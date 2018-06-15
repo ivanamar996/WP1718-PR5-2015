@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link href="Taksi.css" rel="stylesheet" type="text/css">
+    <title>Taxi Services</title>
+    <script src="Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("a#link1").click(function () {   
+                $("div#div1").html("<form accept-charset=\"utf- 8\" method=\"post\" action=\"/api/Register/RegisterAccount\">" +
+                    "<table class=\"tabela\">" +
+                    "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
+                    "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
+                    "<tr><td>Name:</td><td><input type=\"text\" name=\"name\" /></td></tr>" +
+                    "<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" /></td>" +
+                    "<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" /></td></tr>" +
+                    "<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" /></td>" +
+                    "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" /></td>" +
+                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Register\" /></td></tr></table></form>");
+            });
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <div class="divZuti"></div>
+        <img src="pozadina.png" class="slika">
+        <div class="Naslov"> Taxi Services </div>
+        <div class="Registration"><a id="link1">Registration</a></div>
+        <div class="Login"><a id="link2">Login</a></div>
+        <div class="divMijenjam" id="div1"><p class="pocetniP">Welcome to Taxi Services! :)</p></div>
+    </div>
+</body>
+</html>

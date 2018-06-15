@@ -1,0 +1,70 @@
+.slika{
+	width : 100%;
+	height : 100%
+}
+
+body{
+	background-color : black
+}
+
+.divZuti{
+	width : 100%;
+	height : 0.3%;
+	background-color : #ffff1a
+}
+
+.Naslov{
+	font-family:Vedrana;
+	font-size:450%;
+	background-color:#ffff1a;
+	position: absolute;
+    top: 5%;
+    right: 5%;
+}
+
+.Registration{
+	font-family:Vedrana;
+	font-size:150%;
+    color: #ffff1a;
+	background-color:transparent;
+	position: absolute;
+    top: 5%;
+    left: 5%;
+}
+
+.Login{
+	font-family:Vedrana;
+	font-size:150%;
+    color: #ffff1a;
+	background-color:transparent;
+	position: absolute;
+    top: 5%;
+    left: 20%;
+}
+
+.divMijenjam{
+	height:70%;
+	width: 45%;
+	background-color : #ffff1a;
+    opacity:0.7;
+	position: absolute;
+    bottom: 5%;
+    left: 5%;
+}
+
+.slikaTaxi{
+	width: 15%;
+	height: 5%;
+	position: absolute;
+    top: 25%;
+    right: 5%;
+}
+
+.tabela{
+
+}
+
+.pocetniP {
+    font-family:Verdana;
+    font-size:450%;
+}
