@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Dispatchers>
+  <Dispatcher Id="1">
+    <Id>1</Id>
+    <Username>Marko123</Username>
+    <Password>123</Password>
+    <Name>Marko</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>1009000185850</Jmbg>
+    <Phone>065876400</Phone>
+    <Email>marko@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Dispatcher</Role>
+  </Dispatcher>
+  <Dispatcher Id="2">
+    <Id>2</Id>
+    <Username>Iva123</Username>
+    <Password>123</Password>
+    <Name>Ivana</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>0208996185850</Jmbg>
+    <Phone>064789456</Phone>
+    <Email>ivana@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Dispatcher</Role>
+  </Dispatcher>
+    <Dispatcher Id="3">
+    <Id>3</Id>
+    <Username>Igor123</Username>
+    <Password>1234</Password>
+    <Name>Igor</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>1009000123456</Jmbg>
+    <Phone>065876300</Phone>
+    <Email>ivana@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Dispatcher</Role>
+  </Dispatcher>
+</Dispatchers>

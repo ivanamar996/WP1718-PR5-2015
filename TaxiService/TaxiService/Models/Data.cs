@@ -9,5 +9,10 @@ namespace TaxiService.Models
     public class Data
     {
         public static CustomerService customerService = new CustomerService();
+        public static DispatcherServices dispatcherServices = new DispatcherServices();
+
+        public static User loggedUser;
+
+        public static IEnumerable<Dispatcher> dispatchers = dispatcherServices.RetriveAllDispatchers();
     }
 }

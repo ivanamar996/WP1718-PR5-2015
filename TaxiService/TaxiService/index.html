@@ -5,7 +5,7 @@
     <link href="Taksi.css" rel="stylesheet" type="text/css">
     <title>Taxi Services</title>
     <script src="Scripts/jquery-1.10.2.js"></script>
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $("a#link1").click(function () {   
                 $("div#div1").html("<form accept-charset=\"utf- 8\" method=\"post\" action=\"/api/Register/RegisterAccount\">" +
@@ -20,16 +20,76 @@
                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Register\" /></td></tr></table></form>");
             });
         });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("div#div1").html("<form id=\"form1\" accept-charset=\"utf- 8\" method=\"post\" action=\"/api/Login/Login\">" +
+                    "<table class=\"tabela\">" +
+                    "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
+                    "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
+                    "<tr><td colspan=\"2\"><input type=\"submit\" id=\"log\" value=\"Login\"/></td></tr>" +
+                    "</table></form>");
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("div#divVeliki").append("<div id=\"divService\" class=\"Service\"><a id=\"link3\">Service</a></div>");
+                        $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"><a id=\"link4\">Edit profile</a></div>");
+                        $("div#divLink").hide();
+                    });
+                });           
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("div#divLink").slideToggle();
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status){
+                        $("a#link3").click(function () {
+                            $("a#link4").click(function () {                                
+                                $("div#div1").html(`<form accept-charset=\"utf- 8\" method=\"post\" action=\"/api/User/Edit\">` +
+                                    `<table class=\"tabela\">` +
+                                    `<tr><td>Username:</td><td><input type=\"text\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
+                                    `<tr><td>Password:</td><td><input type=\"text\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
+                                    `<tr><td>Name:</td><td><input type=\"text\" name=\"name\" value=\"${data.Name}\"/></td></tr>` +
+                                    `<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" value=\"${data.Surname}\"/></td>` +
+                                    `<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" value=\"${data.Jmbg}\" /></td></tr>` +
+                                    `<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" value=\"${data.Phone}\" /></td>` +
+                                    `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"${data.Email}\" /></td>` +
+                                    `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr></table></form>`);
+                            });
+                        });
+                    });
+                });
+            });
+        });
     </script>
 </head>
 <body>
-    <div>
+    <div id="divVeliki">
         <div class="divZuti"></div>
         <img src="pozadina.png" class="slika">
         <div class="Naslov"> Taxi Services </div>
         <div class="Registration"><a id="link1">Registration</a></div>
         <div class="Login"><a id="link2">Login</a></div>
-        <div class="divMijenjam" id="div1"><p class="pocetniP">Welcome to Taxi Services! :)</p></div>
+        <div class="divMijenjam" id="div1">
+            <p class="pocetniP">Welcome to Taxi Services! :)</p>
+        </div>        
     </div>
 </body>
 </html>

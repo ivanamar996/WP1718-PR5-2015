@@ -158,7 +158,7 @@ namespace TaxiService.Services
                     .Elements("Customer")
                     .Select(customer => new Customer
                     {
-                        Id = Guid.Parse(customer.Element("Id").Value),
+                        Id = Int32.Parse(customer.Element("Id").Value),
                         Username = customer.Element("Username").Value,
                         Password = customer.Element("Password").Value,
                         Name = customer.Element("Name").Value,
@@ -190,7 +190,7 @@ namespace TaxiService.Services
                     .Where(x => x.Attribute("Id").Value == id.ToString())
                     .Select(customerx => new Customer
                     {
-                        Id = Guid.Parse(customerx.Element("Id").Value),
+                        Id = Int32.Parse(customerx.Element("Id").Value),
                         Username = customerx.Element("Username").Value,
                         Password = customerx.Element("Password").Value,
                         Name = customerx.Element("Name").Value,
@@ -224,7 +224,7 @@ namespace TaxiService.Services
                     .Where(x => x.Element("Username").Value.ToLower() == Name.ToLower())
                     .Select(customerx => new Customer
                     {
-                        Id = Guid.Parse(customerx.Element("Id").Value),
+                        Id = Int32.Parse(customerx.Element("Id").Value),
                         Username = customerx.Element("Username").Value,
                         Password = customerx.Element("Password").Value,
                         Name = customerx.Element("Name").Value,
