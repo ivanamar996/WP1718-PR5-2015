@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Drives>
+  <Drive Id="0">
+    <Id>0</Id>
+    <OrderDate>2018-06-17T00:03:50.4878883+02:00</OrderDate>
+    <AddressX>44</AddressX>
+    <AddressY>85</AddressY>
+    <AddressAdr>adresa</AddressAdr>
+    <CarType>Bez_Naznake</CarType>
+    <CustomerId>0</CustomerId>
+    <DestinationX>0</DestinationX>
+    <DestinationY>0</DestinationY>
+    <DestinationAdr />
+    <DispatcherId>0</DispatcherId>
+    <Price>0</Price>
+    <Status>Created</Status>
+  </Drive>
+</Drives>

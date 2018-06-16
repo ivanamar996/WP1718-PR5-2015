@@ -25,7 +25,8 @@ namespace TaxiService.Controllers
                 else
                 {
                     customer.Id = customers.Count() + 1;
-                }             
+                }
+                customer.Drives = new List<Drive>();
                 customer.Role = Enums.Roles.Customer;
                 Data.customerService.NewCustomer(customer);
             }

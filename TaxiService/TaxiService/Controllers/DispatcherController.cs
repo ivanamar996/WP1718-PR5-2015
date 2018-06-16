@@ -43,6 +43,7 @@ namespace TaxiService.Controllers
                     Y = Double.Parse(data.GetValue("y").ToString()),
                     Address = data.GetValue("address").ToString()
                 };
+                driverNew.Drives = new List<Drive>();
                 Data.driverServices.NewDriver(driverNew);
                 Data.drivers.Add(driverNew);
             }         

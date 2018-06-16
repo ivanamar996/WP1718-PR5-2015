@@ -131,10 +131,11 @@ namespace TaxiService.Services
             }
         }
 
-        public Dispatcher RetriveDispatcherById(Guid id)
+        public Dispatcher RetriveDispatcherById(int id)
         {
             if (File.Exists(fileName))
             {
+                Dispatcher dispatcher;
                 FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 XDocument doc = XDocument.Load(stream);
                 IEnumerable<Dispatcher> dispatchers =
@@ -155,7 +156,10 @@ namespace TaxiService.Services
                         Role = (Roles)Enum.Parse(typeof(Roles), dispatcherx.Element("Role").Value)
                     }).ToList();
 
-                Dispatcher dispatcher = dispatchers.First(x => x.Id.Equals(id));
+                if (id != 0)
+                    dispatcher = dispatchers.First(x => x.Id.Equals(id));
+                else
+                    dispatcher = new Dispatcher();
 
                 return dispatcher;
             }

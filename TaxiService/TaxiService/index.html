@@ -46,6 +46,9 @@
                         else if (data.Role == 0) {
                             linkovi += "<br><a id=\"link6\">Change location</a>";
                         }
+                        else if (data.Role == 1) {
+                            linkovi += "<br><a id=\"link7\">Create drive</a>";
+                        }
                         $("div#divLink").html(linkovi);
                     });
                 });           
@@ -132,6 +135,27 @@
                                     `<tr><td>Address: </td><td><input type=\"text\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
                                     `</table></form>`);
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link7").click(function () {
+                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
+                                    "<table class=\"tabela\">" +                                 
+                                    "<tr><td>Location:</td><td></td></tr>" +
+                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
+                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
+                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
+                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
+                                    "</table></form>");
                             });
                         });
                     });

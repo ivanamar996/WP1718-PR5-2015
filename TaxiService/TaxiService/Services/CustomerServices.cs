@@ -178,7 +178,7 @@ namespace TaxiService.Services
             }
         }
 
-        public Customer RetriveCustomerById(Guid id)
+        public Customer RetriveCustomerById(int id)
         {
             if (File.Exists(fileName))
             {
