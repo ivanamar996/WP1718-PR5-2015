@@ -43,6 +43,9 @@
                         if (data.Role == 2) {
                             linkovi += "<br><a id=\"link5\">Add driver</a>";
                         }
+                        else if (data.Role == 0) {
+                            linkovi += "<br><a id=\"link6\">Change location</a>";
+                        }
                         $("div#divLink").html(linkovi);
                     });
                 });           
@@ -108,6 +111,27 @@
                                     "<tr><td>RegNumber: </td><td><input type=\"text\" name=\"regNumber\" /></td></tr>" +                                   
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Add\" /></td></tr>" +
                                     "</table></form>");
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link6").click(function () {
+                                $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/EditLocation\">` +
+                                    `<table class=\"tabela\">` +                                  
+                                    `<tr><td>Location:</td><td></td></tr>` +
+                                    `<tr><td>X: </td><td><input type=\"text\" name=\"x\" value="${data.Location.X}"/></td></tr>` +
+                                    `<tr><td>Y: </td><td><input type=\"text\" name=\"y\" value="${data.Location.Y}" /></td></tr>` +
+                                    `<tr><td>Address: </td><td><input type=\"text\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
+                                    `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
+                                    `</table></form>`);
                             });
                         });
                     });
