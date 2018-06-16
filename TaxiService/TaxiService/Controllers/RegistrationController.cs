@@ -18,7 +18,14 @@ namespace TaxiService.Controllers
             if (!Data.customerService.CheckIfCustomerExists(customer.Username))
             {
                 IEnumerable<Customer> customers = Data.customerService.RetriveAllCustomers();
-                customer.Id = customers.Count() + 1;
+                if (customers == null)
+                {
+                    customer.Id = 0;
+                }
+                else
+                {
+                    customer.Id = customers.Count() + 1;
+                }             
                 customer.Role = Enums.Roles.Customer;
                 Data.customerService.NewCustomer(customer);
             }

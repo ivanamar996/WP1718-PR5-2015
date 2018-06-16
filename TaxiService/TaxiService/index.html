@@ -8,7 +8,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("a#link1").click(function () {   
-                $("div#div1").html("<form accept-charset=\"utf- 8\" method=\"post\" action=\"/api/Register/RegisterAccount\">" +
+                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Register/RegisterAccount\">" +
                     "<table class=\"tabela\">" +
                     "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
                     "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
@@ -23,7 +23,7 @@
 
         $(document).ready(function () {
             $("a#link2").click(function () {
-                $("div#div1").html("<form id=\"form1\" accept-charset=\"utf- 8\" method=\"post\" action=\"/api/Login/Login\">" +
+                $("div#div1").html("<form id=\"form1\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Login/Login\">" +
                     "<table class=\"tabela\">" +
                     "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
                     "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
@@ -36,9 +36,14 @@
             $("a#link2").click(function () {
                 $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status) {
+                        let linkovi = "<a id=\"link4\">Edit profile</a>";
                         $("div#divVeliki").append("<div id=\"divService\" class=\"Service\"><a id=\"link3\">Service</a></div>");
-                        $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"><a id=\"link4\">Edit profile</a></div>");
+                        $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"></div>");
                         $("div#divLink").hide();
+                        if (data.Role == 2) {
+                            linkovi += "<br><a id=\"link5\">Add driver</a>";
+                        }
+                        $("div#divLink").html(linkovi);
                     });
                 });           
             });
@@ -46,13 +51,13 @@
 
         $(document).ready(function () {
             $("a#link2").click(function () {
-                $("form#form1").submit(function () {
+               $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status) {
                         $("a#link3").click(function () {
                             $("div#divLink").slideToggle();
                         });
                     });
-                });
+               });
             });
         });
 
@@ -60,9 +65,9 @@
             $("a#link2").click(function () {
                 $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status){
-                        $("a#link3").click(function () {
+                       $("a#link3").click(function () {
                             $("a#link4").click(function () {                                
-                                $("div#div1").html(`<form accept-charset=\"utf- 8\" method=\"post\" action=\"/api/User/Edit\">` +
+                                $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/Edit\">` +
                                     `<table class=\"tabela\">` +
                                     `<tr><td>Username:</td><td><input type=\"text\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
                                     `<tr><td>Password:</td><td><input type=\"text\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
@@ -72,6 +77,37 @@
                                     `<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" value=\"${data.Phone}\" /></td>` +
                                     `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"${data.Email}\" /></td>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr></table></form>`);
+                            });
+                        });
+                   });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link5").click(function () {
+                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/AddDriver\">" +
+                                    "<table class=\"tabela\">" +
+                                    "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
+                                    "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
+                                    "<tr><td>Name:</td><td><input type=\"text\" name=\"name\"/></td></tr>" +
+                                    "<tr><td>Surname:</td><td><input type=\"text\" name=\"surname\" /></td></tr>" +
+                                    "<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" /></td></tr>" +
+                                    "<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" /></td></tr>" +
+                                    "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" /></td></tr>" +
+                                    "<tr><td>Location:</td><td></td></tr>"+
+                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
+                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
+                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +                                  
+                                    "<tr><td>Car:</td><td></td></tr>" +
+                                    "<tr><td>Year: </td><td><input type=\"text\" name=\"year\" /></td></tr>" +
+                                    "<tr><td>RegNumber: </td><td><input type=\"text\" name=\"regNumber\" /></td></tr>" +                                   
+                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Add\" /></td></tr>" +
+                                    "</table></form>");
                             });
                         });
                     });

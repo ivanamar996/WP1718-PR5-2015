@@ -25,6 +25,11 @@ namespace TaxiService.Controllers
                 Dispatcher dispatcherLogin = Data.dispatcherServices.RetriveDispatcherByUserName(log.Username);
                 Data.loggedUser = dispatcherLogin;
             }
+            else if (Data.driverServices.LogIn(log.Username, log.Password))
+            {
+                Driver driverLogin = Data.driverServices.RetriveDriverByUserName(log.Username);
+                Data.loggedUser = driverLogin;
+            }
         }
 
         public User Get()

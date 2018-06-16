@@ -1,26 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Customers>
-  <Customer Id="2a320d00-0b39-4b2a-ae44-0271db1674a5">
-    <Id>2a320d00-0b39-4b2a-ae44-0271db1674a5</Id>
-    <Username>Iva</Username>
-    <Password>oo</Password>
-    <Name>Ivana</Name>
-    <Surname>Markovic</Surname>
+  <Customer Id="0">
+    <Id>0</Id>
+    <Username>Viki</Username>
+    <Password>123</Password>
+    <Name>Violeta</Name>
+    <Surname>Mladjenovic</Surname>
     <Jmbg>0208996185850</Jmbg>
-    <Phone />
-    <Email>ivana@gmail.com</Email>
-    <Gender>Male</Gender>
-    <Role>Customer</Role>
-  </Customer>
-  <Customer Id="2b4b522d-155f-44b6-b29e-fc15446a8fd1">
-    <Id>2b4b522d-155f-44b6-b29e-fc15446a8fd1</Id>
-    <Username>Iva123</Username>
-    <Password>1231</Password>
-    <Name>Ivana</Name>
-    <Surname>Markovic</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone />
-    <Email>ivana@gmail.com</Email>
+    <Phone>45678</Phone>
+    <Email>violeta@gmail.com</Email>
     <Gender>Male</Gender>
     <Role>Customer</Role>
   </Customer>

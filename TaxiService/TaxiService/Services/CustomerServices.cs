@@ -9,7 +9,7 @@ using static TaxiService.Models.Enums;
 
 namespace TaxiService.Services
 {
-    public class CustomerService
+    public class CustomerServices
     {
         private string fileName = HttpContext.Current.Server.MapPath("~/App_Data/Customers.xml");
 
