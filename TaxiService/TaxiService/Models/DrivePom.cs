@@ -6,23 +6,18 @@ using static TaxiService.Models.Enums;
 
 namespace TaxiService.Models
 {
-    public class Drive
+    public class DrivePom
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
         public Location Address { get; set; }
         public CarTypes CarType { get; set; }
-        public Customer OrderedBy { get; set; }
+        public int CustomerId { get; set; }
         public Location Destination { get; set; }
-        public Dispatcher ApprovedBy { get; set; }
-        public Driver DrivedBy { get; set; }
+        public int DispatcherId { get; set; }
+        public int DriverId { get; set; }
         public double Price { get; set; }
-        public Comment Comments { get; set; }
+        public int CommentId { get; set; }
         public Status State { get; set; }
-
-        public Drive()
-        {
-            Id = -1;
-        }
     }
 }

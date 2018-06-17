@@ -7,5 +7,9 @@ namespace TaxiService.Models
 {
     public class Dispatcher : User
     {
+        public Dispatcher()
+        {
+            Id = -1;
+        }
     }
 }

@@ -7,5 +7,9 @@ namespace TaxiService.Models
 {
     public class Customer : User
     {
+        public Customer()
+        {
+            Id = -1;
+        }
     }
 }

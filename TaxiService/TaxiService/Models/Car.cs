@@ -14,5 +14,10 @@ namespace TaxiService.Models
         public int CarID { get; set; }
         public CarTypes Type { get; set; }
 
+        public Car()
+        {
+            CarID = -1;
+        }
+
     }
 }

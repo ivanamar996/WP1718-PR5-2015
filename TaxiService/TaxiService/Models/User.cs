@@ -21,5 +21,10 @@ namespace TaxiService.Models
       //  [JsonConverter(typeof(StringEnumConverter))]
         public Enums.Roles Role { get; set; }
         public List<Drive> Drives { get; set; }
+
+        public User()
+        {
+            Id = -1;
+        }
     }
 }

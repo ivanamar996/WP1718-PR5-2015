@@ -13,7 +13,7 @@ namespace TaxiService.Controllers
     {
         [HttpPost]
         [Route("api/Customer/CreateDrive")]
-        public void AddDriver([FromBody]JObject data)
+        public void CreateDrive([FromBody]JObject data)
         {
             Drive newDrive = new Drive();
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
@@ -39,6 +39,9 @@ namespace TaxiService.Controllers
             newDrive.OrderedBy = Data.customerService.RetriveCustomerByUserName(Data.loggedUser.Username);
             newDrive.State = Enums.Status.Created;
             Data.driveServices.NewDrive(newDrive);
+
+            newDrive.Price = 456;
+            Data.driveServices.EditDriverProfile(newDrive);
         } 
     }
 }

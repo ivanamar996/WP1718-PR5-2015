@@ -13,112 +13,30 @@ namespace TaxiService.Services
     {
         private string fileName = HttpContext.Current.Server.MapPath("~/App_Data/Drives.xml");
 
-        public void EditDriverProfile(Driver driver)
-        {
-            if (File.Exists(fileName))
-            {
-                XDocument xmlDocument = XDocument.Load(fileName);
-
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Id", driver.Id);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Username", driver.Username);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Password", driver.Password);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Name", driver.Name);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Surname", driver.Surname);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Jmbg", driver.Jmbg);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Phone", driver.Phone);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Email", driver.Email);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Gender", driver.Gender);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Role", driver.Role);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("X", driver.Location.X);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Y", driver.Location.Y);
-                xmlDocument.Element("Drivers")
-                                        .Elements("Driver")
-                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
-                                        .SetElementValue("Address", driver.Location.Address);
-
-                xmlDocument.Save(fileName);
-            }
-        }
-
-        public void NewDrive(Drive drive) //nisam nista za Comment,
+        public void NewDrive(Drive drive) 
         {
             if (!File.Exists(fileName))
             {
                 XDocument xmlDocument = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
-
                 new XElement("Drives",
                 new XElement("Drive", new XAttribute("Id", drive.Id),
-                new XElement("Id", drive.Id),
-                new XElement("OrderDate",drive.OrderDate),
-                new XElement("AddressX",drive.Address.X),
-                new XElement("AddressY",drive.Address.Y),
-                new XElement("AddressAdr",drive.Address.Address),
-                new XElement("CarType",drive.CarType),
-                new XElement("CustomerId", drive.OrderedBy.Id),
-                //new XElement("CustomerUsername", drive.OrderedBy.Username),
-              //  new XElement("CustomerPassword", drive.OrderedBy.Password),
-              //  new XElement("CustomerName", drive.OrderedBy.Name),
-             //   new XElement("CustomerSurname", drive.OrderedBy.Surname),
-              //  new XElement("CustomerJmbg", drive.OrderedBy.Jmbg),
-              //  new XElement("CustomerPhone", drive.OrderedBy.Phone),
-                //new XElement("CustomerEmail", drive.OrderedBy.Email),
-               // new XElement("CustomerGender", drive.OrderedBy.Gender),
-              //  new XElement("CustomerRole", drive.OrderedBy.Role),
-                new XElement("DestinationX", drive.Destination.X),
-                new XElement("DestinationY", drive.Destination.Y),
-                new XElement("DestinationAdr", drive.Destination.Address),
-                new XElement("DispatcherId", drive.ApprovedBy.Id),
-              //  new XElement("DispatcherUsername", drive.ApprovedBy.Username),
-              //  new XElement("DispatcherPassword", drive.ApprovedBy.Password),
-              //  new XElement("DispatcherName", drive.ApprovedBy.Name),
-              //  new XElement("DispatcherSurname", drive.ApprovedBy.Surname),
-             //   new XElement("DispatcherJmbg", drive.ApprovedBy.Jmbg),
-              //  new XElement("DispatcherPhone", drive.ApprovedBy.Phone),
-             //   new XElement("DispatcherEmail", drive.ApprovedBy.Email),
-//new XElement("DispatcherGender", drive.ApprovedBy.Gender),
-              //  new XElement("DispatcherRole", drive.ApprovedBy.Role),
-                new XElement("Price",drive.Price),
-                new XElement("Status",drive.State)
-                )
-                ));
-
+                        new XElement("Id", drive.Id),
+                        new XElement("OrderDate", drive.OrderDate),
+                        new XElement("AddressX", drive.Address.X),
+                        new XElement("AddressY", drive.Address.Y),
+                        new XElement("AddressAdr", drive.Address.Address),
+                        new XElement("CarType", drive.CarType),
+                        new XElement("CustomerId", drive.OrderedBy.Id),
+                        new XElement("DestinationX", drive.Destination.X),
+                        new XElement("DestinationY", drive.Destination.Y),
+                        new XElement("DestinationAdr", drive.Destination.Address),
+                        new XElement("DispatcherId", drive.ApprovedBy.Id),
+                        new XElement("DriverId", drive.DrivedBy.Id),
+                        new XElement("CommentId", drive.Comments.Id),
+                        new XElement("Price", drive.Price),
+                        new XElement("Status", drive.State)
+                )));
                 xmlDocument.Save(fileName);
             }
             else
@@ -129,38 +47,21 @@ namespace TaxiService.Services
                     XDocument doc = XDocument.Load(stream);
                     XElement drivers = doc.Element("Drives");
                     drivers.Add(new XElement("Drive", new XAttribute("Id", drive.Id),
-                new XElement("Id", drive.Id),
-                new XElement("OrderDate", drive.OrderDate),
-                new XElement("AddressX", drive.Address.X),
-                new XElement("AddressY", drive.Address.Y),
-                new XElement("AddressAdr", drive.Address.Address),
-                new XElement("CarType", drive.CarType),
-                new XElement("CustomerId", drive.OrderedBy.Id),
-                //new XElement("CustomerUsername", drive.OrderedBy.Username),
-                //  new XElement("CustomerPassword", drive.OrderedBy.Password),
-                //  new XElement("CustomerName", drive.OrderedBy.Name),
-                //   new XElement("CustomerSurname", drive.OrderedBy.Surname),
-                //  new XElement("CustomerJmbg", drive.OrderedBy.Jmbg),
-                //  new XElement("CustomerPhone", drive.OrderedBy.Phone),
-                //new XElement("CustomerEmail", drive.OrderedBy.Email),
-                // new XElement("CustomerGender", drive.OrderedBy.Gender),
-                //  new XElement("CustomerRole", drive.OrderedBy.Role),
-                new XElement("DestinationX", drive.Destination.X),
-                new XElement("DestinationY", drive.Destination.Y),
-                new XElement("DestinationAdr", drive.Destination.Address),
-                new XElement("DispatcherId", drive.ApprovedBy.Id),
-                new XElement("CommentId", drive.Comments.Id),
-                //  new XElement("DispatcherUsername", drive.ApprovedBy.Username),
-                //  new XElement("DispatcherPassword", drive.ApprovedBy.Password),
-                //  new XElement("DispatcherName", drive.ApprovedBy.Name),
-                //  new XElement("DispatcherSurname", drive.ApprovedBy.Surname),
-                //   new XElement("DispatcherJmbg", drive.ApprovedBy.Jmbg),
-                //  new XElement("DispatcherPhone", drive.ApprovedBy.Phone),
-                //   new XElement("DispatcherEmail", drive.ApprovedBy.Email),
-                //new XElement("DispatcherGender", drive.ApprovedBy.Gender),
-                //  new XElement("DispatcherRole", drive.ApprovedBy.Role),
-                new XElement("Price", drive.Price),
-                new XElement("Status", drive.State)
+                        new XElement("Id", drive.Id),
+                        new XElement("OrderDate", drive.OrderDate),
+                        new XElement("AddressX", drive.Address.X),
+                        new XElement("AddressY", drive.Address.Y),
+                        new XElement("AddressAdr", drive.Address.Address),
+                        new XElement("CarType", drive.CarType),
+                        new XElement("CustomerId", drive.OrderedBy.Id),
+                        new XElement("DestinationX", drive.Destination.X),
+                        new XElement("DestinationY", drive.Destination.Y),
+                        new XElement("DestinationAdr", drive.Destination.Address),
+                        new XElement("DispatcherId", drive.ApprovedBy.Id),
+                        new XElement("DriverId", drive.DrivedBy.Id),
+                        new XElement("CommentId", drive.Comments.Id),
+                        new XElement("Price", drive.Price),
+                        new XElement("Status", drive.State)
                 ));
                     doc.Save(fileName);
                 }
@@ -172,16 +73,19 @@ namespace TaxiService.Services
         {
             if (File.Exists(fileName))
             {
+                List<Drive> fullDrives = new List<Drive>();
+
                 FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 XDocument doc = XDocument.Load(stream);
-                IEnumerable<Drive> drives =
+
+                IEnumerable<DrivePom> drives =
                     doc.Root
                     .Elements("Drive")
-                    .Select(drive => new Drive
+                    .Select(drive => new DrivePom
                     {
                         Id = Int32.Parse(drive.Element("Id").Value),
 
-                        OrderedBy = Data.customerService.RetriveCustomerById(Int32.Parse(drive.Element("CustomerId").Value)),
+                        CustomerId = Int32.Parse(drive.Element("CustomerId").Value),
 
                         Address = new Location
                         {
@@ -198,19 +102,118 @@ namespace TaxiService.Services
 
                         },
 
+                        DriverId = Int32.Parse(drive.Element("DriverId").Value),
                         CarType = (CarTypes)Enum.Parse(typeof(CarTypes), drive.Element("CarType").Value),
-                        ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Int32.Parse(drive.Element("DispatcherId").Value)),
+                        DispatcherId = Int32.Parse(drive.Element("DispatcherId").Value),
                         Price = Double.Parse(drive.Element("Price").Value),
-                        State = (Status)Enum.Parse(typeof(Status), drive.Element("State").Value),
-                        Comments = new Comment { },
-                  
+                        State = (Status)Enum.Parse(typeof(Status), drive.Element("Status").Value),
+                        CommentId = Int32.Parse(drive.Element("CommentId").Value),
+
                     }).ToList();
 
-                return drives;
+                foreach(DrivePom pom in drives)
+                {
+                    Drive drive = new Drive();
+                    drive.Id = pom.Id;
+                    drive.OrderDate = pom.OrderDate;
+                    drive.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
+                    drive.Price = pom.Price;
+                    drive.State = pom.State;
+                    drive.Destination = pom.Destination;
+                    drive.CarType = drive.CarType;
+
+                    if (pom.DispatcherId == -1)
+                        drive.ApprovedBy = new Dispatcher();
+                    else
+                        drive.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(pom.DispatcherId);
+
+                    if (pom.CommentId == -1)
+                        drive.Comments = new Comment(); //nemam else her nisam napravila commenrService
+
+                    if (pom.DriverId == -1)
+                        drive.DrivedBy = new Driver();
+                    else
+                        drive.DrivedBy = Data.driverServices.RetriveDriverById(pom.DriverId);
+
+                    fullDrives.Add(drive);
+                }
+
+                return fullDrives;
             }
             else
             {
                 return null;
+            }
+        }
+
+        public void EditDriverProfile(Drive drive)
+        {
+            if (File.Exists(fileName))
+            {
+                XDocument xmlDocument = XDocument.Load(fileName);
+
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("Id", drive.Id);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("OrderDate", drive.OrderDate);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("AddressX", drive.Address.X);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("AddressY", drive.Address.Y);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("AddressAdr", drive.Address.Address);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("CarType", drive.CarType);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("CustomerId", drive.OrderedBy.Id);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("DestinationX", drive.Destination.X);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("DestinationY", drive.Destination.Y);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("DestinationAdr", drive.Destination.Address);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("DispatcherId", drive.ApprovedBy.Id);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("DriverId", drive.DrivedBy.Id);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("CommentId", drive.Comments.Id);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("Price", drive.Price);
+                xmlDocument.Element("Drives")
+                                        .Elements("Drive")
+                                        .Where(x => x.Attribute("Id").Value == drive.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("Status", drive.State);
+
+                xmlDocument.Save(fileName);
             }
         }
     }

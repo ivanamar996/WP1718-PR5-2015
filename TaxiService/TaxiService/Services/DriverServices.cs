@@ -220,7 +220,7 @@ namespace TaxiService.Services
             }
         }
 
-        public Driver RetriveDriverById(Guid id)
+        public Driver RetriveDriverById(int id)
         {
             if (File.Exists(fileName))
             {
