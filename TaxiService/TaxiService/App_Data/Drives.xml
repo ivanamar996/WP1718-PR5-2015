@@ -2,19 +2,19 @@
 <Drives>
   <Drive Id="0">
     <Id>0</Id>
-    <OrderDate>0001-01-01T00:00:00</OrderDate>
-    <AddressX>44</AddressX>
+    <OrderDate>2018-06-18T17:06:42.2975393+02:00</OrderDate>
+    <AddressX>123</AddressX>
     <AddressY>85</AddressY>
     <AddressAdr>adresa</AddressAdr>
     <CarType>Bez_Naznake</CarType>
-    <CustomerId>0</CustomerId>
+    <CustomerId>-1</CustomerId>
     <DestinationX>0</DestinationX>
     <DestinationY>0</DestinationY>
-    <DestinationAdr></DestinationAdr>
-    <DispatcherId>-1</DispatcherId>
-    <DriverId>-1</DriverId>
+    <DestinationAdr />
+    <DispatcherId>2</DispatcherId>
+    <DriverId>0</DriverId>
     <CommentId>-1</CommentId>
     <Price>0</Price>
-    <Status>Canceled</Status>
+    <Status>Formated</Status>
   </Drive>
 </Drives>

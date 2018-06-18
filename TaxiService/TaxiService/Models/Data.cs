@@ -17,6 +17,10 @@ namespace TaxiService.Models
         public static User loggedUser;
 
         public static List<Driver> drivers = new List<Driver>();
+
+        public static List<Driver> freeDrivers = new List<Driver>();
+        public static List<Driver> busyDrivers = new List<Driver>();
+        
         public static IEnumerable<Dispatcher> dispatchers = dispatcherServices.RetriveAllDispatchers();
     }
 }

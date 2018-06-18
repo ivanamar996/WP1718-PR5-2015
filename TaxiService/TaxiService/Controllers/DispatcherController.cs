@@ -46,7 +46,46 @@ namespace TaxiService.Controllers
                 driverNew.Drives = new List<Drive>();
                 Data.driverServices.NewDriver(driverNew);
                 Data.drivers.Add(driverNew);
+                Data.freeDrivers.Add(driverNew);
             }         
+        }
+
+        [HttpPost]
+        [Route("api/Dispatcher/CreateDrive")]
+        public void CreateDrive([FromBody]JObject data)
+        {
+            Drive newDrive = new Drive();
+            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
+
+            if (drives == null)
+                newDrive.Id = 0;
+            else
+                newDrive.Id = drives.Count() + 1;
+
+            newDrive.Address = new Location()
+            {
+                X = Double.Parse(data.GetValue("x").ToString()),
+                Y = Double.Parse(data.GetValue("y").ToString()),
+                Address = data.GetValue("address").ToString()
+            };
+
+            newDrive.Destination = new Location();
+            newDrive.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
+            newDrive.Comments = new Comment();
+            if (Data.freeDrivers == null)
+                newDrive.DrivedBy = new Driver();
+            else
+            {
+                newDrive.DrivedBy = Data.freeDrivers[0];         
+                Data.busyDrivers.Add(Data.freeDrivers[0]);
+                Data.freeDrivers.RemoveAt(0);
+            }
+
+            newDrive.Price = 0;
+            newDrive.OrderDate = DateTime.Now;
+            newDrive.OrderedBy = new Customer();
+            newDrive.State = Enums.Status.Formated;
+            Data.driveServices.NewDrive(newDrive);
         }
     }
 }
