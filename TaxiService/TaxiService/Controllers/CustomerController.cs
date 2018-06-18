@@ -38,7 +38,6 @@ namespace TaxiService.Controllers
             newDrive.OrderDate = DateTime.Now;
             newDrive.OrderedBy = Data.customerService.RetriveCustomerByUserName(Data.loggedUser.Username);
             newDrive.State = Enums.Status.Created;
-           // Data.loggedUser.Drives.Add(newDrive);
             Data.driveServices.NewDrive(newDrive);           
         }
 
@@ -46,7 +45,6 @@ namespace TaxiService.Controllers
         [Route("api/Customer/ChangeDrive")]
         public void ChangeDrive([FromBody]JObject data)
         {
-            //Drive driveEdit = new Drive();
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             foreach(Drive d in drives)
             {
@@ -57,8 +55,36 @@ namespace TaxiService.Controllers
                         d.Address.X = Double.Parse(data.GetValue("xEdit").ToString());
                         d.Address.Y = Double.Parse(data.GetValue("yEdit").ToString());
                         d.Address.Address = data.GetValue("addressEdit").ToString();
-                       // d.Comments.Id = 0;
                         Data.driveServices.EditDriveProfile(d);
+                    }
+                }
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Customer/CancelDrive")]
+        public void CancelDrive([FromBody]JObject data)
+        {
+            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
+            foreach (Drive d in drives)
+            {
+                if (d.OrderedBy.Id == Data.loggedUser.Id)
+                {
+                    if (d.State == Enums.Status.Created)
+                    {
+                        d.State = Enums.Status.Canceled;
+                        Data.driveServices.EditDriveProfile(d);
+                        Comment com = new Comment();
+                        IEnumerable<Comment> comments = Data.commentServices.RetriveAllComments();
+                        if (comments == null)
+                            com.Id = 0;
+                        else
+                            com.Id = comments.Count() + 1;
+
+                        com.Description = data.GetValue("description").ToString();
+                        com.CreatedBy = Data.customerService.RetriveCustomerById(Data.loggedUser.Id);
+                        com.CommentedOn = d;
+                        Data.commentServices.NewComment(com);
                     }
                 }
             }

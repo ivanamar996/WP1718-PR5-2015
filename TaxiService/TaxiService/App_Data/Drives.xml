@@ -3,9 +3,9 @@
   <Drive Id="0">
     <Id>0</Id>
     <OrderDate>0001-01-01T00:00:00</OrderDate>
-    <AddressX>33</AddressX>
-    <AddressY>33</AddressY>
-    <AddressAdr>zz</AddressAdr>
+    <AddressX>44</AddressX>
+    <AddressY>85</AddressY>
+    <AddressAdr>adresa</AddressAdr>
     <CarType>Bez_Naznake</CarType>
     <CustomerId>0</CustomerId>
     <DestinationX>0</DestinationX>
@@ -15,6 +15,6 @@
     <DriverId>-1</DriverId>
     <CommentId>-1</CommentId>
     <Price>0</Price>
-    <Status>Created</Status>
+    <Status>Canceled</Status>
   </Drive>
 </Drives>

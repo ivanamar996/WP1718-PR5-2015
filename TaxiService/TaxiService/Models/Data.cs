@@ -12,6 +12,7 @@ namespace TaxiService.Models
         public static DispatcherServices dispatcherServices = new DispatcherServices();
         public static DriverServices driverServices = new DriverServices();
         public static DriveServices driveServices = new DriveServices();
+        public static CommentService commentServices = new CommentService();
 
         public static User loggedUser;
 

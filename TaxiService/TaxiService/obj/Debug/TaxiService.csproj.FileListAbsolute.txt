@@ -93,3 +93,4 @@ C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.Web.xml
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csproj.CoreCompileInputs.cache
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.dll
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.pdb
+C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csprojResolveAssemblyReference.cache

@@ -48,7 +48,7 @@
                         }
                         else if (data.Role == 1) {
                             linkovi += "<br><a id=\"link7\">Create drive</a></br><a id=\"link8\">Change drive</a>";
-                            //linkovi += "<br><a id=\"link8\">Change drive</a>";
+                            linkovi += "<br><a id=\"link9\">Cancel drive</a>";
                         }
                         $("div#divLink").html(linkovi);
                         $("div#divLink").hide();
@@ -186,7 +186,23 @@
             });
         });
 
-
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link9").click(function () {
+                                $("div#div1").html("<p> Create comment</p><br>" +
+                                    "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CancelDrive\">" +                           
+                                    "<textarea name=\"description\" rows=\"10\" cols=\"30\"/><br>" +
+                                    "<input type=\"submit\" value=\"Create\"/>"+
+                                    "</form>");
+                            });
+                        });
+                    });
+                });
+            });
+        });
 
     </script>
 </head>

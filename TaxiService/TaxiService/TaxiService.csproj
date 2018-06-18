@@ -192,6 +192,7 @@
     </Compile>
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\CommentPom.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Models\Dispatcher.cs" />
@@ -203,6 +204,7 @@
     <Compile Include="Models\LoginClass.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CommentService.cs" />
     <Compile Include="Services\CustomerServices.cs" />
     <Compile Include="Services\DispatcherServices.cs" />
     <Compile Include="Services\DriverServices.cs" />

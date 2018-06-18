@@ -120,7 +120,7 @@ namespace TaxiService.Services
                     drive.Price = pom.Price;
                     drive.State = pom.State;
                     drive.Destination = pom.Destination;
-                    drive.CarType = drive.CarType;
+                    drive.CarType = pom.CarType;
                     drive.Address = pom.Address;
 
                     if (pom.DispatcherId == -1)
@@ -215,6 +215,85 @@ namespace TaxiService.Services
                                         .SetElementValue("Status", drive.State);
 
                 xmlDocument.Save(fileName);
+            }
+        }
+
+        public Drive RetriveDriveById(int id)
+        {
+            if (File.Exists(fileName))
+            {
+                List<Drive> fullDrives = new List<Drive>();
+
+                FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                XDocument doc = XDocument.Load(stream);
+                IEnumerable<DrivePom> drives =
+                    doc.Root
+                    .Elements("Drive")
+                    .Where(x => x.Attribute("Id").Value == id.ToString())
+                    .Select(drivex => new DrivePom
+                    {
+                        Id = Int32.Parse(drivex.Element("Id").Value),
+
+                        CustomerId = Int32.Parse(drivex.Element("CustomerId").Value),
+
+                        Address = new Location
+                        {
+                            Address = drivex.Element("AddressAdr").Value,
+                            X = Double.Parse(drivex.Element("AddressX").Value),
+                            Y = Double.Parse(drivex.Element("AddressY").Value)
+                        },
+
+                        Destination = new Location
+                        {
+                            Address = drivex.Element("DestinationAdr").Value,
+                            X = Double.Parse(drivex.Element("DestinationX").Value),
+                            Y = Double.Parse(drivex.Element("DestinationY").Value)
+
+                        },
+
+                        DriverId = Int32.Parse(drivex.Element("DriverId").Value),
+                        CarType = (CarTypes)Enum.Parse(typeof(CarTypes), drivex.Element("CarType").Value),
+                        DispatcherId = Int32.Parse(drivex.Element("DispatcherId").Value),
+                        Price = Double.Parse(drivex.Element("Price").Value),
+                        State = (Status)Enum.Parse(typeof(Status), drivex.Element("Status").Value),
+                        CommentId = Int32.Parse(drivex.Element("CommentId").Value),
+                    }).ToList();
+
+                foreach (DrivePom pom in drives)
+                {
+                    Drive d = new Drive();
+                    d.Id = pom.Id;
+                    d.OrderDate = pom.OrderDate;
+                    d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
+                    d.Price = pom.Price;
+                    d.State = pom.State;
+                    d.Destination = pom.Destination;
+                    d.CarType = pom.CarType;
+                    d.Address = pom.Address;
+
+                    if (pom.DispatcherId == -1)
+                        d.ApprovedBy = new Dispatcher();
+                    else
+                        d.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(pom.DispatcherId);
+
+                    if (pom.CommentId == -1)
+                        d.Comments = new Comment(); //nemam else her nisam napravila commenrService
+
+                    if (pom.DriverId == -1)
+                        d.DrivedBy = new Driver();
+                    else
+                        d.DrivedBy = Data.driverServices.RetriveDriverById(pom.DriverId);
+
+                    fullDrives.Add(d);
+                }
+
+                Drive drive = fullDrives.First(x => x.Id.Equals(id));
+
+                return drive;
+            }
+            else
+            {
+                return null;
             }
         }
     }
