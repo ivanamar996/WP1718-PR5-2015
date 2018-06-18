@@ -12,5 +12,10 @@ namespace TaxiService.Models
         public User CreatedBy { get; set; }
         public Drive CommentedOn { get; set; }
         public int Grade { get; set; }
+
+        public Comment()
+        {
+            Id = -1;
+        }
     }
 }

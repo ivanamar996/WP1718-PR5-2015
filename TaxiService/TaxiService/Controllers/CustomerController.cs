@@ -29,7 +29,7 @@ namespace TaxiService.Controllers
                 Y = Double.Parse(data.GetValue("y").ToString()),
                 Address = data.GetValue("address").ToString()
             };
-
+         
             newDrive.Destination = new Location();
             newDrive.ApprovedBy = new Dispatcher();
             newDrive.Comments = new Comment();
@@ -38,10 +38,30 @@ namespace TaxiService.Controllers
             newDrive.OrderDate = DateTime.Now;
             newDrive.OrderedBy = Data.customerService.RetriveCustomerByUserName(Data.loggedUser.Username);
             newDrive.State = Enums.Status.Created;
-            Data.driveServices.NewDrive(newDrive);
+           // Data.loggedUser.Drives.Add(newDrive);
+            Data.driveServices.NewDrive(newDrive);           
+        }
 
-            newDrive.Price = 456;
-            Data.driveServices.EditDriverProfile(newDrive);
-        } 
+        [HttpPost]
+        [Route("api/Customer/ChangeDrive")]
+        public void ChangeDrive([FromBody]JObject data)
+        {
+            //Drive driveEdit = new Drive();
+            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
+            foreach(Drive d in drives)
+            {
+                if (d.OrderedBy.Id == Data.loggedUser.Id)
+                {
+                    if (d.State == Enums.Status.Created)
+                    {
+                        d.Address.X = Double.Parse(data.GetValue("xEdit").ToString());
+                        d.Address.Y = Double.Parse(data.GetValue("yEdit").ToString());
+                        d.Address.Address = data.GetValue("addressEdit").ToString();
+                       // d.Comments.Id = 0;
+                        Data.driveServices.EditDriveProfile(d);
+                    }
+                }
+            }
+        }
     }
 }

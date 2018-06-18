@@ -121,6 +121,7 @@ namespace TaxiService.Services
                     drive.State = pom.State;
                     drive.Destination = pom.Destination;
                     drive.CarType = drive.CarType;
+                    drive.Address = pom.Address;
 
                     if (pom.DispatcherId == -1)
                         drive.ApprovedBy = new Dispatcher();
@@ -146,7 +147,7 @@ namespace TaxiService.Services
             }
         }
 
-        public void EditDriverProfile(Drive drive)
+        public void EditDriveProfile(Drive drive)
         {
             if (File.Exists(fileName))
             {
