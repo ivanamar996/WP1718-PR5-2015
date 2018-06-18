@@ -19,4 +19,23 @@
     <RegNumber>852</RegNumber>
     <Type>Bez_Naznake</Type>
   </Driver>
+  <Driver Id="2">
+    <Id>2</Id>
+    <Username>Vozac</Username>
+    <Password>123</Password>
+    <Name>Violeta</Name>
+    <Surname>ert</Surname>
+    <Jmbg>0208996185850</Jmbg>
+    <Phone>45678</Phone>
+    <Email>ivana@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Driver</Role>
+    <X>44</X>
+    <Y>85</Y>
+    <Address>adresa</Address>
+    <CarId>0</CarId>
+    <ModelYear>1996</ModelYear>
+    <RegNumber>852</RegNumber>
+    <Type>Bez_Naznake</Type>
+  </Driver>
 </Drivers>
