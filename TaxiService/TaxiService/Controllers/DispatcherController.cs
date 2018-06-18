@@ -87,5 +87,28 @@ namespace TaxiService.Controllers
             newDrive.State = Enums.Status.Formated;
             Data.driveServices.NewDrive(newDrive);
         }
+
+        [HttpGet]
+        [Route("api/Dispatcher/ProcessDrive")]
+        public void ProcessDrive()
+        {
+            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
+
+            foreach(Drive d in drives)
+            {
+                if(d.State == Enums.Status.Created)
+                {
+                    if (Data.freeDrivers != null)
+                    {
+                        d.DrivedBy = Data.driverServices.RetriveDriverById(Data.freeDrivers[0].Id);
+                        d.State = Enums.Status.Processed;
+                        d.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
+                        Data.busyDrivers.Add(Data.freeDrivers[0]);
+                        Data.freeDrivers.RemoveAt(0);
+                        Data.driveServices.EditDriveProfile(d);
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Customers>
+  <Customer Id="0">
+    <Id>0</Id>
+    <Username>Viki</Username>
+    <Password>123</Password>
+    <Name>Violeta</Name>
+    <Surname>Mladjenovic</Surname>
+    <Jmbg>0208996185850</Jmbg>
+    <Phone>45678</Phone>
+    <Email>violeta@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Customer</Role>
+  </Customer>
+</Customers>

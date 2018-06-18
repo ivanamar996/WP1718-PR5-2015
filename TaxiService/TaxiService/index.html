@@ -43,6 +43,7 @@
                         if (data.Role == 2) {
                             linkovi += "<br><a id=\"link5\">Add driver</a>";
                             linkovi += "<br><a id=\"link10\">Create drive</a>";
+                            linkovi += "<br><a id=\"link11\">Process drive</a>";
                         }
                         else if (data.Role == 0) {
                             linkovi += "<br><a id=\"link6\">Change location</a>";
@@ -219,6 +220,21 @@
                                     "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
                                     "</table></form>");
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link11").click(function () {
+                                $("a#link11").attr("href", "api/Dispatcher/ProcessDrive");
+
                             });
                         });
                     });
