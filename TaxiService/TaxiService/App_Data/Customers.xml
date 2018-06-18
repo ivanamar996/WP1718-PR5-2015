@@ -12,4 +12,16 @@
     <Gender>Male</Gender>
     <Role>Customer</Role>
   </Customer>
+  <Customer Id="2">
+    <Id>2</Id>
+    <Username>Marko123</Username>
+    <Password>234</Password>
+    <Name>Ivana</Name>
+    <Surname>ert</Surname>
+    <Jmbg>0208996185850</Jmbg>
+    <Phone>45678</Phone>
+    <Email>ivana@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Customer</Role>
+  </Customer>
 </Customers>

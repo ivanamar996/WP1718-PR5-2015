@@ -274,16 +274,12 @@
                     $.get("/api/Login", function (data, status) {
                         $("a#link3").click(function () {
                             $("a#link13").click(function () {
-                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
-                                    "<table class=\"tabela\">" +
-                                    "<tr><td>Destination:</td><td></td></tr>" +
-                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\"/></td></tr>" +
-                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\"/></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\"/></td></tr>" +
-                                    "<tr><td>Price: </td><td><input type=\"number\" name=\"price\"/></td></tr>" +
-                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Submit\"/></td></tr>" +
-                                    "</table>" +
+                                $("div#div1").html("<p> Create comment</p><br>" +
+                                    "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
+                                    "<textarea name=\"description\" rows=\"10\" cols=\"30\"/><br>" +
+                                    "<input type=\"submit\" value=\"Create\"/>" +
                                     "</form>");
+                          
                             });
                         });
                     });

@@ -29,7 +29,7 @@ namespace TaxiService.Controllers
 
             foreach(Drive d in drives)
             {
-                if(d.DrivedBy == Data.driverServices.RetriveDriverById(Data.loggedUser.Id))
+                if(d.DrivedBy.Id == Data.loggedUser.Id)
                 {
                     driveFinis = d;
                 }
@@ -44,6 +44,8 @@ namespace TaxiService.Controllers
             };
             driveFinis.Price = Int32.Parse(data.GetValue("price").ToString());
             Data.driveServices.EditDriveProfile(driveFinis);
+            Data.freeDrivers.Add(driveFinis.DrivedBy);
+            Data.busyDrivers.Remove(driveFinis.DrivedBy);
         }
 
         [HttpPost]
@@ -55,21 +57,30 @@ namespace TaxiService.Controllers
 
             foreach (Drive d in drives)
             {
-                if (d.DrivedBy == Data.driverServices.RetriveDriverById(Data.loggedUser.Id))
+                if (d.DrivedBy.Id == Data.loggedUser.Id)
                 {
                     driveFinis = d;
                 }
             }
 
-            driveFinis.State = Enums.Status.Successful;
-            driveFinis.Destination = new Location
-            {
-                X = Double.Parse(data.GetValue("x").ToString()),
-                Y = Double.Parse(data.GetValue("y").ToString()),
-                Address = data.GetValue("address").ToString()
-            };
-            driveFinis.Price = Int32.Parse(data.GetValue("price").ToString());
+            driveFinis.State = Enums.Status.Unsuccessful;
+
+            Comment com = new Comment();
+            IEnumerable<Comment> comments = Data.commentServices.RetriveAllComments();
+
+            if (comments == null)
+                com.Id = 0;
+            else
+                com.Id = comments.Count() + 1;
+
+            com.Description = data.GetValue("description").ToString();
+            com.CreatedBy = Data.driverServices.RetriveDriverById(driveFinis.DrivedBy.Id);
+            com.CommentedOn = driveFinis;
+
+            Data.commentServices.NewComment(com);
             Data.driveServices.EditDriveProfile(driveFinis);
+            Data.freeDrivers.Add(driveFinis.DrivedBy);
+            Data.busyDrivers.Remove(driveFinis.DrivedBy);
         }
     }
 }
