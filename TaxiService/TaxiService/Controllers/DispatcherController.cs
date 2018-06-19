@@ -35,8 +35,12 @@ namespace TaxiService.Controllers
                 driverNew.Phone = data.GetValue("phone").ToString();
                 driverNew.Gender = Enums.Genders.Female;
                 driverNew.Email = data.GetValue("email").ToString();
-                driverNew.DriverCar = new Car() { CarID = cnt++, Year = Int32.Parse(data.GetValue("year").ToString()),
-                    RegNumber = Int32.Parse(data.GetValue("regNumber").ToString()) };
+                driverNew.DriverCar = new Car()
+                {
+                    CarID = cnt++,
+                    Year = Int32.Parse(data.GetValue("year").ToString()),
+                    RegNumber = Int32.Parse(data.GetValue("regNumber").ToString())
+                };
                 driverNew.Location = new Location()
                 {
                     X = Double.Parse(data.GetValue("x").ToString()),
@@ -47,7 +51,7 @@ namespace TaxiService.Controllers
                 Data.driverServices.NewDriver(driverNew);
                 Data.drivers.Add(driverNew);
                 Data.freeDrivers.Add(driverNew);
-            }         
+            }
         }
 
         [HttpPost]
@@ -76,7 +80,7 @@ namespace TaxiService.Controllers
                 newDrive.DrivedBy = new Driver();
             else
             {
-                newDrive.DrivedBy = Data.freeDrivers[0];         
+                newDrive.DrivedBy = Data.freeDrivers[0];
                 Data.busyDrivers.Add(Data.freeDrivers[0]);
                 Data.freeDrivers.RemoveAt(0);
             }
@@ -94,9 +98,9 @@ namespace TaxiService.Controllers
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
 
-            foreach(Drive d in drives)
+            foreach (Drive d in drives)
             {
-                if(d.State == Enums.Status.Created)
+                if (d.State == Enums.Status.Created)
                 {
                     if (Data.freeDrivers != null)
                     {
@@ -109,6 +113,31 @@ namespace TaxiService.Controllers
                     }
                 }
             }
+        }
+
+        [HttpGet]
+        [Route("api/Dispatcher/GetAllDrives")]
+        public List<Drive> GetAllDrives()
+        {
+            return Data.driveServices.RetriveAllDrives() as List<Drive>;
+        }
+
+        [HttpGet]
+        [Route("api/Dispatcher/GetDrives")]
+        public List<Drive> GetDrives()
+        {
+            List<Drive> dispatcherDrives = new List<Drive>();
+
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.ApprovedBy.Id == Data.loggedUser.Id)
+                {
+                    dispatcherDrives.Add(d);               
+                }
+            }
+            return dispatcherDrives;
         }
     }
 }
