@@ -76,6 +76,7 @@ namespace TaxiService.Controllers
                         Data.driveServices.EditDriveProfile(d);
                         Comment com = new Comment();
                         IEnumerable<Comment> comments = Data.commentServices.RetriveAllComments();
+
                         if (comments == null)
                             com.Id = 0;
                         else
@@ -88,6 +89,22 @@ namespace TaxiService.Controllers
                     }
                 }
             }
+        }
+
+        public List<Drive> GetDrives()
+        {
+            List<Drive> customerDrives = new List<Drive>();
+
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+
+            foreach(Drive d in allDrives)
+            {
+                if (d.OrderedBy.Id == Data.loggedUser.Id)
+                {
+                    customerDrives.Add(d);
+                }
+            }
+            return customerDrives;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace TaxiService.Models
         public Comment()
         {
             Id = -1;
+            CreatedBy = new User();
+            Grade = 0;
         }
     }
 }
