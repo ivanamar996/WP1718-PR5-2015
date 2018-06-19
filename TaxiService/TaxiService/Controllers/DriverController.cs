@@ -82,5 +82,40 @@ namespace TaxiService.Controllers
             Data.freeDrivers.Add(driveFinis.DrivedBy);
             Data.busyDrivers.Remove(driveFinis.DrivedBy);
         }
+
+        [HttpGet]
+        [Route("api/Driver/GetDrives")]
+        public List<Drive> GetDrives()
+        {
+            List<Drive> driverDrives = new List<Drive>();
+
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.DrivedBy.Id == Data.loggedUser.Id)
+                {
+                    driverDrives.Add(d);
+                }
+            }
+            return driverDrives;
+        }
+
+        [Route("api/Driver/GetDrivesCreated")]
+        public List<Drive> GetDrivesCreated()
+        {
+            List<Drive> driverDrivesCreated = new List<Drive>();
+
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.State == Enums.Status.Created)
+                {
+                    driverDrivesCreated.Add(d);
+                }
+            }
+            return driverDrivesCreated;
+        }
     }
 }

@@ -34,4 +34,21 @@
     <Price>0</Price>
     <Status>Unsuccessful</Status>
   </Drive>
+  <Drive Id="3">
+    <Id>3</Id>
+    <OrderDate>2018-06-19T16:50:16.371419+02:00</OrderDate>
+    <AddressX>44456</AddressX>
+    <AddressY>85</AddressY>
+    <AddressAdr>adresa1</AddressAdr>
+    <CarType>Bez_Naznake</CarType>
+    <CustomerId>0</CustomerId>
+    <DestinationX>0</DestinationX>
+    <DestinationY>0</DestinationY>
+    <DestinationAdr />
+    <DispatcherId>-1</DispatcherId>
+    <DriverId>-1</DriverId>
+    <CommentId>-1</CommentId>
+    <Price>0</Price>
+    <Status>Created</Status>
+  </Drive>
 </Drives>
