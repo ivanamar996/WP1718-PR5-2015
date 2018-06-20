@@ -6,22 +6,158 @@
     <title>Taxi Services</title>
     <script src="Scripts/jquery-1.10.2.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("a#link1").click(function () {   
-                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Register/RegisterAccount\">" +
-                    "<table class=\"tabela\">" +
-                    "<tr><td>Username:</td><td><input type=\"text\" name=\"username\" /></td></tr>" +
-                    "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
-                    "<tr><td>Name:</td><td><input type=\"text\" name=\"name\" /></td></tr>" +
-                    "<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" /></td>" +
-                    "<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" /></td></tr>" +
-                    "<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" /></td>" +
-                    "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" /></td>" +
-                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Register\" /></td></tr></table></form>");
-            });
-        });
 
         $(document).ready(function () {
+
+            $("a#link1").click(function () {
+                $("div#div1").html("<form id=\"formRegistration\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Registration/RegisterAccount\">" +
+                    "<table class=\"tabela\">" +
+                    "<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" /></td></tr>" +
+                    "<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" /></td></tr>" +
+                    "<tr><td>Name:</td><td><input type=\"text\" id=\"nameId\" name=\"name\" /></td></tr>" +
+                    "<tr><td>Surname:</td><td><input type=\"text\" id=\"surnameId\" name=\"Surname\" /></td>" +
+                    "<tr><td>Jmbg:</td><td><input type=\"text\" id=\"jmbgId\" name=\"jmbg\" /></td></tr>" +
+                    "<tr><td>Phone:</td><td><input type=\"text\" id=\"phoneId\" name=\"phone\" /></td></tr>" +
+                    "<tr><td>Email:</td><td><input type=\"text\" id=\"emailId\" name=\"email\" /></td></tr>" +
+                    "<tr><td>Gender:</td><td><input type=\"radio\" id=\"genderId\" name=\"gender\" id=\"genderId\" checked value=\"Male\">Male"+
+                    "<input type=\"radio\" name=\"gender\" value=\"Female\">Female </td></tr>"+
+                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Register\" /></td></tr></table></form>");
+
+               
+            });
+
+            //Validacija registracije
+            var isValidate = false;
+
+            function Validate() {
+
+                if ($("#nameId").val()) {
+                    isValidate = true;
+                }
+                else {
+                    $("#nameId").attr("placeholder", "Enter your name").placeholder;
+                    isValidate = false;
+                }
+                if ($("#surnameId").val()) {
+                    isValidate = true;
+                }
+                else {
+                    $("#surnameId").attr("placeholder", "Enter your surname").placeholder;
+                    isValidate = false;
+                }
+                if ($("#usernameId").val()) {
+                    isValidate = true;
+                    let username = $("#usernameId").val();
+                    if (username.length < 4) {
+                        $("#usernameId").val("");
+                        $("#usernameId").attr("placeholder", "4 characters at a minimum").placeholder;
+                        isValidate = false;
+                    }
+                }
+                else {
+                    $("#usernameId").attr("placeholder", "Enter your username").placeholder;
+                    isValidate = false;
+                }
+                if ($("#passwordId").val()) {
+                    isValidate = true;
+                    let password = $("#passwordId").val();
+                    if (password.length < 4) {
+                        $("#passwordId").val("");
+                        $("#passwordId").attr("placeholder", "4 characters at a minimum").placeholder;
+                        isValidate = false;
+                    }
+                }
+                else {
+                    $("#passwordId").attr("placeholder", "Enter your password").placeholder;
+                    isValidate = false;
+                }
+                if ($("#jmbgId").val()) {
+                    isValidate = true;
+                    let jmbg = $("#jmbgId").val();
+                    if (isNaN(jmbg)) {  // vraca true ako nije broj
+                        $("#jmbgId").val("");
+                        $("#jmbgId").attr("placeholder", "Must be numeric characters").placeholder;
+                        isValidate = false;
+                    }
+                    else if (jmbg.length != 13) {
+                        $("#jmbgId").val("");
+                        $("#jmbgId").attr("placeholder", "Must have 13 characters").placeholder;
+                        isValidate = false;
+                    }
+                }
+                else {
+                    $("#jmbgId").attr("placeholder", "Enter your jmbg").placeholder;
+                    isValidate = false;
+                }
+                if ($("#phoneId").val()) {
+                    isValidate = true;
+                    let phone = $("#phoneId").val();
+                    if (isNaN(phone)) {  // vraca true ako nije broj
+                        $("#phoneId").val("");
+                        $("#phoneId").attr("placeholder", "Must be numeric characters").placeholder;
+                        isValidate = false;
+                    }
+                }
+                else {
+                    $("#phoneId").attr("placeholder", "Enter your phone number").placeholder;
+                    isValidate = false;
+                }
+                if ($("#emailId").val()) {
+                    isValidate = true;
+                    let email = $("#emailId").val();
+                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    if (!email.match(re)) {
+                        $("#emailId").val("");
+                        $("#emailId").attr("placeholder", "Invalid e-mail").placeholder;
+                        isValidate = false;
+                    }
+                }
+                else {
+                    $("#emailId").attr("placeholder", "Enter your e-mail").placeholder;
+                    isValidate = false;
+                }
+                if ($("#nameId").val() && $("#surnameId").val() && $("#usernameId").val() && $("#passwordId").val() && $("#jmbgId").val() && $("#phoneId").val() && $("#emailId").val()) {
+                    isValidate = true;
+                }
+                else {
+                    isValidate = false;
+                }
+
+            }
+
+           $("a#link1").click(function () {
+                $("form#formRegistration").submit(function (e) {
+                    Validate();
+                    if (isValidate) {
+                        $.ajax({
+                            url: "/api/Registration/RegisterAccount",
+                            method: "POST",
+                            dataType: "json",
+                            data: {
+                                Name: $("#nameId").val(),
+                                Surname: $("#surnameId").val(),
+                                Username: $("#usernameId").val(),
+                                Password: $("#passwordId").val(),
+                                Jmbg: $("#jmbgId").val(),
+                                Gender: $("input[name=gender]").filter(":checked").val(),
+                                Phone: $("#phoneId").val(),
+                                Email: $("#emailId").val(),
+                            },
+                            success: function (html) {
+                               // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                               // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                alert("Uspjesno ste se registrovali");
+                               
+                            },
+                            error: function () {
+                                alert("Greska pri registraciji.");
+                            }
+                        });
+                    }
+                    e.preventDefault();
+                });
+            });
+
             $("a#link2").click(function () {
                 $("div#div1").html("<form id=\"form1\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Login/Login\">" +
                     "<table class=\"tabela\">" +
@@ -29,11 +165,7 @@
                     "<tr><td>Password:</td><td><input type=\"text\" name=\"password\" /></td></tr>" +
                     "<tr><td colspan=\"2\"><input type=\"submit\" id=\"log\" value=\"Login\"/></td></tr>" +
                     "</table></form>");
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
                 $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status) {
 
@@ -44,9 +176,11 @@
                         $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"></div>");
 
                         $("div#divVeliki").append("<div id=\"divSort\" class=\"Sort\"><a id=\"linkSort\">Sort</a></div>");
-                        //$("div#divSort").append("<a id=\"linkByDate\">by date</a></br><a id=\"linkByGrade\">by grade</a>");
+                        $("div#divVeliki").append("<div id=\"divSearch\" class=\"Search\"><a id=\"linkSearch\">Search</a></div>");
+
                         $("div#divVeliki").append("<div id=\"divLink2\" class=\"divULinku2\"></div>");
-                        
+                        $("div#divVeliki").append("<div id=\"divLink3\" class=\"divULinku3\"></div>");
+
 
                         if (data.Role == 2) {
                             linkovi += "<br><a id=\"link5\">Add driver</a>";
@@ -70,43 +204,25 @@
 
                         $("div#divLink").html(linkovi);
                         $("div#divLink2").html("<a id=\"linkByDate\">by date</a></br><a id=\"linkByGrade\">by grade</a>");
+                        $("div#divLink3").html("<a id=\"linkByOrderDate\">by order date</a></br><a id=\"linkByGradeSearch\">by grade</a></br><a id=\"linkByPrice\">by price</a>");
                         $("div#divLink").hide();
                         $("div#divLink2").hide();
-                    });
-                });           
-            });
-        });
+                        $("div#divLink3").hide();
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-               $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
                         $("a#link3").click(function () {
-                            $("div#divLink").slideToggle();                            
+                            $("div#divLink").slideToggle();
                         });
-                    });
-               });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
                         $("a#linkSort").click(function () {
                             $("div#divLink2").slideToggle();
                         });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status){
-                       $("a#link3").click(function () {
-                            $("a#link4").click(function () {                                
+                        $("a#linkSearch").click(function () {
+                            $("div#divLink3").slideToggle();
+                        });
+
+                        $("a#link3").click(function () {
+                            $("a#link4").click(function () {
                                 $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/Edit\">` +
                                     `<table class=\"tabela\">` +
                                     `<tr><td>Username:</td><td><input type=\"text\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
@@ -118,17 +234,7 @@
                                     `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"${data.Email}\" /></td>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr></table></form>`);
                             });
-                        });
-                   });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link5").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/AddDriver\">" +
                                     "<table class=\"tabela\">" +
@@ -139,30 +245,21 @@
                                     "<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" /></td></tr>" +
                                     "<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" /></td></tr>" +
                                     "<tr><td>Email:</td><td><input type=\"text\" name=\"email\" /></td></tr>" +
-                                    "<tr><td>Location:</td><td></td></tr>"+
+                                    "<tr><td>Location:</td><td></td></tr>" +
                                     "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
                                     "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +                                  
+                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
                                     "<tr><td>Car:</td><td></td></tr>" +
                                     "<tr><td>Year: </td><td><input type=\"text\" name=\"year\" /></td></tr>" +
-                                    "<tr><td>RegNumber: </td><td><input type=\"text\" name=\"regNumber\" /></td></tr>" +                                   
+                                    "<tr><td>RegNumber: </td><td><input type=\"text\" name=\"regNumber\" /></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Add\" /></td></tr>" +
                                     "</table></form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
+
                             $("a#link6").click(function () {
                                 $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/EditLocation\">` +
-                                    `<table class=\"tabela\">` +                                  
+                                    `<table class=\"tabela\">` +
                                     `<tr><td>Location:</td><td></td></tr>` +
                                     `<tr><td>X: </td><td><input type=\"text\" name=\"x\" value="${data.Location.X}"/></td></tr>` +
                                     `<tr><td>Y: </td><td><input type=\"text\" name=\"y\" value="${data.Location.Y}" /></td></tr>` +
@@ -170,38 +267,16 @@
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
                                     `</table></form>`);
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link7").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
-                                    "<table class=\"tabela\">" +                                 
+                                    "<table class=\"tabela\">" +
                                     "<tr><td>Location:</td><td></td></tr>" +
                                     "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
                                     "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +                                    
+                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
                                     "</table></form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link8").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/ChangeDrive\">" +
                                     "<table class=\"tabela\">" +
@@ -212,35 +287,13 @@
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>" +
                                     "</table></form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link9").click(function () {
                                 $("div#div1").html("<p> Create comment</p><br>" +
-                                    "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CancelDrive\">" +                           
+                                    "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CancelDrive\">" +
                                     "<textarea name=\"description\" rows=\"10\" cols=\"30\"/><br>" +
-                                    "<input type=\"submit\" value=\"Create\"/>"+
+                                    "<input type=\"submit\" value=\"Create\"/>" +
                                     "</form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link10").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/CreateDrive\">" +
                                     "<table class=\"tabela\">" +
@@ -251,31 +304,9 @@
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
                                     "</table></form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link11").click(function () {
                                 $("a#link11").attr("href", "api/Dispatcher/ProcessDrive");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link12").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
                                     "<table class=\"tabela\">" +
@@ -284,40 +315,18 @@
                                     "<tr><td>Y: </td><td><input type=\"text\" name=\"y\"/></td></tr>" +
                                     "<tr><td>Address: </td><td><input type=\"text\" name=\"address\"/></td></tr>" +
                                     "<tr><td>Price: </td><td><input type=\"number\" name=\"price\"/></td></tr>" +
-                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Submit\"/></td></tr>" +                                 
+                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Submit\"/></td></tr>" +
                                     "</table>" +
                                     "</form>");
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link13").click(function () {
                                 $("div#div1").html("<p> Create comment</p><br>" +
                                     "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
                                     "<textarea name=\"description\" rows=\"10\" cols=\"30\"/><br>" +
                                     "<input type=\"submit\" value=\"Create\"/>" +
                                     "</form>");
-                          
-                            });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
+                            });
                             $("a#link14").click(function () {
                                 $.get("/api/Customer", function (data, status) {
                                     let drives = `<h5>Your drives</h5>`;
@@ -325,36 +334,25 @@
                                         drives += `<ol>` +
                                             `<li>Drive` +
                                             `<ul>` +
-                                                `<li>ID : ${data[drive].Id}</li>` +
-                                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
-                                                `<li>Address : ${data[drive].Address.Address}</li>` +
-                                                `<li>Car type : ${data[drive].CarType}</li>` +
-                                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
-                                                `<li>Location : ${data[drive].Destination.Address}</li>` +
-                                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
-                                                `<li>Price : ${data[drive].Price}</li>` +
-                                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
-                                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
-                                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                                `<li>Status : ${data[drive].State}</li>` +
-                                            `</ul>`+
-                                            `</li>`+
-                                           `</ol>`;
+                                            `<li>ID : ${data[drive].Id}</li>` +
+                                            `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                            `<li>Address : ${data[drive].Address.Address}</li>` +
+                                            `<li>Car type : ${data[drive].CarType}</li>` +
+                                            `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                            `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                            `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                            `<li>Price : ${data[drive].Price}</li>` +
+                                            `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                            `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                            `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                            `<li>Status : ${data[drive].State}</li>` +
+                                            `</ul>` +
+                                            `</li>` +
+                                            `</ol>`;
                                     }
                                     $("div#div1").html(drives);
                                 });
                             });
-                        });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link15").click(function () {
                                 $.get("/api/Dispatcher/GetAllDrives", function (data, status) {
                                     let drives = `<h5>All drives</h5>`;
@@ -381,17 +379,7 @@
                                     $("div#div1").html(drives);
                                 });
                             });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link16").click(function () {
                                 $.get("/api/Dispatcher/GetDrives", function (data, status) {
                                     let drives = `<h5>Your drives</h5>`;
@@ -418,17 +406,7 @@
                                     $("div#div1").html(drives);
                                 });
                             });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link17").click(function () {
                                 $.get("/api/Driver/GetDrives", function (data, status) {
                                     let drives = `<h5>Your drives</h5>`;
@@ -455,17 +433,7 @@
                                     $("div#div1").html(drives);
                                 });
                             });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link18").click(function () {
                                 $.get("/api/Driver/GetDrivesCreated", function (data, status) {
                                     let drives = `<h5>Created drives</h5>`;
@@ -492,24 +460,14 @@
                                     $("div#div1").html(drives);
                                 });
                             });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#link3").click(function () {
                             $("a#link19").click(function () {
                                 $("div#div1").html("<form id=\"filterForm\"accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/FilterDrives\">" +
                                     "<table class=\"tabela\">" +
                                     "<tr><td>Drive status: </td><td><select name=\"status\">" +
                                     "<option value=\"Created\">Created</option>" +
-                                    "<option value=\"Canceled\">Canceled</option>"+
-                                    "<option value=\"Formated\">Formated</option>"+
+                                    "<option value=\"Canceled\">Canceled</option>" +
+                                    "<option value=\"Formated\">Formated</option>" +
                                     "<option value=\"Processed\">Processed</option>" +
                                     "<option value=\"Accepted\">Accepted</option>" +
                                     "<option value=\"Successful\">Successful</option>" +
@@ -517,19 +475,7 @@
                                     "</select></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Filter\"/></td></tr>" +
                                     "</table></form>");
-                            });
-                        });
-                    });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-           $("a#link2").click(function () {
-               $("form#form1").submit(function () {
-                 $.get("/api/Login", function (data, status) {
-                      $("a#link3").click(function () {
-                            $("a#link19").click(function () {
                                 $("form#filterForm").submit(function () {
                                     $.get("api/User/GetFilterDrives", function (data, status) {
                                         let drives = `<h5>Created drives</h5>`;
@@ -557,16 +503,10 @@
                                     });
                                 });
                             });
-                     });
-                   });
-                });
-            });
-        });
 
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
+
+                        });
+
                         $("a#linkSort").click(function () {
                             $("a#linkByDate").click(function () {
                                 $.get("/api/User/SortDriveByDate", function (data, status) {
@@ -595,48 +535,37 @@
                                 });
                             });
                         });
-                    });
-                });
-            });
-        });
-
-        $(document).ready(function () {
-            $("a#link2").click(function () {
-                $("form#form1").submit(function () {
-                    $.get("/api/Login", function (data, status) {
-                        $("a#linkSort").click(function () {
-                            $("a#linkByGrade").click(function () {
-                                $.get("/api/User/SortDriveByGrade", function (data, status) {
-                                    let drives = `<h5>Created drives</h5>`;
-                                    for (drive in data) {
-                                        drives += `<ol>` +
-                                            `<li>Drive` +
-                                            `<ul>` +
-                                            `<li>ID : ${data[drive].Id}</li>` +
-                                            `<li>OrderDate : ${data[drive].OrderDate}</li>` +
-                                            `<li>Address : ${data[drive].Address.Address}</li>` +
-                                            `<li>Car type : ${data[drive].CarType}</li>` +
-                                            `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
-                                            `<li>Location : ${data[drive].Destination.Address}</li>` +
-                                            `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
-                                            `<li>Price : ${data[drive].Price}</li>` +
-                                            `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
-                                            `<li>Comment : ${data[drive].Comments.Description}</li> ` +
-                                            `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                            `<li>Status : ${data[drive].State}</li>` +
-                                            `</ul>` +
-                                            `</li>` +
-                                            `</ol>`;
-                                    }
-                                    $("div#div1").html(drives);
-                                });
+                        $("a#linkByGrade").click(function () {
+                            $.get("/api/User/SortDriveByGrade", function (data, status) {
+                                let drives = `<h5>Created drives</h5>`;
+                                for (drive in data) {
+                                    drives += `<ol>` +
+                                        `<li>Drive` +
+                                        `<ul>` +
+                                        `<li>ID : ${data[drive].Id}</li>` +
+                                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                                        `<li>Car type : ${data[drive].CarType}</li>` +
+                                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                        `<li>Price : ${data[drive].Price}</li>` +
+                                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                        `<li>Status : ${data[drive].State}</li>` +
+                                        `</ul>` +
+                                        `</li>` +
+                                        `</ol>`;
+                                }
+                                $("div#div1").html(drives);
                             });
                         });
                     });
                 });
             });
         });
-
+        
     </script>
 </head>
 <body>

@@ -12,8 +12,8 @@ namespace TaxiService.Controllers
     {
 
         [HttpPost]
-        [Route("api/Register/RegisterAccount")]
-        public void RegisterAccount([FromBody]Customer customer)
+        [Route("api/Registration/RegisterAccount")]
+        public HttpResponseMessage RegisterAccount([FromBody]Customer customer)
         {
             if (!Data.customerService.CheckIfCustomerExists(customer.Username))
             {
@@ -29,7 +29,10 @@ namespace TaxiService.Controllers
                 customer.Drives = new List<Drive>();
                 customer.Role = Enums.Roles.Customer;
                 Data.customerService.NewCustomer(customer);
+                return Request.CreateResponse(HttpStatusCode.Created, customer);
             }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
     }
 }
