@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -44,6 +45,29 @@ namespace TaxiService.Controllers
                 driverEdit.Surname = user.Surname;
                 Data.driverServices.EditDriverProfile(driverEdit);
             }
+        }
+
+        [HttpPost]
+        [Route("api/User/FilterDrives")]
+        public void FilterDrives([FromBody]JObject data)
+        {
+            //List<Drive> filterDrives = new List<Drive>();
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            Data.filterDrives.Clear();
+            foreach (Drive d in allDrives)
+            {
+                if (d.State.ToString() == data.GetValue("status").ToString())
+                {
+                    Data.filterDrives.Add(d);
+                }
+            }
+        }
+
+        [HttpGet]
+        [Route("api/User/GetFilterDrives")]
+        public List<Drive> GetFilterDrives()
+        {
+            return Data.filterDrives;
         }
     }
 }

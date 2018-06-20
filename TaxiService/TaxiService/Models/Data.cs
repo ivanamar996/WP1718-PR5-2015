@@ -18,6 +18,8 @@ namespace TaxiService.Models
 
         public static List<Driver> drivers = new List<Driver>();
 
+        public static List<Drive> filterDrives = new List<Drive>();
+
         public static List<Driver> freeDrivers = new List<Driver>();
         public static List<Driver> busyDrivers = new List<Driver>();
         

@@ -37,7 +37,8 @@
                 $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status) {
 
-                        let linkovi = "<a id=\"link4\">Edit profile</a>";
+                        let linkovi = "<a id=\"link4\">Edit profile</a></br>";
+                        linkovi += "<a id=\"link19\">Filter drives</a>";
                         $("div#divVeliki").append("<div id=\"divService\" class=\"Service\"><a id=\"link3\">Service</a></div>");
                         $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"></div>");
                        
@@ -473,6 +474,71 @@
                             });
                         });
                     });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#link3").click(function () {
+                            $("a#link19").click(function () {
+                                $("div#div1").html("<form id=\"filterForm\"accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/FilterDrives\">" +
+                                    "<table class=\"tabela\">" +
+                                    "<tr><td>Drive status: </td><td><select name=\"status\">" +
+                                    "<option value=\"Created\">Created</option>" +
+                                    "<option value=\"Canceled\">Canceled</option>"+
+                                    "<option value=\"Formated\">Formated</option>"+
+                                    "<option value=\"Processed\">Processed</option>" +
+                                    "<option value=\"Accepted\">Accepted</option>" +
+                                    "<option value=\"Successful\">Successful</option>" +
+                                    "<option value=\"Unsuccessful\">Unsuccessful</option>" +
+                                    "</select></td></tr>" +
+                                    "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Filter\"/></td></tr>" +
+                                    "</table></form>");
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+           $("a#link2").click(function () {
+               $("form#form1").submit(function () {
+                 $.get("/api/Login", function (data, status) {
+                      $("a#link3").click(function () {
+                            $("a#link19").click(function () {
+                                $("form#filterForm").submit(function () {
+                                    $.get("api/User/GetFilterDrives", function (data, status) {
+                                        let drives = `<h5>Created drives</h5>`;
+                                        for (drive in data) {
+                                            drives += `<ol>` +
+                                                `<li>Drive` +
+                                                `<ul>` +
+                                                `<li>ID : ${data[drive].Id}</li>` +
+                                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                                `<li>Price : ${data[drive].Price}</li>` +
+                                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                                `<li>Status : ${data[drive].State}</li>` +
+                                                `</ul>` +
+                                                `</li>` +
+                                                `</ol>`;
+                                        }
+                                        $("div#div1").html(drives);
+                                    });
+                                });
+                            });
+                     });
+                   });
                 });
             });
         });
