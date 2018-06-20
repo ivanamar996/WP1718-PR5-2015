@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,7 +20,7 @@ namespace TaxiService.Models
         public string Email { get; set; }
        // [JsonConverter(typeof(StringEnumConverter))]
         public Enums.Genders Gender { get; set; }
-      //  [JsonConverter(typeof(StringEnumConverter))]
+        //[JsonConverter(typeof(StringEnumConverter))]
         public Enums.Roles Role { get; set; }
         public List<Drive> Drives { get; set; }
 

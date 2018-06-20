@@ -89,6 +89,16 @@ body{
     left: 30%;
 }
 
+.Sort {
+    font-family: Vedrana;
+    font-size: 150%;
+    color: #ffff1a;
+    background-color: transparent;
+    position: absolute;
+    top: 5%;
+    left: 40%;
+}
+
 .divULinku {
     font-family: Vedrana;
     font-size: 100%;
@@ -107,6 +117,6 @@ body{
     background-color: white;
     opacity: 0.7;
     position: absolute;
-    top: 15%;
-    left: 30%;
+    top: 10%;
+    left: 40%;
 }

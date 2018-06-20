@@ -69,5 +69,31 @@ namespace TaxiService.Controllers
         {
             return Data.filterDrives;
         }
+
+        [HttpGet]
+        [Route("api/User/SortDriveByDate")]
+        public List<Drive> SortDriveByDate()
+        {
+            List<Drive> sortedDrives = new List<Drive>();
+
+            List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
+
+            sortedDrives = allDrives.OrderBy(d => d.OrderDate).ToList();
+
+            return sortedDrives;
+        }
+
+        [HttpGet]
+        [Route("api/User/SortDriveByGrade")]
+        public List<Drive> SortDriveByGrade()
+        {
+            List<Drive> sortedDrives = new List<Drive>();
+
+            List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
+
+            sortedDrives = allDrives.OrderBy(d => d.Comments.Grade).ToList();
+
+            return sortedDrives;
+        }
     }
 }

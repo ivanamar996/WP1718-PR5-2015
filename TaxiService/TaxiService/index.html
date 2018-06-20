@@ -39,9 +39,15 @@
 
                         let linkovi = "<a id=\"link4\">Edit profile</a></br>";
                         linkovi += "<a id=\"link19\">Filter drives</a>";
+
                         $("div#divVeliki").append("<div id=\"divService\" class=\"Service\"><a id=\"link3\">Service</a></div>");
                         $("div#divVeliki").append("<div id=\"divLink\" class=\"divULinku\"></div>");
-                       
+
+                        $("div#divVeliki").append("<div id=\"divSort\" class=\"Sort\"><a id=\"linkSort\">Sort</a></div>");
+                        //$("div#divSort").append("<a id=\"linkByDate\">by date</a></br><a id=\"linkByGrade\">by grade</a>");
+                        $("div#divVeliki").append("<div id=\"divLink2\" class=\"divULinku2\"></div>");
+                        
+
                         if (data.Role == 2) {
                             linkovi += "<br><a id=\"link5\">Add driver</a>";
                             linkovi += "<br><a id=\"link10\">Create drive</a>";
@@ -63,7 +69,9 @@
                         }
 
                         $("div#divLink").html(linkovi);
+                        $("div#divLink2").html("<a id=\"linkByDate\">by date</a></br><a id=\"linkByGrade\">by grade</a>");
                         $("div#divLink").hide();
+                        $("div#divLink2").hide();
                     });
                 });           
             });
@@ -74,10 +82,22 @@
                $("form#form1").submit(function () {
                     $.get("/api/Login", function (data, status) {
                         $("a#link3").click(function () {
-                            $("div#divLink").slideToggle();
+                            $("div#divLink").slideToggle();                            
                         });
                     });
                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#linkSort").click(function () {
+                            $("div#divLink2").slideToggle();
+                        });
+                    });
+                });
             });
         });
 
@@ -539,6 +559,80 @@
                             });
                      });
                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#linkSort").click(function () {
+                            $("a#linkByDate").click(function () {
+                                $.get("/api/User/SortDriveByDate", function (data, status) {
+                                    let drives = `<h5>Created drives</h5>`;
+                                    for (drive in data) {
+                                        drives += `<ol>` +
+                                            `<li>Drive` +
+                                            `<ul>` +
+                                            `<li>ID : ${data[drive].Id}</li>` +
+                                            `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                            `<li>Address : ${data[drive].Address.Address}</li>` +
+                                            `<li>Car type : ${data[drive].CarType}</li>` +
+                                            `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                            `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                            `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                            `<li>Price : ${data[drive].Price}</li>` +
+                                            `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                            `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                            `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                            `<li>Status : ${data[drive].State}</li>` +
+                                            `</ul>` +
+                                            `</li>` +
+                                            `</ol>`;
+                                    }
+                                    $("div#div1").html(drives);
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("a#link2").click(function () {
+                $("form#form1").submit(function () {
+                    $.get("/api/Login", function (data, status) {
+                        $("a#linkSort").click(function () {
+                            $("a#linkByGrade").click(function () {
+                                $.get("/api/User/SortDriveByGrade", function (data, status) {
+                                    let drives = `<h5>Created drives</h5>`;
+                                    for (drive in data) {
+                                        drives += `<ol>` +
+                                            `<li>Drive` +
+                                            `<ul>` +
+                                            `<li>ID : ${data[drive].Id}</li>` +
+                                            `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                            `<li>Address : ${data[drive].Address.Address}</li>` +
+                                            `<li>Car type : ${data[drive].CarType}</li>` +
+                                            `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                            `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                            `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                            `<li>Price : ${data[drive].Price}</li>` +
+                                            `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                            `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                            `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                            `<li>Status : ${data[drive].State}</li>` +
+                                            `</ul>` +
+                                            `</li>` +
+                                            `</ol>`;
+                                    }
+                                    $("div#div1").html(drives);
+                                });
+                            });
+                        });
+                    });
                 });
             });
         });
