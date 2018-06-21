@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TaxiService.Models;
+using static TaxiService.Models.Enums;
 
 namespace TaxiService.Controllers
 {
@@ -13,7 +14,7 @@ namespace TaxiService.Controllers
     {
         [HttpPost]
         [Route("api/Customer/CreateDrive")]
-        public void CreateDrive([FromBody]JObject data)
+        public HttpResponseMessage CreateDrive([FromBody]JObject data)
         {
             Drive newDrive = new Drive();
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
@@ -25,9 +26,9 @@ namespace TaxiService.Controllers
 
             newDrive.Address = new Location()
             {
-                X = Double.Parse(data.GetValue("x").ToString()),
-                Y = Double.Parse(data.GetValue("y").ToString()),
-                Address = data.GetValue("address").ToString()
+                X = Double.Parse(data.GetValue("X").ToString()),
+                Y = Double.Parse(data.GetValue("Y").ToString()),
+                Address = data.GetValue("Address").ToString()
             };
          
             newDrive.Destination = new Location();
@@ -35,10 +36,12 @@ namespace TaxiService.Controllers
             newDrive.Comments = new Comment();
             newDrive.DrivedBy = new Driver();
             newDrive.Price = 0;
+            newDrive.CarType = (CarTypes)Enum.Parse(typeof(CarTypes), data.GetValue("Type").ToString());
             newDrive.OrderDate = DateTime.Now;
             newDrive.OrderedBy = Data.customerService.RetriveCustomerByUserName(Data.loggedUser.Username);
             newDrive.State = Enums.Status.Created;
-            Data.driveServices.NewDrive(newDrive);           
+            Data.driveServices.NewDrive(newDrive);
+            return Request.CreateResponse(HttpStatusCode.Created, newDrive);
         }
 
         [HttpPost]

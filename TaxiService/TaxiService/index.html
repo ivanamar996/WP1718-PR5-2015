@@ -621,7 +621,7 @@
                                     `</table></form>`);
                             });
 
-                            //Validacija forme za dodavanje vozaca
+                            //Validacija forme za promjenu lokacije vozaca
                             var isValidateEditLocation = false;
 
                             function ValidateEditLocation() {
@@ -650,7 +650,7 @@
                                     }
                                 }
                                 else {
-                                    $("#yID").attr("placeholder", "Enter your x number").placeholder;
+                                    $("#yID").attr("placeholder", "Enter your y number").placeholder;
                                     isValidateEditLocation = false;
                                 }
 
@@ -677,6 +677,7 @@
                                                 X: $("#xID").val(),
                                                 Y: $("#yID").val(),
                                                 Address: $("#addressID").val(),
+                                                
                                             },
                                             success: function (html) {
                                                 // sessionStorage.setItem("currentUser", JSON.stringify(data));
@@ -693,17 +694,51 @@
                                 });
                             });
 
-
                             $("a#link7").click(function () {
-                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
+                                $("div#div1").html("<form id=\"formCreateDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
                                     "<table class=\"tabela\">" +
                                     "<tr><td>Location:</td><td></td></tr>" +
-                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
-                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
+                                    "<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\" /></td></tr>" +
+                                    "<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\" /></td></tr>" +
+                                    "<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\" /></td></tr>" +
+                                    "<tr><td>Car type: </td><td><select id=\"typeID\" name=\"type\">" +
+                                    "<option value=\"None\">None</option>" +
+                                    "<option value=\"Car\">Car</option>" +
+                                    "<option value=\"Van\">Van</option>" +
+                                    "</select></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
                                     "</table></form>");
                             });
+
+                            $("a#link7").click(function () {
+                                $("form#formCreateDrive").submit(function (e) {
+                                    ValidateEditLocation();
+                                    if (isValidateEditLocation) {
+                                        $.ajax({
+                                            url: "/api/Customer/CreateDrive",
+                                            method: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                X: $("#xID").val(),
+                                                Y: $("#yID").val(),
+                                                Address: $("#addressID").val(),
+                                                Type: $("#typeID").val()
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno ste kreirali voznju.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska pri kreiranju voznje.");
+                                            }
+                                        });
+                                    }
+                                    e.preventDefault();
+                                });
+                            });
+
                             $("a#link8").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/ChangeDrive\">" +
                                     "<table class=\"tabela\">" +
