@@ -231,14 +231,14 @@
                                     `<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
                                     `<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
                                     `<tr><td>Name:</td><td><input type=\"text\" name=\"name\" id=\"nameId\" value=\"${data.Name}\"/></td></tr>` +
-                                    `<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" id=\"surnameId\" value=\"${data.Surname}\"/></td>` +
+                                    `<tr><td>Surname:</td><td><input type=\"text\" name=\"surname\" id=\"surnameId\" value=\"${data.Surname}\"/></td>` +
                                     `<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" id=\"jmbgId\" value=\"${data.Jmbg}\" /></td></tr>` +
                                     `<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" id=\"phoneId\" value=\"${data.Phone}\" /></td>` +
                                     `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" id=\"emailId\" value=\"${data.Email}\" /></td>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr></table></form>`);
                             });
 
-                            //validacija pri editovanju profila korisnika
+                            //Validacija forme za editovanje profila korisnika
                             var isValidateEdit = false;
 
                             function ValidateEdit() {
@@ -286,7 +286,7 @@
                                 }
 
                                 if ($("#jmbgId").val()) {
-                                    isValidate = true;
+                                    isValidateEdit = true;
                                     let jmbg = $("#jmbgId").val();
                                     if (isNaN(jmbg)) {  // vraca true ako nije broj
                                         $("#jmbgId").val("");
@@ -303,8 +303,9 @@
                                     $("#jmbgId").attr("placeholder", "Enter your jmbg").placeholder;
                                     isValidateEdit = false;
                                 }
+
                                 if ($("#phoneId").val()) {
-                                    isValidate = true;
+                                    isValidateEdit = true;
                                     let phone = $("#phoneId").val();
                                     if (isNaN(phone)) {  // vraca true ako nije broj
                                         $("#phoneId").val("");
@@ -316,6 +317,7 @@
                                     $("#phoneId").attr("placeholder", "Enter your phone number").placeholder;
                                     isValidateEdit = false;
                                 }
+
                                 if ($("#emailId").val()) {
                                     isValidateEdit = true;
                                     let email = $("#emailId").val();
@@ -330,6 +332,8 @@
                                     $("#emailId").attr("placeholder", "Enter your e-mail").placeholder;
                                     isValidateEdit = false;
                                 }
+
+                                
                                 if ($("#nameId").val() && $("#surnameId").val() && $("#usernameId").val() && $("#passwordId").val() && $("#jmbgId").val() && $("#phoneId").val() && $("#emailId").val()) {
                                     isValidateEdit = true;
                                 }
@@ -347,7 +351,7 @@
                                             url: "/api/User/Edit",
                                             method: "POST",
                                             dataType: "json",
-                                            data: {
+                                               data: {
                                                 Name: $("#nameId").val(),
                                                 Surname: $("#surnameId").val(),
                                                 Username: $("#usernameId").val(),
@@ -356,15 +360,21 @@
                                                 //Gender: $("input[name=gender]").filter(":checked").val(),
                                                 Phone: $("#phoneId").val(),
                                                 Email: $("#emailId").val(),
+                                                //X: $("#xID").val(),
+                                                //Y: $("#yID").val(),
+                                                //Address: $("#addressID").val(),
+                                                //Type: $("#typeID").val(),
+                                                //Year: $("#yearID").val(),
+                                                //RegNumber: $("#regNumberID").val(),
                                             },
                                             success: function (html) {
                                                 // sessionStorage.setItem("currentUser", JSON.stringify(data));
                                                 // let user = JSON.parse(sessionStorage.getItem("currentUser"));
-                                                alert("Uspjesno ste se editovali profil.");
+                                                alert("Uspjesno ste izmjenili podatke");
 
                                             },
                                             error: function () {
-                                                alert("Greska pri editovanju profila.");
+                                                alert("Greska pri izmjeni profila.");
                                             }
                                         });
                                     }
@@ -601,15 +611,89 @@
                             });
 
                             $("a#link6").click(function () {
-                                $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/EditLocation\">` +
+                                $("div#div1").html(`<form id=\"formEditLocation\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/EditLocation\">` +
                                     `<table class=\"tabela\">` +
                                     `<tr><td>Location:</td><td></td></tr>` +
-                                    `<tr><td>X: </td><td><input type=\"text\" name=\"x\" value="${data.Location.X}"/></td></tr>` +
-                                    `<tr><td>Y: </td><td><input type=\"text\" name=\"y\" value="${data.Location.Y}" /></td></tr>` +
+                                    `<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\" value="${data.Location.X}"/></td></tr>` +
+                                    `<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\" value="${data.Location.Y}" /></td></tr>` +
                                     `<tr><td>Address: </td><td><input type=\"text\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
                                     `</table></form>`);
                             });
+
+                            //Validacija forme za dodavanje vozaca
+                            var isValidateEditLocation = false;
+
+                            function ValidateEditLocation() {
+
+                                if ($("#xID").val()) {
+                                    isValidateEditLocation = true;
+                                    let phone = $("#xID").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#xID").val("");
+                                        $("#xID").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateEditLocation = false;
+                                    }
+                                }
+                                else {
+                                    $("#xID").attr("placeholder", "Enter your x number").placeholder;
+                                    isValidateEditLocation = false;
+                                }
+
+                                if ($("#yID").val()) {
+                                    isValidateEditLocation = true;
+                                    let phone = $("#yID").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#yID").val("");
+                                        $("#yID").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateEditLocation = false;
+                                    }
+                                }
+                                else {
+                                    $("#yID").attr("placeholder", "Enter your x number").placeholder;
+                                    isValidateEditLocation = false;
+                                }
+
+                               
+
+                                if ($("#xID").val() && $("#yID").val()) {
+                                    isValidateEditLocation = true;
+                                }
+                                else {
+                                    isValidateEditLocation = false;
+                                }
+
+                            }
+
+                            $("a#link6").click(function () {
+                                $("form#formEditLocation").submit(function (e) {
+                                    ValidateEditLocation();
+                                    if (isValidateEditLocation) {
+                                        $.ajax({
+                                            url: "/api/Driver/EditLocation",
+                                            method: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                X: $("#xID").val(),
+                                                Y: $("#yID").val(),
+                                                Address: $("#addressID").val(),
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno ste promijenili svoju lokaciju.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska pri izmjeni lokacije.");
+                                            }
+                                        });
+                                    }
+                                    e.preventDefault();
+                                });
+                            });
+
+
                             $("a#link7").click(function () {
                                 $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
                                     "<table class=\"tabela\">" +

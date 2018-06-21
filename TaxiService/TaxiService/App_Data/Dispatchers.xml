@@ -3,11 +3,11 @@
   <Dispatcher Id="1">
     <Id>1</Id>
     <Username>Marko123</Username>
-    <Password>123</Password>
+    <Password>1234</Password>
     <Name>Marko</Name>
-    <Surname>Markovic</Surname>
+    <Surname>Markovic55</Surname>
     <Jmbg>1009000185850</Jmbg>
-    <Phone>065876400</Phone>
+    <Phone>065876</Phone>
     <Email>marko@gmail.com</Email>
     <Gender>Male</Gender>
     <Role>Dispatcher</Role>
@@ -16,10 +16,10 @@
     <Id>2</Id>
     <Username>Iva1234</Username>
     <Password>1234</Password>
-    <Name>Ivanaam</Name>
-    <Surname>ert45633</Surname>
+    <Name>Ivana</Name>
+    <Surname>ert5</Surname>
     <Jmbg>0208996185850</Jmbg>
-    <Phone>064789456</Phone>
+    <Phone>45678</Phone>
     <Email>ivana@gmail.com</Email>
     <Gender>Female</Gender>
     <Role>Dispatcher</Role>

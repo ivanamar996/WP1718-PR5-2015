@@ -23,8 +23,10 @@ namespace TaxiService.Controllers
                 dispatcherEdit.Name = user.Name;
                 dispatcherEdit.Jmbg = user.Jmbg;
                 dispatcherEdit.Surname = user.Surname;
+                dispatcherEdit.Phone = user.Phone;
+                dispatcherEdit.Email = user.Email;
                 Data.dispatcherServices.EditDispatcherProfile(dispatcherEdit);
-                return Request.CreateResponse(HttpStatusCode.Created,dispatcherEdit);
+                return Request.CreateResponse(HttpStatusCode.Created, dispatcherEdit);
             }
             else if (Data.customerService.CheckIfCustomerExists(Data.loggedUser.Username))
             {
@@ -33,9 +35,11 @@ namespace TaxiService.Controllers
                 customerEdit.Password = user.Password;
                 customerEdit.Name = user.Name;
                 customerEdit.Jmbg = user.Jmbg;
+                customerEdit.Phone = user.Phone;
                 customerEdit.Surname = user.Surname;
+                customerEdit.Email = user.Email;
                 Data.customerService.EditCustomerProfile(customerEdit);
-                return Request.CreateResponse(HttpStatusCode.Created,customerEdit);
+                return Request.CreateResponse(HttpStatusCode.Created, customerEdit);
             }
             else if (Data.driverServices.CheckIfDriverExists(Data.loggedUser.Username))
             {
@@ -45,8 +49,10 @@ namespace TaxiService.Controllers
                 driverEdit.Name = user.Name;
                 driverEdit.Jmbg = user.Jmbg;
                 driverEdit.Surname = user.Surname;
+                driverEdit.Phone = user.Phone;
+                driverEdit.Email = user.Email;
                 Data.driverServices.EditDriverProfile(driverEdit);
-                return Request.CreateResponse(HttpStatusCode.Created,driverEdit);
+                return Request.CreateResponse(HttpStatusCode.Created, driverEdit);
             }
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
