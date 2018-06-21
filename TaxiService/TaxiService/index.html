@@ -163,8 +163,8 @@
             $("a#link2").click(function () {
                 $("div#div1").html("<form id=\"form1\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Login/Login\">" +
                     "<table class=\"tabela\">" +
-                    "<tr><td>Username:</td><td><input id=\"usernameId2\" type=\"text\" name=\"username\" /></td></tr>" +
-                    "<tr><td>Password:</td><td><input id=\"passwordId2\" type=\"text\" name=\"password\" /></td></tr>" +
+                    "<tr><td>Username:</td><td><input id=\"usernameId\" type=\"text\" name=\"username\" /></td></tr>" +
+                    "<tr><td>Password:</td><td><input id=\"passwordId\" type=\"text\" name=\"password\" /></td></tr>" +
                     "<tr><td colspan=\"2\"><input type=\"submit\" id=\"log\" value=\"Login\"/></td></tr>" +
                     "</table></form>");
 
@@ -772,6 +772,75 @@
                             });
                         });
                     });
+                });
+           });
+
+            //Validacija registracije
+            var isValidateLogin = false;
+
+            function Validate() {
+
+                if ($("#usernameId").val()) {
+                    isValidate = true;
+                    let username = $("#usernameId").val();
+                    if (username.length < 4) {
+                        $("#usernameId").val("");
+                        $("#usernameId").attr("placeholder", "4 characters at a minimum").placeholder;
+                        isValidateLogin = false;
+                    }
+                }
+                else {
+                    $("#usernameId").attr("placeholder", "Enter your username").placeholder;
+                    isValidateLogin = false;
+                }
+
+                if ($("#passwordId").val()) {
+                    isValidateLogin = true;
+                    let password = $("#passwordId").val();
+                    if (password.length < 4) {
+                        $("#passwordId").val("");
+                        $("#passwordId").attr("placeholder", "4 characters at a minimum").placeholder;
+                        isValidateLogin = false;
+                    }
+                }
+                else {
+                    $("#passwordId").attr("placeholder", "Enter your password").placeholder;
+                    isValidateLogin = false;
+                }
+
+                if ($("#usernameId").val() && $("#passwordId").val()) {
+                    isValidateLogin = true;
+                }
+                else {
+                    isValidateLogin = false;
+                }
+
+            }
+
+            $("a#link2").click(function () {
+                $("form#form1").submit(function (e) {
+                    Validate();
+                    if (isValidate) {
+                        $.ajax({
+                            url: "/api/Login/Login",
+                            method: "POST",
+                            dataType: "json",
+                            data: {
+                                Username: $("#usernameId").val(),
+                                Password: $("#passwordId").val(),
+                            },
+                            success: function (html) {
+                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                alert("Uspjesno ste se logovali");
+
+                            },
+                            error: function () {
+                                alert("Greska pri logovanju.");
+                            }
+                        });
+                    }
+                    e.preventDefault();
                 });
             });
        });
