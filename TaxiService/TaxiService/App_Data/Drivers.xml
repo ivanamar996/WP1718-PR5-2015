@@ -2,7 +2,7 @@
 <Drivers>
   <Driver Id="0">
     <Id>0</Id>
-    <Username>Vozac</Username>
+    <Username>Viki</Username>
     <Password>123</Password>
     <Name>Ivana</Name>
     <Surname>ert</Surname>
@@ -17,31 +17,12 @@
     <CarId>0</CarId>
     <ModelYear>1996</ModelYear>
     <RegNumber>852</RegNumber>
-    <Type>Bez_Naznake</Type>
+    <Type>Car</Type>
   </Driver>
   <Driver Id="2">
     <Id>2</Id>
-    <Username>Vozac2</Username>
-    <Password>123</Password>
-    <Name>Ivana</Name>
-    <Surname>ert</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone>45678</Phone>
-    <Email>ivana@gmail.com</Email>
-    <Gender>Female</Gender>
-    <Role>Driver</Role>
-    <X>44</X>
-    <Y>85</Y>
-    <Address>adresa</Address>
-    <CarId>1</CarId>
-    <ModelYear>1996</ModelYear>
-    <RegNumber>852</RegNumber>
-    <Type>Bez_Naznake</Type>
-  </Driver>
-  <Driver Id="3">
-    <Id>3</Id>
-    <Username>Vozac3</Username>
-    <Password>123</Password>
+    <Username>Iva1234</Username>
+    <Password>1234</Password>
     <Name>Ivana</Name>
     <Surname>ert</Surname>
     <Jmbg>0208996185850</Jmbg>
@@ -55,6 +36,25 @@
     <CarId>0</CarId>
     <ModelYear>1996</ModelYear>
     <RegNumber>852</RegNumber>
-    <Type>Bez_Naznake</Type>
+    <Type>Car</Type>
+  </Driver>
+  <Driver Id="3">
+    <Id>3</Id>
+    <Username>Viki111</Username>
+    <Password>1234</Password>
+    <Name>Ivana</Name>
+    <Surname>ert</Surname>
+    <Jmbg>0208996185850</Jmbg>
+    <Phone>45678</Phone>
+    <Email>ivana@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Driver</Role>
+    <X>44</X>
+    <Y>85</Y>
+    <Address>adresa</Address>
+    <CarId>0</CarId>
+    <ModelYear>1996</ModelYear>
+    <RegNumber>852</RegNumber>
+    <Type>Car</Type>
   </Driver>
 </Drivers>

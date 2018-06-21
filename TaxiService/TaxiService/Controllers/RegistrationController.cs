@@ -28,6 +28,7 @@ namespace TaxiService.Controllers
                 }
                 customer.Drives = new List<Drive>();
                 customer.Role = Enums.Roles.Customer;
+                
                 Data.customerService.NewCustomer(customer);
                 return Request.CreateResponse(HttpStatusCode.Created, customer);
             }

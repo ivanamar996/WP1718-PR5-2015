@@ -19,17 +19,21 @@ namespace TaxiService.Controllers
             {
                 Customer customerLogin = Data.customerService.RetriveCustomerByUserName(log.Username);
                 Data.loggedUser = customerLogin;
+                //return Request.CreateResponse(HttpStatusCode.Created, customerLogin);
             }
             else if (Data.dispatcherServices.LogIn(log.Username, log.Password))
             {
                 Dispatcher dispatcherLogin = Data.dispatcherServices.RetriveDispatcherByUserName(log.Username);
                 Data.loggedUser = dispatcherLogin;
+                //return Request.CreateResponse(HttpStatusCode.Created, dispatcherLogin);
             }
             else if (Data.driverServices.LogIn(log.Username, log.Password))
             {
                 Driver driverLogin = Data.driverServices.RetriveDriverByUserName(log.Username);
                 Data.loggedUser = driverLogin;
+                //return Request.CreateResponse(HttpStatusCode.Created, driverLogin);
             }
+            //return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         public User Get()

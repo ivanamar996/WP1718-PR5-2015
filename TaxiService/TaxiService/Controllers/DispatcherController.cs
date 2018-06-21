@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using TaxiService.Models;
+using static TaxiService.Models.Enums;
 
 namespace TaxiService.Controllers
 {
@@ -15,9 +16,9 @@ namespace TaxiService.Controllers
 
         [HttpPost]
         [Route("api/Dispatcher/AddDriver")]
-        public void AddDriver([FromBody]JObject data)
+        public HttpResponseMessage AddDriver([FromBody]JObject data)
         {
-            if (!Data.driverServices.CheckIfDriverExists(data.GetValue("username").ToString()))
+            if (!Data.driverServices.CheckIfDriverExists(data.GetValue("Username").ToString()))
             {
                 Driver driverNew = new Driver();
                 IEnumerable<Driver> drivers = Data.driverServices.RetriveAllDrivers();
@@ -27,31 +28,37 @@ namespace TaxiService.Controllers
                 else
                     driverNew.Id = drivers.Count() + 1;
 
-                driverNew.Username = data.GetValue("username").ToString();
-                driverNew.Password = data.GetValue("password").ToString();
-                driverNew.Name = data.GetValue("name").ToString();
-                driverNew.Surname = data.GetValue("surname").ToString();
-                driverNew.Jmbg = data.GetValue("jmbg").ToString();
-                driverNew.Phone = data.GetValue("phone").ToString();
-                driverNew.Gender = Enums.Genders.Female;
-                driverNew.Email = data.GetValue("email").ToString();
+                driverNew.Username = data.GetValue("Username").ToString();
+                driverNew.Password = data.GetValue("Password").ToString();
+                driverNew.Name = data.GetValue("Name").ToString();
+                driverNew.Surname = data.GetValue("Surname").ToString();
+                driverNew.Jmbg = data.GetValue("Jmbg").ToString();
+                driverNew.Phone = data.GetValue("Phone").ToString();
+                driverNew.Gender = (Genders)Enum.Parse(typeof(Genders), data.GetValue("Gender").ToString());
+                driverNew.Email = data.GetValue("Email").ToString();
+
                 driverNew.DriverCar = new Car()
                 {
                     CarID = cnt++,
-                    Year = Int32.Parse(data.GetValue("year").ToString()),
-                    RegNumber = Int32.Parse(data.GetValue("regNumber").ToString())
+                    Type = (CarTypes)Enum.Parse(typeof(CarTypes), data.GetValue("Type").ToString()),
+                    Year = Int32.Parse(data.GetValue("Year").ToString()),
+                    RegNumber = Int32.Parse(data.GetValue("RegNumber").ToString())
                 };
+
                 driverNew.Location = new Location()
                 {
-                    X = Double.Parse(data.GetValue("x").ToString()),
-                    Y = Double.Parse(data.GetValue("y").ToString()),
-                    Address = data.GetValue("address").ToString()
+                    X = Double.Parse(data.GetValue("X").ToString()),
+                    Y = Double.Parse(data.GetValue("Y").ToString()),
+                    Address = data.GetValue("Address").ToString()
                 };
                 driverNew.Drives = new List<Drive>();
                 Data.driverServices.NewDriver(driverNew);
                 Data.drivers.Add(driverNew);
                 Data.freeDrivers.Add(driverNew);
+                return Request.CreateResponse(HttpStatusCode.Created, driverNew);
             }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
