@@ -226,16 +226,150 @@
 
                         $("a#link3").click(function () {
                             $("a#link4").click(function () {
-                                $("div#div1").html(`<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/Edit\">` +
+                                $("div#div1").html(`<form id=\"formEditProfile\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/Edit\">` +
                                     `<table class=\"tabela\">` +
-                                    `<tr><td>Username:</td><td><input type=\"text\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
-                                    `<tr><td>Password:</td><td><input type=\"text\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
-                                    `<tr><td>Name:</td><td><input type=\"text\" name=\"name\" value=\"${data.Name}\"/></td></tr>` +
-                                    `<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" value=\"${data.Surname}\"/></td>` +
-                                    `<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" value=\"${data.Jmbg}\" /></td></tr>` +
-                                    `<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" value=\"${data.Phone}\" /></td>` +
-                                    `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" value=\"${data.Email}\" /></td>` +
+                                    `<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
+                                    `<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
+                                    `<tr><td>Name:</td><td><input type=\"text\" name=\"name\" id=\"nameId\" value=\"${data.Name}\"/></td></tr>` +
+                                    `<tr><td>Surname:</td><td><input type=\"text\" name=\"Surname\" id=\"surnameId\" value=\"${data.Surname}\"/></td>` +
+                                    `<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" id=\"jmbgId\" value=\"${data.Jmbg}\" /></td></tr>` +
+                                    `<tr><td>Phone:</td><td><input type=\"text\" name=\"phone\" id=\"phoneId\" value=\"${data.Phone}\" /></td>` +
+                                    `<tr><td>Email:</td><td><input type=\"text\" name=\"email\" id=\"emailId\" value=\"${data.Email}\" /></td>` +
                                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr></table></form>`);
+                            });
+
+                            //validacija pri editovanju profila korisnika
+                            var isValidateEdit = false;
+
+                            function ValidateEdit() {
+
+                                if ($("#nameId").val()) {
+                                    isValidateEdit = true;
+                                }
+                                else {
+                                    $("#nameId").attr("placeholder", "Enter your name").placeholder;
+                                    isValidateEdit = false;
+                                }
+                                if ($("#surnameId").val()) {
+                                    isValidateEdit = true;
+                                }
+                                else {
+                                    $("#surnameId").attr("placeholder", "Enter your surname").placeholder;
+                                    isValidateEdit = false;
+                                }
+                                if ($("#usernameId").val()) {
+                                    isValidateEdit = true;
+                                    let username = $("#usernameId").val();
+                                    if (username.length < 4) {
+                                        $("#usernameId").val("");
+                                        $("#usernameId").attr("placeholder", "4 characters at a minimum").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                }
+                                else {
+                                    $("#usernameId").attr("placeholder", "Enter your username").placeholder;
+                                    isValidateEdit = false;
+                                }
+
+                                if ($("#passwordId").val()) {
+                                    isValidateEdit = true;
+                                    let password = $("#passwordId").val();
+                                    if (password.length < 4) {
+                                        $("#passwordId").val("");
+                                        $("#passwordId").attr("placeholder", "4 characters at a minimum").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                }
+                                else {
+                                    $("#passwordId").attr("placeholder", "Enter your password").placeholder;
+                                    isValidateEdit = false;
+                                }
+
+                                if ($("#jmbgId").val()) {
+                                    isValidate = true;
+                                    let jmbg = $("#jmbgId").val();
+                                    if (isNaN(jmbg)) {  // vraca true ako nije broj
+                                        $("#jmbgId").val("");
+                                        $("#jmbgId").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                    else if (jmbg.length != 13) {
+                                        $("#jmbgId").val("");
+                                        $("#jmbgId").attr("placeholder", "Must have 13 characters").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                }
+                                else {
+                                    $("#jmbgId").attr("placeholder", "Enter your jmbg").placeholder;
+                                    isValidateEdit = false;
+                                }
+                                if ($("#phoneId").val()) {
+                                    isValidate = true;
+                                    let phone = $("#phoneId").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#phoneId").val("");
+                                        $("#phoneId").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                }
+                                else {
+                                    $("#phoneId").attr("placeholder", "Enter your phone number").placeholder;
+                                    isValidateEdit = false;
+                                }
+                                if ($("#emailId").val()) {
+                                    isValidateEdit = true;
+                                    let email = $("#emailId").val();
+                                    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                                    if (!email.match(re)) {
+                                        $("#emailId").val("");
+                                        $("#emailId").attr("placeholder", "Invalid e-mail").placeholder;
+                                        isValidateEdit = false;
+                                    }
+                                }
+                                else {
+                                    $("#emailId").attr("placeholder", "Enter your e-mail").placeholder;
+                                    isValidateEdit = false;
+                                }
+                                if ($("#nameId").val() && $("#surnameId").val() && $("#usernameId").val() && $("#passwordId").val() && $("#jmbgId").val() && $("#phoneId").val() && $("#emailId").val()) {
+                                    isValidateEdit = true;
+                                }
+                                else {
+                                    isValidateEdit = false;
+                                }
+
+                            }
+
+                            $("a#link4").click(function () {
+                                $("form#formEditProfile").submit(function (e) {
+                                    ValidateEdit();
+                                    if (isValidateEdit) {
+                                        $.ajax({
+                                            url: "/api/User/Edit",
+                                            method: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                Name: $("#nameId").val(),
+                                                Surname: $("#surnameId").val(),
+                                                Username: $("#usernameId").val(),
+                                                Password: $("#passwordId").val(),
+                                                Jmbg: $("#jmbgId").val(),
+                                                //Gender: $("input[name=gender]").filter(":checked").val(),
+                                                Phone: $("#phoneId").val(),
+                                                Email: $("#emailId").val(),
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno ste se editovali profil.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska pri editovanju profila.");
+                                            }
+                                        });
+                                    }
+                                    e.preventDefault();
+                                });
                             });
 
                             $("a#link5").click(function () {
@@ -712,10 +846,11 @@
                                     });
                                 });
                             });
-
-
                         });
 
+                        
+                        //});
+                        ///});
                         $("a#linkSort").click(function () {
                             $("a#linkByDate").click(function () {
                                 $.get("/api/User/SortDriveByDate", function (data, status) {
@@ -778,7 +913,7 @@
             //Validacija registracije
             var isValidateLogin = false;
 
-            function Validate() {
+            function ValidateLogin() {
 
                 if ($("#usernameId").val()) {
                     isValidate = true;
@@ -819,8 +954,8 @@
 
             $("a#link2").click(function () {
                 $("form#form1").submit(function (e) {
-                    Validate();
-                    if (isValidate) {
+                    ValidateLogin();
+                    if (isValidateLogin) {
                         $.ajax({
                             url: "/api/Login/Login",
                             method: "POST",

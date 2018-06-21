@@ -13,7 +13,7 @@ namespace TaxiService.Controllers
     {
         [HttpPost]
         [Route("api/User/Edit")]
-        public void Edit([FromBody]User user)
+        public HttpResponseMessage Edit([FromBody]User user)
         {
             if (Data.dispatcherServices.CheckIfDispatcherExists(Data.loggedUser.Username))
             {
@@ -24,6 +24,7 @@ namespace TaxiService.Controllers
                 dispatcherEdit.Jmbg = user.Jmbg;
                 dispatcherEdit.Surname = user.Surname;
                 Data.dispatcherServices.EditDispatcherProfile(dispatcherEdit);
+                return Request.CreateResponse(HttpStatusCode.Created,dispatcherEdit);
             }
             else if (Data.customerService.CheckIfCustomerExists(Data.loggedUser.Username))
             {
@@ -34,6 +35,7 @@ namespace TaxiService.Controllers
                 customerEdit.Jmbg = user.Jmbg;
                 customerEdit.Surname = user.Surname;
                 Data.customerService.EditCustomerProfile(customerEdit);
+                return Request.CreateResponse(HttpStatusCode.Created,customerEdit);
             }
             else if (Data.driverServices.CheckIfDriverExists(Data.loggedUser.Username))
             {
@@ -44,7 +46,9 @@ namespace TaxiService.Controllers
                 driverEdit.Jmbg = user.Jmbg;
                 driverEdit.Surname = user.Surname;
                 Data.driverServices.EditDriverProfile(driverEdit);
+                return Request.CreateResponse(HttpStatusCode.Created,driverEdit);
             }
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
