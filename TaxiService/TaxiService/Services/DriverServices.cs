@@ -80,6 +80,10 @@ namespace TaxiService.Services
                 xmlDocument.Element("Drivers")
                                         .Elements("Driver")
                                         .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
+                                        .SetElementValue("Free", driver.Free);
+                xmlDocument.Element("Drivers")
+                                        .Elements("Driver")
+                                        .Where(x => x.Attribute("Id").Value == driver.Id.ToString()).FirstOrDefault()
                                         .SetElementValue("X", driver.Location.X);
                 xmlDocument.Element("Drivers")
                                         .Elements("Driver")
@@ -132,6 +136,7 @@ namespace TaxiService.Services
                 new XElement("Email", driver.Email),
                 new XElement("Gender", driver.Gender),
                 new XElement("Role", driver.Role),
+                new XElement("Free", driver.Free),
                     new XElement("X", driver.Location.X),
                     new XElement("Y", driver.Location.Y),
                     new XElement("Address", driver.Location.Address),
@@ -162,6 +167,7 @@ namespace TaxiService.Services
                                   new XElement("Email", driver.Email),
                                   new XElement("Gender", driver.Gender),
                                   new XElement("Role", driver.Role),
+                                  new XElement("Free", driver.Free),
                                   new XElement("X", driver.Location.X),
                                   new XElement("Y", driver.Location.Y),
                                   new XElement("Address", driver.Location.Address),
@@ -197,6 +203,8 @@ namespace TaxiService.Services
                         Phone = driver.Element("Phone").Value,
                         Gender = (Genders)Enum.Parse(typeof(Genders), driver.Element("Gender").Value),
                         Role = (Roles)Enum.Parse(typeof(Roles), driver.Element("Role").Value),
+                        Free = Convert.ToBoolean(driver.Element("Free").Value),
+
                         Location = new Location
                         {
                             Address = driver.Element("Address").Value,
@@ -242,6 +250,7 @@ namespace TaxiService.Services
                         Phone = driverx.Element("Phone").Value,
                         Gender = (Genders)Enum.Parse(typeof(Genders), driverx.Element("Gender").Value),
                         Role = (Roles)Enum.Parse(typeof(Roles), driverx.Element("Role").Value),
+                        Free = Convert.ToBoolean(driverx.Element("Free").Value),
                         Location = new Location
                         {
                             Address = driverx.Element("Address").Value,
@@ -289,6 +298,7 @@ namespace TaxiService.Services
                         Phone = driverx.Element("Phone").Value,
                         Gender = (Genders)Enum.Parse(typeof(Genders), driverx.Element("Gender").Value),
                         Role = (Roles)Enum.Parse(typeof(Roles), driverx.Element("Role").Value),
+                        Free = Convert.ToBoolean(driverx.Element("Free").Value),
                         Location = new Location
                         {
                             Address = driverx.Element("Address").Value,

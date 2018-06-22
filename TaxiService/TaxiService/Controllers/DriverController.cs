@@ -56,8 +56,12 @@ namespace TaxiService.Controllers
 
             driveFinis.Price = Int32.Parse(data.GetValue("Price").ToString());
             Data.driveServices.EditDriveProfile(driveFinis);
-            Data.freeDrivers.Add(driveFinis.DrivedBy);
-            Data.busyDrivers.Remove(driveFinis.DrivedBy);
+            Driver d1 = driveFinis.DrivedBy;
+            d1.Free = true;
+            Data.driverServices.EditDriverProfile(d1);
+
+            //Data.freeDrivers.Add(driveFinis.DrivedBy);
+            //Data.busyDrivers.Remove(driveFinis.DrivedBy);
             return Request.CreateResponse(HttpStatusCode.Created, driveFinis);
         }
 
@@ -98,8 +102,11 @@ namespace TaxiService.Controllers
 
             Data.commentServices.NewComment(com);
             Data.driveServices.EditDriveProfile(driveFinis);
-            Data.freeDrivers.Add(driveFinis.DrivedBy);
-            Data.busyDrivers.Remove(driveFinis.DrivedBy);
+            Driver d1 = driveFinis.DrivedBy;
+            d1.Free = true;
+            Data.driverServices.EditDriverProfile(d1);
+            //Data.freeDrivers.Add(driveFinis.DrivedBy);
+            //Data.busyDrivers.Remove(driveFinis.DrivedBy);
             return Request.CreateResponse(HttpStatusCode.Created, com);
         }
 

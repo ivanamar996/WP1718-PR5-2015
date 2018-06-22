@@ -872,36 +872,20 @@
                                 $("a#link11").attr("href", "api/Dispatcher/ProcessDrive");
                             });
 
-                            /*$("a#link11").click(function () {
-                                //$("form#formDispCreateDrive").submit(function (e) {
-                                    //ValidateEditLocation();
-                                   // if (isValidateEditLocation) {
-                                        $.ajax({
-                                            url: "/api/Dispatcher/ProcessDrive",
-                                            method: "POST",
-                                            dataType: "json",
-                                           /* data: {
-                                                X: $("#xID").val(),
-                                                Y: $("#yID").val(),
-                                                Address: $("#addressID").val(),
-                                                Type: $("#typeID").val()
-                                            },
-                                            success: function (html) {
-                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
-                                                alert("Uspjesno ste dodijelili voznju slobodnom vozacu.");
-
-                                            },
-                                            error: function () {
-                                                alert("Greska pri dodijeli voznje slobodnom vozacu.");
-                                            }
-                                        });
-                                   // }
-                                    e.preventDefault();
-                               // });
-                            });*/
+                            $("a#link11").click(function () {  //predje na drugu stranu
+                                $.ajax({
+                                    statusCode: {
+                                        200: function () {
+                                            alert('Uspjesno');
+                                        },
+                                        500: function () {
+                                            alert('Greska');
+                                        }
+                                    }
+                                });
+                               
+                            });
                 
-
                             $("a#link12").click(function () {
                                 $("div#div1").html("<form id=\"formSuccDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
                                     "<table class=\"tabela\">" +

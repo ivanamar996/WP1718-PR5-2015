@@ -36,6 +36,7 @@ namespace TaxiService.Controllers
                 driverNew.Phone = data.GetValue("Phone").ToString();
                 driverNew.Gender = (Genders)Enum.Parse(typeof(Genders), data.GetValue("Gender").ToString());
                 driverNew.Email = data.GetValue("Email").ToString();
+                driverNew.Free = true;
 
                 driverNew.DriverCar = new Car()
                 {
@@ -51,10 +52,10 @@ namespace TaxiService.Controllers
                     Y = Double.Parse(data.GetValue("Y").ToString()),
                     Address = data.GetValue("Address").ToString()
                 };
+
                 driverNew.Drives = new List<Drive>();
                 Data.driverServices.NewDriver(driverNew);
-                Data.drivers.Add(driverNew);
-                Data.freeDrivers.Add(driverNew);
+                //Data.drivers.Add(driverNew);             
                 return Request.CreateResponse(HttpStatusCode.Created, driverNew);
             }
 
@@ -85,14 +86,29 @@ namespace TaxiService.Controllers
             newDrive.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
             newDrive.Comments = new Comment();
 
-            if (Data.freeDrivers.Count==0)
+            /*if (Data.freeDrivers.Count==0)    MORAM DODIJELITI VOZNJU SLOBODNOM VOZACUU
                 newDrive.DrivedBy = new Driver();
             else
             {
                 newDrive.DrivedBy = Data.freeDrivers.ElementAt(0);
                 Data.busyDrivers.Add(Data.freeDrivers[0]);
                 Data.freeDrivers.RemoveAt(0);
+            }*/
+
+            IEnumerable<Driver> drivers = Data.driverServices.RetriveAllDrivers();
+
+            foreach(Driver driver in drivers)
+            {
+                if (driver.Free == true)
+                {
+                    newDrive.DrivedBy = driver;
+                    driver.Free = false;
+                    Data.driverServices.EditDriverProfile(driver);
+                }
             }
+
+            if (newDrive.DrivedBy == null)
+                newDrive.DrivedBy = new Driver();
 
             newDrive.Price = 0;
             newDrive.OrderDate = DateTime.Now;
@@ -108,29 +124,27 @@ namespace TaxiService.Controllers
         public HttpResponseMessage ProcessDrive()
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
-            bool done = false;
+            IEnumerable<Driver> drivers = Data.driverServices.RetriveAllDrivers();
+           
             foreach (Drive d in drives)
             {
                 if (d.State == Enums.Status.Created)
                 {
-                    if (Data.freeDrivers != null)
+                   foreach(Driver driver in drivers)
                     {
-                        d.DrivedBy = Data.driverServices.RetriveDriverById(Data.freeDrivers[0].Id);
-                        d.State = Enums.Status.Processed;
-                        d.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
-                        Data.busyDrivers.Add(Data.freeDrivers[0]);
-                        Data.freeDrivers.RemoveAt(0);
-                        Data.driveServices.EditDriveProfile(d);
-                        done = true;
-                        return Request.CreateResponse(HttpStatusCode.Created);
+                        if (driver.Free == true)
+                        {
+                            d.DrivedBy = driver;
+                            driver.Free = false;
+                            d.State = Enums.Status.Processed;
+                            Data.driverServices.EditDriverProfile(driver);
+                            Data.driveServices.EditDriveProfile(d);
+                            return Request.CreateResponse(HttpStatusCode.OK);
+                        }
                     }
                 }
             }
-
-            if (done==false)
-                return Request.CreateResponse(HttpStatusCode.InternalServerError);
-            else
-                return Request.CreateResponse(HttpStatusCode.OK);
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpGet]
