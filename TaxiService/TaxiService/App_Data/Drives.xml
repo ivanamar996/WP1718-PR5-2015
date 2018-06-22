@@ -2,7 +2,7 @@
 <Drives>
   <Drive Id="0">
     <Id>0</Id>
-    <OrderDate>2018-06-21T21:23:33.1449606+02:00</OrderDate>
+    <OrderDate>0001-01-01T00:00:00</OrderDate>
     <AddressX>123</AddressX>
     <AddressY>85</AddressY>
     <AddressAdr>adresa</AddressAdr>
@@ -10,11 +10,45 @@
     <CustomerId>0</CustomerId>
     <DestinationX>0</DestinationX>
     <DestinationY>0</DestinationY>
-    <DestinationAdr />
+    <DestinationAdr></DestinationAdr>
     <DispatcherId>-1</DispatcherId>
     <DriverId>-1</DriverId>
     <CommentId>-1</CommentId>
     <Price>0</Price>
-    <Status>Created</Status>
+    <Status>Canceled</Status>
+  </Drive>
+  <Drive Id="2">
+    <Id>2</Id>
+    <OrderDate>0001-01-01T00:00:00</OrderDate>
+    <AddressX>123</AddressX>
+    <AddressY>85</AddressY>
+    <AddressAdr>adresa</AddressAdr>
+    <CarType>Car</CarType>
+    <CustomerId>0</CustomerId>
+    <DestinationX>0</DestinationX>
+    <DestinationY>0</DestinationY>
+    <DestinationAdr></DestinationAdr>
+    <DispatcherId>-1</DispatcherId>
+    <DriverId>-1</DriverId>
+    <CommentId>-1</CommentId>
+    <Price>0</Price>
+    <Status>Canceled</Status>
+  </Drive>
+  <Drive Id="3">
+    <Id>3</Id>
+    <OrderDate>0001-01-01T00:00:00</OrderDate>
+    <AddressX>123</AddressX>
+    <AddressY>85</AddressY>
+    <AddressAdr>adresa</AddressAdr>
+    <CarType>Car</CarType>
+    <CustomerId>0</CustomerId>
+    <DestinationX>0</DestinationX>
+    <DestinationY>0</DestinationY>
+    <DestinationAdr></DestinationAdr>
+    <DispatcherId>-1</DispatcherId>
+    <DriverId>-1</DriverId>
+    <CommentId>-1</CommentId>
+    <Price>0</Price>
+    <Status>Canceled</Status>
   </Drive>
 </Drives>

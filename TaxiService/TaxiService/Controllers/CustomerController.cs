@@ -46,7 +46,7 @@ namespace TaxiService.Controllers
 
         [HttpPost]
         [Route("api/Customer/ChangeDrive")]
-        public void ChangeDrive([FromBody]JObject data)
+        public HttpResponseMessage ChangeDrive([FromBody]JObject data)
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             foreach(Drive d in drives)
@@ -55,18 +55,21 @@ namespace TaxiService.Controllers
                 {
                     if (d.State == Enums.Status.Created)
                     {
-                        d.Address.X = Double.Parse(data.GetValue("xEdit").ToString());
-                        d.Address.Y = Double.Parse(data.GetValue("yEdit").ToString());
-                        d.Address.Address = data.GetValue("addressEdit").ToString();
+                        d.Address.X = Double.Parse(data.GetValue("X").ToString());
+                        d.Address.Y = Double.Parse(data.GetValue("Y").ToString());
+                        d.Address.Address = data.GetValue("Address").ToString();
+                        d.CarType = (CarTypes)Enum.Parse(typeof(CarTypes), data.GetValue("Type").ToString());
                         Data.driveServices.EditDriveProfile(d);
+                        return Request.CreateResponse(HttpStatusCode.Created, d);
                     }
                 }
             }
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         [HttpPost]
         [Route("api/Customer/CancelDrive")]
-        public void CancelDrive([FromBody]JObject data)
+        public HttpResponseMessage CancelDrive([FromBody]JObject data)
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             foreach (Drive d in drives)
@@ -85,13 +88,15 @@ namespace TaxiService.Controllers
                         else
                             com.Id = comments.Count() + 1;
 
-                        com.Description = data.GetValue("description").ToString();
+                        com.Description = data.GetValue("Description").ToString();
                         com.CreatedBy = Data.customerService.RetriveCustomerById(Data.loggedUser.Id);
                         com.CommentedOn = d;
                         Data.commentServices.NewComment(com);
+                        return Request.CreateResponse(HttpStatusCode.Created, com);
                     }
                 }
             }
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
         public List<Drive> GetDrives()
