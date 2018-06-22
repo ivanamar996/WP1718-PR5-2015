@@ -63,7 +63,7 @@ namespace TaxiService.Controllers
 
         [HttpPost]
         [Route("api/Dispatcher/CreateDrive")]
-        public void CreateDrive([FromBody]JObject data)
+        public HttpResponseMessage CreateDrive([FromBody]JObject data)
         {
             Drive newDrive = new Drive();
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
@@ -75,19 +75,21 @@ namespace TaxiService.Controllers
 
             newDrive.Address = new Location()
             {
-                X = Double.Parse(data.GetValue("x").ToString()),
-                Y = Double.Parse(data.GetValue("y").ToString()),
-                Address = data.GetValue("address").ToString()
+                X = Double.Parse(data.GetValue("X").ToString()),
+                Y = Double.Parse(data.GetValue("Y").ToString()),
+                Address = data.GetValue("Address").ToString()
             };
 
+            newDrive.CarType = (CarTypes)Enum.Parse(typeof(CarTypes), data.GetValue("Type").ToString());
             newDrive.Destination = new Location();
             newDrive.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
             newDrive.Comments = new Comment();
-            if (Data.freeDrivers == null)
+
+            if (Data.freeDrivers.Count==0)
                 newDrive.DrivedBy = new Driver();
             else
             {
-                newDrive.DrivedBy = Data.freeDrivers[0];
+                newDrive.DrivedBy = Data.freeDrivers.ElementAt(0);
                 Data.busyDrivers.Add(Data.freeDrivers[0]);
                 Data.freeDrivers.RemoveAt(0);
             }
@@ -97,14 +99,16 @@ namespace TaxiService.Controllers
             newDrive.OrderedBy = new Customer();
             newDrive.State = Enums.Status.Formated;
             Data.driveServices.NewDrive(newDrive);
+            return Request.CreateResponse(HttpStatusCode.Created, newDrive);
+
         }
 
         [HttpGet]
         [Route("api/Dispatcher/ProcessDrive")]
-        public void ProcessDrive()
+        public HttpResponseMessage ProcessDrive()
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
-
+            bool done = false;
             foreach (Drive d in drives)
             {
                 if (d.State == Enums.Status.Created)
@@ -117,9 +121,16 @@ namespace TaxiService.Controllers
                         Data.busyDrivers.Add(Data.freeDrivers[0]);
                         Data.freeDrivers.RemoveAt(0);
                         Data.driveServices.EditDriveProfile(d);
+                        done = true;
+                        return Request.CreateResponse(HttpStatusCode.Created);
                     }
                 }
             }
+
+            if (done==false)
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            else
+                return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpGet]

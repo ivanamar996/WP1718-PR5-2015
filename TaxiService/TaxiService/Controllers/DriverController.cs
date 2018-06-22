@@ -27,7 +27,7 @@ namespace TaxiService.Controllers
 
         [HttpPost]
         [Route("api/Driver/SuccessfulDrive")]
-        public void SuccessfulDrive([FromBody]JObject data)
+        public HttpResponseMessage SuccessfulDrive([FromBody]JObject data)
         {            
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             Drive driveFinis = new Drive();
@@ -40,22 +40,30 @@ namespace TaxiService.Controllers
                 }
             }
 
+            if (driveFinis.State==Enums.Status.Successful)
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+
             driveFinis.State = Enums.Status.Successful;
             driveFinis.Destination = new Location
             {
-                X = Double.Parse(data.GetValue("x").ToString()),
-                Y = Double.Parse(data.GetValue("y").ToString()),
-                Address = data.GetValue("address").ToString()
+                X = Double.Parse(data.GetValue("X").ToString()),
+                Y = Double.Parse(data.GetValue("Y").ToString()),
+                Address = data.GetValue("Address").ToString()
             };
-            driveFinis.Price = Int32.Parse(data.GetValue("price").ToString());
+
+            if (driveFinis.OrderedBy == null)
+                driveFinis.OrderedBy = new Customer();
+
+            driveFinis.Price = Int32.Parse(data.GetValue("Price").ToString());
             Data.driveServices.EditDriveProfile(driveFinis);
             Data.freeDrivers.Add(driveFinis.DrivedBy);
             Data.busyDrivers.Remove(driveFinis.DrivedBy);
+            return Request.CreateResponse(HttpStatusCode.Created, driveFinis);
         }
 
         [HttpPost]
         [Route("api/Driver/UnsuccessfulDrive")]
-        public void UnsuccessfulDrive([FromBody]JObject data)
+        public HttpResponseMessage UnsuccessfulDrive([FromBody]JObject data)
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             Drive driveFinis = new Drive();
@@ -68,6 +76,12 @@ namespace TaxiService.Controllers
                 }
             }
 
+            if (driveFinis.OrderedBy == null)
+                driveFinis.OrderedBy = new Customer();
+
+            if (driveFinis.State == Enums.Status.Unsuccessful)
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+
             driveFinis.State = Enums.Status.Unsuccessful;
 
             Comment com = new Comment();
@@ -78,7 +92,7 @@ namespace TaxiService.Controllers
             else
                 com.Id = comments.Count() + 1;
 
-            com.Description = data.GetValue("description").ToString();
+            com.Description = data.GetValue("Description").ToString();
             com.CreatedBy = Data.driverServices.RetriveDriverById(driveFinis.DrivedBy.Id);
             com.CommentedOn = driveFinis;
 
@@ -86,6 +100,7 @@ namespace TaxiService.Controllers
             Data.driveServices.EditDriveProfile(driveFinis);
             Data.freeDrivers.Add(driveFinis.DrivedBy);
             Data.busyDrivers.Remove(driveFinis.DrivedBy);
+            return Request.CreateResponse(HttpStatusCode.Created, com);
         }
 
         [HttpGet]

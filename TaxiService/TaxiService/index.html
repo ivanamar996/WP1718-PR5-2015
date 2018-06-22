@@ -824,38 +824,221 @@
 
 
                             $("a#link10").click(function () {
-                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/CreateDrive\">" +
+                                $("div#div1").html("<form id=\"formDispCreateDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/CreateDrive\">" +
                                     "<table class=\"tabela\">" +
                                     "<tr><td>Location:</td><td></td></tr>" +
-                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\" /></td></tr>" +
-                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" /></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" /></td></tr>" +
+                                    "<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\" /></td></tr>" +
+                                    "<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\" /></td></tr>" +
+                                    "<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\" /></td></tr>" +
+                                    "<tr><td>Car type: </td><td><select id=\"typeID\" name=\"type\">" +
+                                    "<option value=\"None\">None</option>" +
+                                    "<option value=\"Car\">Car</option>" +
+                                    "<option value=\"Van\">Van</option>" +
+                                    "</select></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
                                     "</table></form>");
                             });
+
+                            $("a#link10").click(function () {
+                                $("form#formDispCreateDrive").submit(function (e) {
+                                    ValidateEditLocation();
+                                    if (isValidateEditLocation) {
+                                        $.ajax({
+                                            url: "/api/Dispatcher/CreateDrive",
+                                            method: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                X: $("#xID").val(),
+                                                Y: $("#yID").val(),
+                                                Address: $("#addressID").val(),
+                                                Type: $("#typeID").val()
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno ste kreirali voznju.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska pri kreiranju voznje.");
+                                            }
+                                        });
+                                    }
+                                    e.preventDefault();
+                                });
+                            });
+
                             $("a#link11").click(function () {
                                 $("a#link11").attr("href", "api/Dispatcher/ProcessDrive");
                             });
+
+                            /*$("a#link11").click(function () {
+                                //$("form#formDispCreateDrive").submit(function (e) {
+                                    //ValidateEditLocation();
+                                   // if (isValidateEditLocation) {
+                                        $.ajax({
+                                            url: "/api/Dispatcher/ProcessDrive",
+                                            method: "POST",
+                                            dataType: "json",
+                                           /* data: {
+                                                X: $("#xID").val(),
+                                                Y: $("#yID").val(),
+                                                Address: $("#addressID").val(),
+                                                Type: $("#typeID").val()
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno ste dodijelili voznju slobodnom vozacu.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska pri dodijeli voznje slobodnom vozacu.");
+                                            }
+                                        });
+                                   // }
+                                    e.preventDefault();
+                               // });
+                            });*/
+                
+
                             $("a#link12").click(function () {
-                                $("div#div1").html("<form accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
+                                $("div#div1").html("<form id=\"formSuccDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
                                     "<table class=\"tabela\">" +
                                     "<tr><td>Destination:</td><td></td></tr>" +
-                                    "<tr><td>X: </td><td><input type=\"text\" name=\"x\"/></td></tr>" +
-                                    "<tr><td>Y: </td><td><input type=\"text\" name=\"y\"/></td></tr>" +
-                                    "<tr><td>Address: </td><td><input type=\"text\" name=\"address\"/></td></tr>" +
-                                    "<tr><td>Price: </td><td><input type=\"number\" name=\"price\"/></td></tr>" +
+                                    "<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\"/></td></tr>" +
+                                    "<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\"/></td></tr>" +
+                                    "<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\"/></td></tr>" +
+                                    "<tr><td>Price: </td><td><input type=\"number\" id=\"priceID\" name=\"price\"/></td></tr>" +
                                     "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Submit\"/></td></tr>" +
                                     "</table>" +
                                     "</form>");
                             });
+
+                            //Validacija forme prilikom uspjesne voznje
+                            var isValidateSuccDrive = false;
+
+                            function ValidateSuccDrive() {
+
+                                if ($("#xID").val()) {
+                                    isValidateSuccDrive = true;
+                                    let phone = $("#xID").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#xID").val("");
+                                        $("#xID").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateSuccDrive = false;
+                                    }
+                                }
+                                else {
+                                    $("#xID").attr("placeholder", "Enter your x number").placeholder;
+                                    isValidateSuccDrive = false;
+                                }
+
+                                if ($("#yID").val()) {
+                                    isValidateSuccDrive = true;
+                                    let phone = $("#yID").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#yID").val("");
+                                        $("#yID").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateSuccDrive = false;
+                                    }
+                                }
+                                else {
+                                    $("#yID").attr("placeholder", "Enter your y number").placeholder;
+                                    isValidateSuccDrive = false;
+                                }
+
+                                if ($("#priceID").val()) {
+                                    isValidateSuccDrive = true;
+                                    let phone = $("#priceID").val();
+                                    if (isNaN(phone)) {  // vraca true ako nije broj
+                                        $("#priceID").val("");
+                                        $("#priceID").attr("placeholder", "Must be numeric characters").placeholder;
+                                        isValidateSuccDrive = false;
+                                    }
+                                }
+                                else {
+                                    $("#priceID").attr("placeholder", "Enter your y number").placeholder;
+                                    isValidateSuccDrive = false;
+                                }
+
+                                if ($("#xID").val() && $("#yID").val() && $("#priceID").val()) {
+                                    isValidateSuccDrive = true;
+                                }
+                                else {
+                                    isValidateSuccDrive = false;
+                                }
+                            }
+
+                            $("a#link12").click(function () {
+                                $("form#formSuccDrive").submit(function (e) {
+                                    ValidateSuccDrive();
+                                    if (isValidateSuccDrive) {
+                                        $.ajax({
+                                            url: "/api/Driver/SuccessfulDrive",
+                                            method: "POST",
+                                            dataType: "json",
+                                            data: {
+                                                X: $("#xID").val(),
+                                                Y: $("#yID").val(),
+                                                Address: $("#addressID").val(),
+                                                Price: $("#priceID").val()
+                                            },
+                                            success: function (html) {
+                                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                                alert("Uspjesno.");
+
+                                            },
+                                            error: function () {
+                                                alert("Greska.");
+                                            }
+                                        });
+                                    }
+                                    e.preventDefault();
+                                });
+                            });
+
                             $("a#link13").click(function () {
                                 $("div#div1").html("<p> Create comment</p><br>" +
-                                    "<form accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
-                                    "<textarea name=\"description\" rows=\"10\" cols=\"30\"/><br>" +
+                                    "<form id=\"formUnsDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
+                                    "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"30\"/><br>" +
                                     "<input type=\"submit\" value=\"Create\"/>" +
                                     "</form>");
 
                             });
+
+                            $("a#link13").click(function () {
+                                $("form#formUnsDrive").submit(function (e) {
+                                    //ValidateEditLocation();
+                                    //if (isValidateEditLocation) {
+                                    $.ajax({
+                                        url: "/api/Driver/UnsuccessfulDrive",
+                                        method: "POST",
+                                        dataType: "json",
+                                        data: {
+                                            //X: $("#xID").val(),
+                                            //Y: $("#yID").val(),
+                                            //Address: $("#addressID").val(),
+                                            // Type: $("#typeID").val()
+                                            Description: $("#descriptionID").val()
+                                        },
+                                        success: function (html) {
+                                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                                            alert("Uspjesno.");
+
+                                        },
+                                        error: function () {
+                                            alert("Greska.");
+                                        }
+                                    });
+                                    //}
+                                    e.preventDefault();
+                                });
+                            });
+
+
                             $("a#link14").click(function () {
                                 $.get("/api/Customer", function (data, status) {
                                     let drives = `<h5>Your drives</h5>`;

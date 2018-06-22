@@ -85,6 +85,8 @@ namespace TaxiService.Services
                     {
                         Id = Int32.Parse(drive.Element("Id").Value),
 
+                        OrderDate = DateTime.Parse(drive.Element("OrderDate").Value),
+
                         CustomerId = Int32.Parse(drive.Element("CustomerId").Value),
 
                         Address = new Location

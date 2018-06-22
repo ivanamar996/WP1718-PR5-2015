@@ -180,6 +180,9 @@ namespace TaxiService.Services
 
         public Customer RetriveCustomerById(int id)
         {
+            if (id == -1)
+                return null;
+
             if (File.Exists(fileName))
             {
                 FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
