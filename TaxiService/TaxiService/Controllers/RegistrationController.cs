@@ -15,6 +15,7 @@ namespace TaxiService.Controllers
         [Route("api/Registration/RegisterAccount")]
         public HttpResponseMessage RegisterAccount([FromBody]Customer customer)
         {
+            
             if (!Data.customerService.CheckIfCustomerExists(customer.Username))
             {
                 IEnumerable<Customer> customers = Data.customerService.RetriveAllCustomers();

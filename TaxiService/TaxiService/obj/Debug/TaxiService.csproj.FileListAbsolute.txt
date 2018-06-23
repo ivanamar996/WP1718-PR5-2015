@@ -46,6 +46,10 @@ C:\Users\Ivana\Desktop\TaxiService\TaxiService\obj\Debug\TaxiService.csprojResol
 C:\Users\Ivana\Desktop\TaxiService\TaxiService\obj\Debug\TaxiService.csproj.CoreCompileInputs.cache
 C:\Users\Ivana\Desktop\TaxiService\TaxiService\obj\Debug\TaxiService.dll
 C:\Users\Ivana\Desktop\TaxiService\TaxiService\obj\Debug\TaxiService.pdb
+C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.ServerTelemetryChannel.xml
+C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.Web.xml
+C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csproj.CoreCompileInputs.cache
+C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.pdb
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\ApplicationInsights.config
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\TaxiService.dll.config
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\TaxiService.dll
@@ -87,10 +91,5 @@ C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\System.Web.WebPages.
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Antlr3.Runtime.pdb
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.ApplicationInsights.xml
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.DependencyCollector.xml
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.WindowsServer.xml
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\bin\Microsoft.AI.Web.xml
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csprojResolveAssemblyReference.cache
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csproj.CoreCompileInputs.cache
 C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.dll
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.pdb

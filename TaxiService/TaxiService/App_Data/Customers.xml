@@ -2,19 +2,7 @@
 <Customers>
   <Customer Id="0">
     <Id>0</Id>
-    <Username>Viki</Username>
-    <Password>1234</Password>
-    <Name>Ivana</Name>
-    <Surname>ert</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone>45678</Phone>
-    <Email>ivana@gmail.com</Email>
-    <Gender>Female</Gender>
-    <Role>Customer</Role>
-  </Customer>
-  <Customer Id="2">
-    <Id>2</Id>
-    <Username>Iva12</Username>
+    <Username>Viki34</Username>
     <Password>1234</Password>
     <Name>Ivana</Name>
     <Surname>ert</Surname>
