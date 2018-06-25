@@ -143,8 +143,6 @@
                         Email: $("#emailId").val(),
                     },
                     success: function (html) {
-                        // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                        // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                         alert("Uspjesno ste se registrovali");
 
                     },
@@ -189,9 +187,10 @@
 
                             let linkovi = "<a id=\"link4\">Edit profile</a><br/>";
                             linkovi += "<a id=\"link19\">Filter drives</a>";
+                            let linkoviSearch = "<a id=\"linkByOrderDate\">by order date</a></br><a id=\"linkByGradeSearch\">by grade</a></br><a id=\"linkByPrice\">by price</a>";
 
                             if (data.Role == 2) {
-
+                                linkoviSearch += "</br><a id=\"linkSearchByCustomer\">by customer</a></br><a id=\"linkSearchByDriver\">by driver</a>";
                                 linkovi += "<br><a id=\"link5\">Add driver</a>";
                                 linkovi += "<br><a id=\"link10\">Create drive</a>";
                                 linkovi += "<br><a id=\"link11\">Process drive</a>";
@@ -204,6 +203,7 @@
                                 linkovi += "<br><a id=\"link13\">Unsuccessful drive</a>";
                                 linkovi += "<br><a id=\"link17\">Your drives</a>";
                                 linkovi += "<br><a id=\"link18\">Created drives</a>";
+                                linkovi += "<br><a id=\"link20\">Accept drive</a>";
                             }
                             else if (data.Role == 1) {
                                 linkovi += "<br><a id=\"link7\">Create drive</a></br><a id=\"link8\">Change drive</a>";
@@ -213,7 +213,7 @@
 
                             $("div#divLink").html(linkovi);
                             $("div#divLink2").html("<a id=\"linkByDate\">by date</a></br><a id=\"linkByGrade\">by grade</a>");
-                            $("div#divLink3").html("<a id=\"linkByOrderDate\">by order date</a></br><a id=\"linkByGradeSearch\">by grade</a></br><a id=\"linkByPrice\">by price</a>");
+                            $("div#divLink3").html(linkoviSearch);
                             $("div#divLink").hide();
                             $("div#divLink2").hide();
                             $("div#divLink3").hide();
@@ -399,7 +399,7 @@
                     `<tr><td>Address: </td><td><input type=\"text\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
                     `</table></form>`);
-             
+
                 $("form#formEditLocation").submit(function (e) {
 
                     ValidateEditLocation();
@@ -431,7 +431,7 @@
             });
         });
 
-        /*$("a#link7").click(function () {
+        $("a#link7").click(function () {
 
             $("div#div1").html("<form id=\"formCreateDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Customer/CreateDrive\">" +
                 "<table class=\"tabela\">" +
@@ -448,6 +448,7 @@
                 "</table></form>");
 
             $("form#formCreateDrive").submit(function (e) {
+                isValidateEditLocation = false;
                 ValidateEditLocation();
                 if (isValidateEditLocation) {
                     $.ajax({
@@ -473,11 +474,492 @@
                 }
                 e.preventDefault();
             });
+        });
 
+        $("a#link8").click(function () {
+            $("div#div1").html("<form id=\"formChangeDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/ChangeDrive\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Location:</td><td></td></tr>" +
+                "<tr><td>X: </td><td><input type=\"text\" name=\"x\" id=\"xID\"/></td></tr>" +
+                "<tr><td>Y: </td><td><input type=\"text\" name=\"y\" id=\"yID\"/></td></tr>" +
+                "<tr><td>Address: </td><td><input type=\"text\" name=\"address\" id=\"addressID\" /></td></tr>" +
+                "<tr><td>Car type: </td><td><select id=\"typeID\" name=\"type\">" +
+                "<option value=\"None\">None</option>" +
+                "<option value=\"Car\">Car</option>" +
+                "<option value=\"Van\">Van</option>" +
+                "</select></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\"/></td></tr>" +
+                "</table></form>");
 
+            $("form#formChangeDrive").submit(function (e) {
+                isValidateEditLocation = false;
+                ValidateEditLocation();
+                if (isValidateEditLocation) {
+                    $.ajax({
+                        url: "/api/Customer/ChangeDrive",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            X: $("#xID").val(),
+                            Y: $("#yID").val(),
+                            Address: $("#addressID").val(),
+                            Type: $("#typeID").val()
+                        },
+                        success: function (html) {
+                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                            alert("Uspjesno ste izmjenili voznju.");
 
-        });*/
+                        },
+                        error: function () {
+                            alert("Greska pri izmjeni voznje.");
+                        }
+                    });
+                }
+                e.preventDefault();
+            });
+
+        });
+
+        $("a#link9").click(function () {
+
+            $("div#div1").html("<p> Create comment</p><br>" +
+                "<form id=\"formCancelDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CancelDrive\">" +
+                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"30\"/><br>" +
+                "<input type=\"submit\" value=\"Create\"/>" +
+                "</form>");
+
+            $("form#formCancelDrive").submit(function (e) {
+                $.ajax({
+                    url: "/api/Customer/CancelDrive",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        Description: $("#descriptionID").val()
+                    },
+                    success: function (html) {
+
+                        alert("Uspjesno ste otkazali voznju.");
+
+                    },
+                    error: function () {
+                        alert("Greska pri otkazivanju voznju.");
+                    }
+                });
+                e.preventDefault();
+            });
+
+        });
+
+        $("a#link10").click(function () {
+
+            $("div#div1").html("<form id=\"formDispCreateDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/CreateDrive\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Location:</td><td></td></tr>" +
+                "<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\" /></td></tr>" +
+                "<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\" /></td></tr>" +
+                "<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\" /></td></tr>" +
+                "<tr><td>Car type: </td><td><select id=\"typeID\" name=\"type\">" +
+                "<option value=\"None\">None</option>" +
+                "<option value=\"Car\">Car</option>" +
+                "<option value=\"Van\">Van</option>" +
+                "</select></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Create\" /></td></tr>" +
+                "</table></form>");
+
+            $("form#formDispCreateDrive").submit(function (e) {
+                ValidateEditLocation();
+                if (isValidateEditLocation) {
+                    $.ajax({
+                        url: "/api/Dispatcher/CreateDrive",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            X: $("#xID").val(),
+                            Y: $("#yID").val(),
+                            Address: $("#addressID").val(),
+                            Type: $("#typeID").val()
+                        },
+                        success: function (html) {
+                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
+                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
+                            alert("Uspjesno ste kreirali voznju.");
+
+                        },
+                        error: function () {
+                            alert("Greska pri kreiranju voznje.");
+                        }
+                    });
+                }
+                e.preventDefault();
+            });
+
+        });
+
+        $("a#link11").click(function () {
+
+            $("a#link11").attr("href", "api/Dispatcher/ProcessDrive"); //PREDJE NA DRUGU STRANU
+
+            $.ajax({
+                statusCode: {
+                    200: function () {
+                        alert('Uspjesno');
+                    },
+                    500: function () {
+                        alert('Greska');
+                    }
+                }
+
+            });
+        });
+
+        $("a#link20").click(function () {
+
+            $("#link20").attr("href", "api/Driver/AcceptDrive");
+            
+                $.ajax({
+                    url: "api/Driver/AcceptDrive",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (server_response) {
+                        if (server_response == 'success') {
+                            $("#result").html(server_response);
+                        }
+                        else {
+                            alert('Not OKay');
+                        }
+                    }
+                });
+        });
+
+        $("a#link12").click(function () {
+
+            $("div#div1").html("<form id=\"formSuccDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Driver/SuccessfulDrive\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Destination:</td><td></td></tr>" +
+                "<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\"/></td></tr>" +
+                "<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\"/></td></tr>" +
+                "<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\"/></td></tr>" +
+                "<tr><td>Price: </td><td><input type=\"number\" id=\"priceID\" name=\"price\"/></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Submit\"/></td></tr>" +
+                "</table>" +
+                "</form>");
+
+            //Validacija forme prilikom uspjesne voznje
+            var isValidateSuccDrive = false;
+
+            function ValidateSuccDrive() {
+
+                if ($("#xID").val()) {
+                    isValidateSuccDrive = true;
+                    let phone = $("#xID").val();
+                    if (isNaN(phone)) {  // vraca true ako nije broj
+                        $("#xID").val("");
+                        $("#xID").attr("placeholder", "Must be numeric characters").placeholder;
+                        isValidateSuccDrive = false;
+                    }
+                }
+                else {
+                    $("#xID").attr("placeholder", "Enter your x number").placeholder;
+                    isValidateSuccDrive = false;
+                }
+
+                if ($("#yID").val()) {
+                    isValidateSuccDrive = true;
+                    let phone = $("#yID").val();
+                    if (isNaN(phone)) {  // vraca true ako nije broj
+                        $("#yID").val("");
+                        $("#yID").attr("placeholder", "Must be numeric characters").placeholder;
+                        isValidateSuccDrive = false;
+                    }
+                }
+                else {
+                    $("#yID").attr("placeholder", "Enter your y number").placeholder;
+                    isValidateSuccDrive = false;
+                }
+
+                if ($("#priceID").val()) {
+                    isValidateSuccDrive = true;
+                    let phone = $("#priceID").val();
+                    if (isNaN(phone)) {  // vraca true ako nije broj
+                        $("#priceID").val("");
+                        $("#priceID").attr("placeholder", "Must be numeric characters").placeholder;
+                        isValidateSuccDrive = false;
+                    }
+                }
+                else {
+                    $("#priceID").attr("placeholder", "Enter your y number").placeholder;
+                    isValidateSuccDrive = false;
+                }
+
+                if ($("#xID").val() && $("#yID").val() && $("#priceID").val()) {
+                    isValidateSuccDrive = true;
+                }
+                else {
+                    isValidateSuccDrive = false;
+                }
+            }
+
+            $("form#formSuccDrive").submit(function (e) {
+                ValidateSuccDrive();
+                if (isValidateSuccDrive) {
+                    $.ajax({
+                        url: "/api/Driver/SuccessfulDrive",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            X: $("#xID").val(),
+                            Y: $("#yID").val(),
+                            Address: $("#addressID").val(),
+                            Price: $("#priceID").val()
+                        },
+                        success: function (html) {
+                            alert("Uspjesno.");
+
+                        },
+                        error: function () {
+                            alert("Greska.");
+                        }
+                    });
+                }
+                e.preventDefault();
+            });
+        });
+
+        $("a#link13").click(function () {
+
+            $("div#div1").html("<p> Create comment</p><br>" +
+                "<form id=\"formUnsDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
+                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"30\"/><br>" +
+                "<input type=\"submit\" value=\"Create\"/>" +
+                "</form>");
+
+            $("form#formUnsDrive").submit(function (e) {
+
+                $.ajax({
+                    url: "/api/Driver/UnsuccessfulDrive",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+
+                        Description: $("#descriptionID").val()
+                    },
+                    success: function (html) {
+
+                        alert("Uspjesno.");
+
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+
+                });
+                e.preventDefault();
+
+            });
+        });
+
+        $("a#link14").click(function () {
+            $.get("/api/Customer", function (data, status) {
+                let drives = `<h5>Your drives</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow","scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#link15").click(function () {
+            $.get("/api/Dispatcher/GetAllDrives", function (data, status) {
+                let drives = `<h5>All drives</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#link16").click(function () {
+            $.get("/api/Dispatcher/GetDrives", function (data, status) {
+                let drives = `<h5>Your drives</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#link17").click(function () {
+            $.get("/api/Driver/GetDrives", function (data, status) {
+                let drives = `<h5>Your drives</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#link18").click(function () {
+            $.get("/api/Driver/GetDrivesCreated", function (data, status) {
+                let drives = `<h5>Created drives</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#link19").click(function () {
+            $("div#div1").html("<form id=\"filterForm\"accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/FilterDrives\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Drive status: </td><td><select id=\"statusID\" name=\"status\">" +
+                "<option value=\"Created\">Created</option>" +
+                "<option value=\"Canceled\">Canceled</option>" +
+                "<option value=\"Formated\">Formated</option>" +
+                "<option value=\"Processed\">Processed</option>" +
+                "<option value=\"Accepted\">Accepted</option>" +
+                "<option value=\"Successful\">Successful</option>" +
+                "<option value=\"Unsuccessful\">Unsuccessful</option>" +
+                "</select></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Filter\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#filterForm").submit(function (e) {
+                    $.ajax({
+                        url: "/api/User/FilterDrives",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            Data: $("#statusID").val(),          
+                        },
+                        success: function (data) {
+                            let drives = `<h5>Created drives</h5>`;
+                            for (drive in data) {
+                                drives += `<ol>` +
+                                    `<li>Drive` +
+                                    `<ul>` +
+                                    `<li>ID : ${data[drive].Id}</li>` +
+                                    `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                    `<li>Address : ${data[drive].Address.Address}</li>` +
+                                    `<li>Car type : ${data[drive].CarType}</li>` +
+                                    `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                    `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                    `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                    `<li>Price : ${data[drive].Price}</li>` +
+                                    `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                    `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                    `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                    `<li>Status : ${data[drive].State}</li>` +
+                                    `</ul>` +
+                                    `</li>` +
+                                    `</ol>`;
+                            }
+                            $("div#div1").css("overflow", "scroll");
+                            $("div#div1").html(drives);
+                        },
+                        error: function () {
+                            alert("Greska.");
+                        }
+                    });
+                e.preventDefault();
+            });  
+        });
     });
+
+    $("a#linkSort").click(function () {
+
+    });
+
 
     //Validacija forme za promjenu lokacije vozaca
     var isValidateEditLocation = false;
@@ -788,11 +1270,324 @@
     }
 
     $("a#linkSort").click(function () {
+
         $("div#divLink2").slideToggle();
+
+        $("a#linkByDate").click(function () {
+            $.get("/api/User/SortDriveByDate", function (data, status) {
+                let drives = `<h5>SortDriveByDate</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
+
+        $("a#linkByGrade").click(function () {
+            $.get("api/User/SortDriveByGrade", function (data, status) {
+                let drives = `<h5>SortDriveByGrade</h5>`;
+                for (drive in data) {
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${data[drive].State}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                $("div#div1").css("overflow", "scroll");
+                $("div#div1").html(drives);
+            });
+        });
     });
 
     $("a#linkSearch").click(function () {
-        $("div#divLink3").slideToggle();
-    });
 
+        $("div#divLink3").slideToggle();
+
+        $("a#linkByOrderDate").click(function () {
+
+            $("div#div1").html("<form id=\"serachByOrderDate\"accept-charset=\"utf-8\" method=\"post\" action=\"api/User/SearchDrivesByOrderDate\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>From: </td><td><input type=\"date\" value=\"2018-01-01\" id=\"fromID\" name=\"from\"></td></tr>" +
+                "<tr><td>To: </td><td><input type=\"date\" value=\"2018-12-31\" id=\"toID\" name=\"to\"></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Search\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#serachByOrderDate").submit(function (e) {
+                $.ajax({
+                    url: "api/User/SearchDrivesByOrderDate",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        From: $("#fromID").val(),
+                        To: $("#toID").val(),
+                    },
+                    success: function (data) {
+                        let drives = `<h5>Created drives</h5>`;
+                        for (drive in data) {
+                            drives += `<ol>` +
+                                `<li>Drive` +
+                                `<ul>` +
+                                `<li>ID : ${data[drive].Id}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                `<li>Price : ${data[drive].Price}</li>` +
+                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                `<li>Status : ${data[drive].State}</li>` +
+                                `</ul>` +
+                                `</li>` +
+                                `</ol>`;
+                        }
+                        $("div#div1").css("overflow", "scroll");
+                        $("div#div1").html(drives);
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+                });
+                e.preventDefault();
+            });
+        }); 
+
+        $("a#linkByGradeSearch").click(function () {
+
+            $("div#div1").html("<form id=\"SearchDrivesByGrade\"accept-charset=\"utf-8\" method=\"post\" action=\"api/User/SearchDrivesByGrade\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>From: </td><td><input type=\"number\" value=\"0\" id=\"fromID\" name=\"from\"></td></tr>" +
+                "<tr><td>To: </td><td><input type=\"number\" value=\"5\" id=\"toID\" name=\"to\"></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Search\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#SearchDrivesByGrade").submit(function (e) {
+                $.ajax({
+                    url: "api/User/SearchDrivesByGrade",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        From: $("#fromID").val(),
+                        To: $("#toID").val(),
+                    },
+                    success: function (data) {
+                        let drives = `<h5>Created drives</h5>`;
+                        for (drive in data) {
+                            drives += `<ol>` +
+                                `<li>Drive` +
+                                `<ul>` +
+                                `<li>ID : ${data[drive].Id}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                `<li>Price : ${data[drive].Price}</li>` +
+                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                `<li>Status : ${data[drive].State}</li>` +
+                                `</ul>` +
+                                `</li>` +
+                                `</ol>`;
+                        }
+                        $("div#div1").css("overflow", "scroll");
+                        $("div#div1").html(drives);
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+                });
+                e.preventDefault();
+            });
+        }); 
+
+        $("a#linkByPrice").click(function () {
+
+            $("div#div1").html("<form id=\"SearchDrivesByPrice\"accept-charset=\"utf-8\" method=\"post\" action=\"api/User/SearchDrivesByPrice\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>From: </td><td><input type=\"number\" value=\"0\" id=\"fromID\" name=\"from\"></td></tr>" +
+                "<tr><td>To: </td><td><input type=\"number\" value=\"1000\" id=\"toID\" name=\"to\"></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Search\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#SearchDrivesByPrice").submit(function (e) {
+                $.ajax({
+                    url: "api/User/SearchDrivesByPrice",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        From: $("#fromID").val(),
+                        To: $("#toID").val(),
+                    },
+                    success: function (data) {
+                        let drives = `<h5>Created drives</h5>`;
+                        for (drive in data) {
+                            drives += `<ol>` +
+                                `<li>Drive` +
+                                `<ul>` +
+                                `<li>ID : ${data[drive].Id}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                `<li>Price : ${data[drive].Price}</li>` +
+                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                `<li>Status : ${data[drive].State}</li>` +
+                                `</ul>` +
+                                `</li>` +
+                                `</ol>`;
+                        }
+                        $("div#div1").css("overflow", "scroll");
+                        $("div#div1").html(drives);
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+                });
+                e.preventDefault();
+            });
+        }); 
+
+        $("a#linkSearchByCustomer").click(function () {
+
+            $("div#div1").html("<form id=\"SearchDrivesByCustomer\"accept-charset=\"utf-8\" method=\"post\" action=\"api/User/SearchDrivesByCustomer\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Name: </td><td><input type=\"text\"  id=\"fromID\" name=\"from\"></td></tr>" +
+                "<tr><td>Surname: </td><td><input type=\"text\"  id=\"toID\" name=\"to\"></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Search\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#SearchDrivesByCustomer").submit(function (e) {
+                $.ajax({
+                    url: "api/User/SearchDrivesByCustomer",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        Name: $("#fromID").val(),
+                        Surname: $("#toID").val(),
+                    },
+                    success: function (data) {
+                        let drives = `<h5>Created drives</h5>`;
+                        for (drive in data) {
+                            drives += `<ol>` +
+                                `<li>Drive` +
+                                `<ul>` +
+                                `<li>ID : ${data[drive].Id}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                `<li>Price : ${data[drive].Price}</li>` +
+                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                `<li>Status : ${data[drive].State}</li>` +
+                                `</ul>` +
+                                `</li>` +
+                                `</ol>`;
+                        }
+                        $("div#div1").css("overflow", "scroll");
+                        $("div#div1").html(drives);
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+                });
+                e.preventDefault();
+            });
+        }); 
+
+        $("a#linkSearchByDriver").click(function () {
+
+            $("div#div1").html("<form id=\"SearchDrivesByDriver\"accept-charset=\"utf-8\" method=\"post\" action=\"api/User/SearchDrivesByDriver\">" +
+                "<table class=\"tabela\">" +
+                "<tr><td>Name: </td><td><input type=\"text\"  id=\"fromID\" name=\"from\"></td></tr>" +
+                "<tr><td>Surname: </td><td><input type=\"text\"  id=\"toID\" name=\"to\"></td></tr>" +
+                "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Search\"/></td></tr>" +
+                "</table></form>");
+
+            $("form#SearchDrivesByDriver").submit(function (e) {
+                $.ajax({
+                    url: "api/User/SearchDrivesByDriver",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        Name: $("#fromID").val(),
+                        Surname: $("#toID").val(),
+                    },
+                    success: function (data) {
+                        let drives = `<h5>Created drives</h5>`;
+                        for (drive in data) {
+                            drives += `<ol>` +
+                                `<li>Drive` +
+                                `<ul>` +
+                                `<li>ID : ${data[drive].Id}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>Address : ${data[drive].Address.Address}</li>` +
+                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Location : ${data[drive].Destination.Address}</li>` +
+                                `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                                `<li>Price : ${data[drive].Price}</li>` +
+                                `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                                `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                                `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                                `<li>Status : ${data[drive].State}</li>` +
+                                `</ul>` +
+                                `</li>` +
+                                `</ol>`;
+                        }
+                        $("div#div1").css("overflow", "scroll");
+                        $("div#div1").html(drives);
+                    },
+                    error: function () {
+                        alert("Greska.");
+                    }
+                });
+                e.preventDefault();
+            });
+        });
+    });
 });
+

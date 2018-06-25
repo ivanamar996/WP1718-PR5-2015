@@ -11,6 +11,8 @@ namespace TaxiService.Controllers
 {
     public class UserController : ApiController
     {
+        public List<Drive> filterDrives = new List<Drive>();
+
         [HttpPost]
         [Route("api/User/Edit")]
         public HttpResponseMessage Edit([FromBody]User user)
@@ -59,25 +61,18 @@ namespace TaxiService.Controllers
 
         [HttpPost]
         [Route("api/User/FilterDrives")]
-        public void FilterDrives([FromBody]JObject data)
-        {
-            //List<Drive> filterDrives = new List<Drive>();
+        public HttpResponseMessage FilterDrives([FromBody]JObject data)
+        {        
             IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
-            Data.filterDrives.Clear();
+
             foreach (Drive d in allDrives)
             {
-                if (d.State.ToString() == data.GetValue("status").ToString())
+                if (d.State.ToString() == data.GetValue("Data").ToString())
                 {
-                    Data.filterDrives.Add(d);
+                    filterDrives.Add(d);
                 }
             }
-        }
-
-        [HttpGet]
-        [Route("api/User/GetFilterDrives")]
-        public List<Drive> GetFilterDrives()
-        {
-            return Data.filterDrives;
+            return Request.CreateResponse(HttpStatusCode.OK, filterDrives);
         }
 
         [HttpGet]
@@ -88,7 +83,13 @@ namespace TaxiService.Controllers
 
             List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
 
-            sortedDrives = allDrives.OrderBy(d => d.OrderDate).ToList();
+            foreach (Drive d in allDrives)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
+            sortedDrives = allDrives.OrderByDescending(d => d.OrderDate).ToList();
 
             return sortedDrives;
         }
@@ -101,9 +102,174 @@ namespace TaxiService.Controllers
 
             List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
 
-            sortedDrives = allDrives.OrderBy(d => d.Comments.Grade).ToList();
+            foreach (Drive d in allDrives)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
+            sortedDrives = allDrives.OrderByDescending(d => d.Comments.Grade).ToList();
 
             return sortedDrives;
+        }
+
+        [HttpPost]
+        [Route("api/User/SearchDrivesByOrderDate")]
+        public HttpResponseMessage SearchDrivesByOrderDate([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            List<Drive> searchList = new List<Drive>();
+
+            DateTime dateFrom = (DateTime)data["From"]; ;
+            DateTime dateTo  = (DateTime)data["To"]; ;
+
+            foreach (Drive d in allDrives)
+            {
+                if(d.OrderDate > dateFrom && d.OrderDate < dateTo)
+                {
+                    searchList.Add(d);
+                }
+            }
+
+            foreach (Drive d in searchList)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchList);
+        }
+
+        [HttpPost]
+        [Route("api/User/SearchDrivesByGrade")]
+        public HttpResponseMessage SearchDrivesByGrade([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            List<Drive> searchList = new List<Drive>();
+
+            int gradeFrom = Int32.Parse(data.GetValue("From").ToString());
+            int gradeTo = Int32.Parse(data.GetValue("To").ToString());
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.Comments.Grade >= gradeFrom && d.Comments.Grade <= gradeTo)
+                {
+                    searchList.Add(d);
+                }
+            }
+
+            foreach (Drive d in searchList)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchList);
+        }
+
+        [HttpPost]
+        [Route("api/User/SearchDrivesByPrice")]
+        public HttpResponseMessage SearchDrivesByPrice([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            List<Drive> searchList = new List<Drive>();
+
+            int gradeFrom = Int32.Parse(data.GetValue("From").ToString());
+            int gradeTo = Int32.Parse(data.GetValue("To").ToString());
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.Price >= gradeFrom && d.Price <= gradeTo)
+                {
+                    searchList.Add(d);
+                }
+            }
+
+            foreach (Drive d in searchList)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchList);
+        }
+
+        [HttpPost]
+        [Route("api/User/SearchDrivesByCustomer")]
+        public HttpResponseMessage SearchDrivesByCustomer([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            List<Drive> searchList = new List<Drive>();
+
+            string name = data.GetValue("Name").ToString();
+            string surname = data.GetValue("Surname").ToString();
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.OrderedBy != null)
+                {
+                    if (!name.Equals("") && !surname.Equals(""))
+                    {
+                        if (d.OrderedBy.Name.Equals(name) && d.OrderedBy.Surname.Equals(surname))
+                            searchList.Add(d);
+                    }
+                    else if (name.Equals("") && !surname.Equals(""))
+                    {
+                        if (d.OrderedBy.Surname.Equals(surname))
+                            searchList.Add(d);
+                    }
+                    else if (!name.Equals("") && surname.Equals(""))
+                    {
+                        if (d.OrderedBy.Name.Equals(name))
+                            searchList.Add(d);
+                    }
+                }
+            }
+            foreach (Drive d1 in searchList)
+            {
+                d1.OrderedBy = new Customer();
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, searchList);
+        }
+
+        [HttpPost]
+        [Route("api/User/SearchDrivesByDriver")]
+        public HttpResponseMessage SearchDrivesByDriver([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            List<Drive> searchList = new List<Drive>();
+
+            string name = data.GetValue("Name").ToString();
+            string surname = data.GetValue("Surname").ToString();
+
+            foreach (Drive d in allDrives)
+            {
+                if (d.DrivedBy.Name != null || d.DrivedBy.Surname != null)
+                {
+                    if (!name.Equals("") && !surname.Equals(""))
+                    {
+                        if (d.DrivedBy.Name.Equals(name) && d.DrivedBy.Surname.Equals(surname))
+                            searchList.Add(d);
+                    }
+                    else if (name.Equals("") && !surname.Equals(""))
+                    {
+                        if (d.DrivedBy.Surname.Equals(surname))
+                            searchList.Add(d);
+                    }
+                    else if (!name.Equals("") && surname.Equals(""))
+                    {
+                        if (d.DrivedBy.Name.Equals(name))
+                            searchList.Add(d);
+                    }
+                }
+            }
+
+            foreach(Drive d1 in searchList)
+            {
+                d1.OrderedBy = new Customer();
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, searchList);
         }
     }
 }

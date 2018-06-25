@@ -54,8 +54,8 @@ namespace TaxiService.Controllers
                 };
 
                 driverNew.Drives = new List<Drive>();
-                Data.driverServices.NewDriver(driverNew);
-                //Data.drivers.Add(driverNew);             
+
+                Data.driverServices.NewDriver(driverNew);                           
                 return Request.CreateResponse(HttpStatusCode.Created, driverNew);
             }
 
@@ -85,15 +85,6 @@ namespace TaxiService.Controllers
             newDrive.Destination = new Location();
             newDrive.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
             newDrive.Comments = new Comment();
-
-            /*if (Data.freeDrivers.Count==0)    MORAM DODIJELITI VOZNJU SLOBODNOM VOZACUU
-                newDrive.DrivedBy = new Driver();
-            else
-            {
-                newDrive.DrivedBy = Data.freeDrivers.ElementAt(0);
-                Data.busyDrivers.Add(Data.freeDrivers[0]);
-                Data.freeDrivers.RemoveAt(0);
-            }*/
 
             IEnumerable<Driver> drivers = Data.driverServices.RetriveAllDrivers();
 
@@ -151,7 +142,13 @@ namespace TaxiService.Controllers
         [Route("api/Dispatcher/GetAllDrives")]
         public List<Drive> GetAllDrives()
         {
-            return Data.driveServices.RetriveAllDrives() as List<Drive>;
+            List<Drive> allDrives = Data.driveServices.RetriveAllDrives().ToList();
+            foreach(Drive d in allDrives)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+            return allDrives;
         }
 
         [HttpGet]
@@ -169,6 +166,13 @@ namespace TaxiService.Controllers
                     dispatcherDrives.Add(d);               
                 }
             }
+
+            foreach (Drive d in dispatcherDrives)
+            {
+                if (d.OrderedBy == null)
+                    d.OrderedBy = new Customer();
+            }
+
             return dispatcherDrives;
         }
     }

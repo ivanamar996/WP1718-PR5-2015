@@ -125,6 +125,11 @@ namespace TaxiService.Controllers
                     driverDrives.Add(d);
                 }
             }
+            foreach(Drive d1 in driverDrives)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+            }
             return driverDrives;
         }
 
@@ -143,6 +148,30 @@ namespace TaxiService.Controllers
                 }
             }
             return driverDrivesCreated;
+        }
+
+        [HttpGet]
+        [Route("api/Driver/AcceptDrive")]
+        public HttpResponseMessage AcceptDrive()
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+
+            foreach(Drive d in allDrives)
+            {
+                if (d.State == Enums.Status.Created)
+                {
+                    d.DrivedBy = Data.driverServices.RetriveDriverById(Data.loggedUser.Id);
+                    d.State = Enums.Status.Accepted;
+                    Data.driveServices.EditDriveProfile(d);
+                    Driver driver = d.DrivedBy;
+                    driver.Free = false;
+                    Data.driverServices.EditDriverProfile(driver);
+                    return Request.CreateResponse(HttpStatusCode.Created, d);
+                }
+            }
+
+            
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
     }
 }

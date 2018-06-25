@@ -16,7 +16,7 @@ namespace TaxiService.Models
         public static User loggedUser;
         public static IEnumerable<Driver> drivers;
         public static IEnumerable<Dispatcher> dispatchers;
-        public static List<Drive> filterDrives = new List<Drive>();
+        public static List<Drive> filterDrives;
 
         static Data()
         {
@@ -27,7 +27,7 @@ namespace TaxiService.Models
             commentServices = new CommentService();
             drivers = driverServices.RetriveAllDrivers();
             dispatchers = dispatcherServices.RetriveAllDispatchers();
-            filterDrives = new List<Drive>();
+            //filterDrives = new List<Drive>();
         }
        
         /*public static CustomerServices customerService = new CustomerServices();

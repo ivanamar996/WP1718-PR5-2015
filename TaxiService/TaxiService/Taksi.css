@@ -42,12 +42,13 @@ body{
     left: 20%;
 }
 
-.divMijenjam{
-	height:70%;
-	width: 45%;
-	background-color : #ffff1a;
-    opacity:0.7;
-	position: absolute;
+.divMijenjam {
+    
+    height: 70%;
+    width: 45%;
+    background-color: #ffff1a;
+    opacity: 0.7;
+    position: absolute;
     bottom: 5%;
     left: 5%;
 }
