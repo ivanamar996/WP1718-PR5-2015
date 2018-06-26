@@ -36,13 +36,12 @@ namespace TaxiService.Services
                     XDocument doc = XDocument.Load(stream);
                     XElement drivers = doc.Element("Comments");
                     drivers.Add(new XElement("Comment", new XAttribute("Id", comment.Id),
-                        new XElement("Comment", new XAttribute("Id", comment.Id),
                         new XElement("Id", comment.Id),
                         new XElement("Description", comment.Description),
                         new XElement("UserId", comment.CreatedBy.Id),
                         new XElement("DriveId", comment.CommentedOn.Id),
                         new XElement("Grade", comment.Grade)
-                )));
+                ));
                     doc.Save(fileName);
                 }
                 catch { }
@@ -144,7 +143,5 @@ namespace TaxiService.Services
                 return null;
             }
         }
-
-
     }
 }

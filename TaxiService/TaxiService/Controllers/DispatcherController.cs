@@ -134,6 +134,8 @@ namespace TaxiService.Controllers
                             d.DrivedBy = driver;
                             driver.Free = false;
                             d.State = Enums.Status.Processed;
+                            if (d.ApprovedBy.Id == -1)
+                                d.ApprovedBy = Data.dispatcherServices.RetriveDispatcherById(Data.loggedUser.Id);
                             Data.driverServices.EditDriverProfile(driver);
                             Data.driveServices.EditDriveProfile(d);
                             return Request.CreateResponse(HttpStatusCode.OK);
@@ -153,6 +155,12 @@ namespace TaxiService.Controllers
             {
                 if (d.OrderedBy == null)
                     d.OrderedBy = new Customer();
+                if (d.DrivedBy == null)
+                    d.DrivedBy = new Driver();
+                if (d.ApprovedBy == null)
+                    d.ApprovedBy = new Dispatcher();
+                if (d.Comments == null)
+                    d.Comments = new Comment();
             }
             return allDrives;
         }

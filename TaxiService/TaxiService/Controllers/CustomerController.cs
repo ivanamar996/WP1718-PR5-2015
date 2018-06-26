@@ -93,13 +93,21 @@ namespace TaxiService.Controllers
                         if (comments == null)
                             com.Id = 0;
                         else
-                            com.Id = comments.Count() + 1;
+                        {
+                            if (comments.Count() == 1)
+                                com.Id = comments.Count();
+                            else
+                                com.Id = comments.Count() + 1;
+                        }
+                            
 
                         com.Description = data.GetValue("Description").ToString();
                         com.CreatedBy = Data.customerService.RetriveCustomerById(Data.loggedUser.Id);
                         com.CommentedOn = d;
+                        d.Comments = com;
+                        Data.driveServices.EditDriveProfile(d);
                         Data.commentServices.NewComment(com);
-                        return Request.CreateResponse(HttpStatusCode.Created, com);
+                        return Request.CreateResponse(HttpStatusCode.OK);
                     }
                 }
             }

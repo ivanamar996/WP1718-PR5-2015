@@ -268,12 +268,17 @@ namespace TaxiService.Services
                     Drive d = new Drive();
                     d.Id = pom.Id;
                     d.OrderDate = pom.OrderDate;
-                    d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
+                    //d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
                     d.Price = pom.Price;
                     d.State = pom.State;
                     d.Destination = pom.Destination;
                     d.CarType = pom.CarType;
                     d.Address = pom.Address;
+
+                    if (pom.CustomerId == -1)
+                        d.OrderedBy = new Customer();
+                    else
+                        d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
 
                     if (pom.DispatcherId == -1)
                         d.ApprovedBy = new Dispatcher();
@@ -282,6 +287,8 @@ namespace TaxiService.Services
 
                     if (pom.CommentId == -1)
                         d.Comments = new Comment(); //nemam else her nisam napravila commenrService
+                    else
+                        d.Comments = Data.commentServices.RetriveCommentById(pom.CommentId);
 
                     if (pom.DriverId == -1)
                         d.DrivedBy = new Driver();

@@ -30,19 +30,19 @@ namespace TaxiService.Controllers
         [HttpPost]
         [Route("api/Driver/SuccessfulDrive")]
         public HttpResponseMessage SuccessfulDrive([FromBody]JObject data)
-        {            
+        {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             Drive driveFinis = new Drive();
 
-            foreach(Drive d in drives)
+            foreach (Drive d in drives)
             {
-                if(d.DrivedBy.Id == Data.loggedUser.Id)
+                if (d.DrivedBy.Id == Data.loggedUser.Id)
                 {
                     driveFinis = d;
                 }
             }
 
-            if (driveFinis.State==Enums.Status.Successful)
+            if (driveFinis.State == Enums.Status.Successful || driveFinis.State==Enums.Status.Unsuccessful)
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
 
             driveFinis.State = Enums.Status.Successful;
@@ -62,8 +62,6 @@ namespace TaxiService.Controllers
             d1.Free = true;
             Data.driverServices.EditDriverProfile(d1);
 
-            //Data.freeDrivers.Add(driveFinis.DrivedBy);
-            //Data.busyDrivers.Remove(driveFinis.DrivedBy);
             return Request.CreateResponse(HttpStatusCode.Created, driveFinis);
         }
 
@@ -85,7 +83,7 @@ namespace TaxiService.Controllers
             if (driveFinis.OrderedBy == null)
                 driveFinis.OrderedBy = new Customer();
 
-            if (driveFinis.State == Enums.Status.Unsuccessful)
+            if (driveFinis.State == Enums.Status.Unsuccessful || driveFinis.State==Enums.Status.Successful)
                 return Request.CreateResponse(HttpStatusCode.InternalServerError);
 
             driveFinis.State = Enums.Status.Unsuccessful;
@@ -102,14 +100,14 @@ namespace TaxiService.Controllers
             com.CreatedBy = Data.driverServices.RetriveDriverById(driveFinis.DrivedBy.Id);
             com.CommentedOn = driveFinis;
 
+            driveFinis.Comments = com;
+
             Data.commentServices.NewComment(com);
             Data.driveServices.EditDriveProfile(driveFinis);
             Driver d1 = driveFinis.DrivedBy;
             d1.Free = true;
             Data.driverServices.EditDriverProfile(d1);
-            //Data.freeDrivers.Add(driveFinis.DrivedBy);
-            //Data.busyDrivers.Remove(driveFinis.DrivedBy);
-            return Request.CreateResponse(HttpStatusCode.Created, com);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [HttpGet]
@@ -131,6 +129,12 @@ namespace TaxiService.Controllers
             {
                 if (d1.OrderedBy == null)
                     d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
             return driverDrives;
         }
@@ -148,6 +152,18 @@ namespace TaxiService.Controllers
                 {
                     driverDrivesCreated.Add(d);
                 }
+            }
+
+            foreach (Drive d1 in driverDrivesCreated)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
             return driverDrivesCreated;
         }

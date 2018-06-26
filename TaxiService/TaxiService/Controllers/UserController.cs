@@ -72,6 +72,17 @@ namespace TaxiService.Controllers
                     filterDrives.Add(d);
                 }
             }
+            foreach (Drive d1 in filterDrives)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
+            }
             return Request.CreateResponse(HttpStatusCode.OK, filterDrives);
         }
 
@@ -83,13 +94,19 @@ namespace TaxiService.Controllers
 
             List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
 
-            foreach (Drive d in allDrives)
-            {
-                if (d.OrderedBy == null)
-                    d.OrderedBy = new Customer();
-            }
-
             sortedDrives = allDrives.OrderByDescending(d => d.OrderDate).ToList();
+
+            foreach (Drive d1 in sortedDrives)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
+            }
 
             return sortedDrives;
         }
@@ -101,15 +118,19 @@ namespace TaxiService.Controllers
             List<Drive> sortedDrives = new List<Drive>();
 
             List<Drive> allDrives = Data.driveServices.RetriveAllDrives() as List<Drive>;
-
-            foreach (Drive d in allDrives)
+            foreach (Drive d1 in allDrives)
             {
-                if (d.OrderedBy == null)
-                    d.OrderedBy = new Customer();
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
 
             sortedDrives = allDrives.OrderByDescending(d => d.Comments.Grade).ToList();
-
             return sortedDrives;
         }
 
@@ -131,10 +152,16 @@ namespace TaxiService.Controllers
                 }
             }
 
-            foreach (Drive d in searchList)
+            foreach (Drive d1 in searchList)
             {
-                if (d.OrderedBy == null)
-                    d.OrderedBy = new Customer();
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, searchList);
@@ -147,6 +174,18 @@ namespace TaxiService.Controllers
             IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
             List<Drive> searchList = new List<Drive>();
 
+            foreach (Drive d1 in allDrives)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
+            }
+
             int gradeFrom = Int32.Parse(data.GetValue("From").ToString());
             int gradeTo = Int32.Parse(data.GetValue("To").ToString());
 
@@ -158,11 +197,7 @@ namespace TaxiService.Controllers
                 }
             }
 
-            foreach (Drive d in searchList)
-            {
-                if (d.OrderedBy == null)
-                    d.OrderedBy = new Customer();
-            }
+
 
             return Request.CreateResponse(HttpStatusCode.OK, searchList);
         }
@@ -177,6 +212,18 @@ namespace TaxiService.Controllers
             int gradeFrom = Int32.Parse(data.GetValue("From").ToString());
             int gradeTo = Int32.Parse(data.GetValue("To").ToString());
 
+            foreach (Drive d1 in allDrives)
+            {
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
+            }
+
             foreach (Drive d in allDrives)
             {
                 if (d.Price >= gradeFrom && d.Price <= gradeTo)
@@ -184,13 +231,6 @@ namespace TaxiService.Controllers
                     searchList.Add(d);
                 }
             }
-
-            foreach (Drive d in searchList)
-            {
-                if (d.OrderedBy == null)
-                    d.OrderedBy = new Customer();
-            }
-
             return Request.CreateResponse(HttpStatusCode.OK, searchList);
         }
 
@@ -227,7 +267,14 @@ namespace TaxiService.Controllers
             }
             foreach (Drive d1 in searchList)
             {
-                d1.OrderedBy = new Customer();
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
             return Request.CreateResponse(HttpStatusCode.OK, searchList);
         }
@@ -264,11 +311,17 @@ namespace TaxiService.Controllers
                 }
             }
 
-            foreach(Drive d1 in searchList)
+            foreach (Drive d1 in searchList)
             {
-                d1.OrderedBy = new Customer();
+                if (d1.OrderedBy == null)
+                    d1.OrderedBy = new Customer();
+                if (d1.DrivedBy == null)
+                    d1.DrivedBy = new Driver();
+                if (d1.ApprovedBy == null)
+                    d1.ApprovedBy = new Dispatcher();
+                if (d1.Comments == null)
+                    d1.Comments = new Comment();
             }
-
             return Request.CreateResponse(HttpStatusCode.OK, searchList);
         }
     }

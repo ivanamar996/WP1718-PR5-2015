@@ -406,7 +406,7 @@
                     `</table></form>`);
 
                 $("form#formEditLocation").submit(function (e) {
-
+                    isValidateEditLocation = false;
                     ValidateEditLocation();
 
                     if (isValidateEditLocation) {
@@ -463,8 +463,6 @@
                             Type: $("#typeID").val()
                         },
                         success: function (html) {
-                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                             alert("Uspjesno ste kreirali voznju.");
 
                         },
@@ -507,8 +505,6 @@
                             Type: $("#typeID").val()
                         },
                         success: function (html) {
-                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                             alert("Uspjesno ste izmjenili voznju.");
 
                         },
@@ -538,13 +534,13 @@
                     data: {
                         Description: $("#descriptionID").val()
                     },
-                    success: function (html) {
-
-                        alert("Uspjesno ste otkazali voznju.");
-
-                    },
-                    error: function () {
-                        alert("Greska pri otkazivanju voznju.");
+                    statusCode: {
+                        200: function () {
+                            alert('Uspjesno');
+                        },
+                        500: function () {
+                            alert('Greska');
+                        }
                     }
                 });
                 e.preventDefault();
@@ -597,11 +593,12 @@
 
         });
 
-        $("a#link11").click(function () {
+        $("a#link11").click(function (e) {
 
-            $("a#link11").attr("href", "api/Dispatcher/ProcessDrive"); //PREDJE NA DRUGU STRANU
+            $("a#link11").attr("href", "api/Dispatcher/ProcessDrive");
 
             $.ajax({
+                url: "/api/Dispatcher/ProcessDrive",
                 statusCode: {
                     200: function () {
                         alert('Uspjesno');
@@ -610,9 +607,11 @@
                         alert('Greska');
                     }
                 }
+            });
+            e.preventDefault();
 
             });
-        });
+        //});
 
         $("a#link20").click(function () {
 
@@ -742,13 +741,13 @@
 
                         Description: $("#descriptionID").val()
                     },
-                    success: function (html) {
-
-                        alert("Uspjesno.");
-
-                    },
-                    error: function () {
-                        alert("Greska.");
+                    statusCode: {
+                        200: function () {
+                            alert('Uspjesno');
+                        },
+                        500: function () {
+                            alert('Greska');
+                        }
                     }
 
                 });
@@ -760,50 +759,127 @@
         $("a#link14").click(function () {
             $.get("/api/Customer", function (data, status) {
                 let drives = `<h5>Your drives</h5>`;
+               
                 for (drive in data) {
-                    drives += `<ol>` +
-                        `<li>Drive` +
-                        `<ul>` +
-                        `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate.replace("T",' ')}</li>` +
-                        `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
-                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
-                        `<li>Location : ${data[drive].Destination.Address}</li>` +
-                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
-                        `<li>Price : ${data[drive].Price}</li>` +
-                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
-                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
-                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
-                        `</ul>` +
-                        `</li>` +
-                        `</ol>`;
-                }
-                $("div#div1").css("overflow","scroll");
-                $("div#div1").html(drives);
-            });
-        });
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
 
-        $("a#link15").click(function () {
-            $.get("/api/Dispatcher/GetAllDrives", function (data, status) {
-                let drives = `<h5>All drives</h5>`;
-                for (drive in data) {
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
+                        `</ul>` +
+                        `</li>` +
+                        `</ol>`;
+                }
+                    $("div#div1").css("overflow", "scroll");
+                    $("div#div1").html(drives);
+
+            });
+        });
+
+        $("a#link15").click(function () {
+            $.get("/api/Dispatcher/GetAllDrives", function (data, status) {
+                let drives = `<h5>All drives</h5>`;
+
+                for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
+
+                    drives += `<ol>` +
+                        `<li>Drive` +
+                        `<ul>` +
+                        `<li>ID : ${data[drive].Id}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
+                        `<li>Address : ${data[drive].Address.Address}</li>` +
+                        `<li>Car type : ${car}</li>` +
+                        `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
+                        `<li>Location : ${data[drive].Destination.Address}</li>` +
+                        `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
+                        `<li>Price : ${data[drive].Price}</li>` +
+                        `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
+                        `<li>Comment : ${data[drive].Comments.Description}</li> ` +
+                        `<li> Grade : ${data[drive].Comments.Grade}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -817,21 +893,57 @@
             $.get("/api/Dispatcher/GetDrives", function (data, status) {
                 let drives = `<h5>Your drives</h5>`;
                 for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -844,22 +956,60 @@
         $("a#link17").click(function () {
             $.get("/api/Driver/GetDrives", function (data, status) {
                 let drives = `<h5>Your drives</h5>`;
+
                 for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
+
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -872,22 +1022,60 @@
         $("a#link18").click(function () {
             $.get("/api/Driver/GetDrivesCreated", function (data, status) {
                 let drives = `<h5>Created drives</h5>`;
+
                 for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
+
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -922,22 +1110,60 @@
                         },
                         success: function (data) {
                             let drives = `<h5>Created drives</h5>`;
+
                             for (drive in data) {
+                                let car;
+                                if (data[drive].CarType == 0) {
+                                    car = "None";
+                                }
+                                else if (data[drive].CarType == 1) {
+                                    car = "Car";
+                                }
+                                else if (data[drive].CarType == 2) {
+                                    car = "Van";
+                                }
+                                else {
+                                    car = "";
+                                }
+                                let state;
+                                if (data[drive].State == 0) {
+                                    state = "Created";
+                                }
+                                else if (data[drive].State == 1) {
+                                    state = "Canceled";
+                                }
+                                else if (data[drive].State == 2) {
+                                    state = "Formated";
+                                }
+                                else if (data[drive].State == 3) {
+                                    state = "Processed";
+                                }
+                                else if (data[drive].State == 4) {
+                                    state = "Accepted";
+                                }
+                                else if (data[drive].State == 5) {
+                                    state = "Successful";
+                                }
+                                else if (data[drive].State == 6) {
+                                    state = "Unsuccessful";
+                                }
+
                                 drives += `<ol>` +
                                     `<li>Drive` +
                                     `<ul>` +
                                     `<li>ID : ${data[drive].Id}</li>` +
                                     `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                     `<li>Address : ${data[drive].Address.Address}</li>` +
-                                    `<li>Car type : ${data[drive].CarType}</li>` +
+                                    `<li>Car type : ${car}</li>` +
                                     `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                    `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                     `<li>Location : ${data[drive].Destination.Address}</li>` +
                                     `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                     `<li>Price : ${data[drive].Price}</li>` +
                                     `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                     `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                     `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                    `<li>Status : ${data[drive].State}</li>` +
+                                    `<li>Status : ${state}</li>` +
                                     `</ul>` +
                                     `</li>` +
                                     `</ol>`;
@@ -953,11 +1179,6 @@
             });  
         });
     });
-
-    $("a#linkSort").click(function () {
-
-    });
-
 
     //Validacija forme za promjenu lokacije vozaca
     var isValidateEditLocation = false;
@@ -1162,7 +1383,6 @@
 
     }
 
-
     //Validacija forme za editovanje profila korisnika
     var isValidateEdit = false;
 
@@ -1275,21 +1495,58 @@
             $.get("/api/User/SortDriveByDate", function (data, status) {
                 let drives = `<h5>SortDriveByDate</h5>`;
                 for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
+
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -1303,21 +1560,58 @@
             $.get("api/User/SortDriveByGrade", function (data, status) {
                 let drives = `<h5>SortDriveByGrade</h5>`;
                 for (drive in data) {
+                    let car;
+                    if (data[drive].CarType == 0) {
+                        car = "None";
+                    }
+                    else if (data[drive].CarType == 1) {
+                        car = "Car";
+                    }
+                    else if (data[drive].CarType == 2) {
+                        car = "Van";
+                    }
+                    else {
+                        car = "";
+                    }
+                    let state;
+                    if (data[drive].State == 0) {
+                        state = "Created";
+                    }
+                    else if (data[drive].State == 1) {
+                        state = "Canceled";
+                    }
+                    else if (data[drive].State == 2) {
+                        state = "Formated";
+                    }
+                    else if (data[drive].State == 3) {
+                        state = "Processed";
+                    }
+                    else if (data[drive].State == 4) {
+                        state = "Accepted";
+                    }
+                    else if (data[drive].State == 5) {
+                        state = "Successful";
+                    }
+                    else if (data[drive].State == 6) {
+                        state = "Unsuccessful";
+                    }
+
                     drives += `<ol>` +
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
                         `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
-                        `<li>Car type : ${data[drive].CarType}</li>` +
+                        `<li>Car type : ${car}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                        `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                         `<li>Location : ${data[drive].Destination.Address}</li>` +
                         `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                         `<li>Price : ${data[drive].Price}</li>` +
                         `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                         `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                         `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                        `<li>Status : ${data[drive].State}</li>` +
+                        `<li>Status : ${state}</li>` +
                         `</ul>` +
                         `</li>` +
                         `</ol>`;
@@ -1353,21 +1647,58 @@
                     success: function (data) {
                         let drives = `<h5>Created drives</h5>`;
                         for (drive in data) {
+                            let car;
+                            if (data[drive].CarType == 0) {
+                                car = "None";
+                            }
+                            else if (data[drive].CarType == 1) {
+                                car = "Car";
+                            }
+                            else if (data[drive].CarType == 2) {
+                                car = "Van";
+                            }
+                            else {
+                                car = "";
+                            }
+                            let state;
+                            if (data[drive].State == 0) {
+                                state = "Created";
+                            }
+                            else if (data[drive].State == 1) {
+                                state = "Canceled";
+                            }
+                            else if (data[drive].State == 2) {
+                                state = "Formated";
+                            }
+                            else if (data[drive].State == 3) {
+                                state = "Processed";
+                            }
+                            else if (data[drive].State == 4) {
+                                state = "Accepted";
+                            }
+                            else if (data[drive].State == 5) {
+                                state = "Successful";
+                            }
+                            else if (data[drive].State == 6) {
+                                state = "Unsuccessful";
+                            }
+
                             drives += `<ol>` +
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
                                 `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
-                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Car type : ${car}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                 `<li>Location : ${data[drive].Destination.Address}</li>` +
                                 `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                 `<li>Price : ${data[drive].Price}</li>` +
                                 `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                 `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                 `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                `<li>Status : ${data[drive].State}</li>` +
+                                `<li>Status : ${state}</li>` +
                                 `</ul>` +
                                 `</li>` +
                                 `</ol>`;
@@ -1404,21 +1735,58 @@
                     success: function (data) {
                         let drives = `<h5>Created drives</h5>`;
                         for (drive in data) {
+                            let car;
+                            if (data[drive].CarType == 0) {
+                                car = "None";
+                            }
+                            else if (data[drive].CarType == 1) {
+                                car = "Car";
+                            }
+                            else if (data[drive].CarType == 2) {
+                                car = "Van";
+                            }
+                            else {
+                                car = "";
+                            }
+                            let state;
+                            if (data[drive].State == 0) {
+                                state = "Created";
+                            }
+                            else if (data[drive].State == 1) {
+                                state = "Canceled";
+                            }
+                            else if (data[drive].State == 2) {
+                                state = "Formated";
+                            }
+                            else if (data[drive].State == 3) {
+                                state = "Processed";
+                            }
+                            else if (data[drive].State == 4) {
+                                state = "Accepted";
+                            }
+                            else if (data[drive].State == 5) {
+                                state = "Successful";
+                            }
+                            else if (data[drive].State == 6) {
+                                state = "Unsuccessful";
+                            }
+
                             drives += `<ol>` +
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
                                 `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
-                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Car type : ${car}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                 `<li>Location : ${data[drive].Destination.Address}</li>` +
                                 `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                 `<li>Price : ${data[drive].Price}</li>` +
                                 `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                 `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                 `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                `<li>Status : ${data[drive].State}</li>` +
+                                `<li>Status : ${state}</li>` +
                                 `</ul>` +
                                 `</li>` +
                                 `</ol>`;
@@ -1455,21 +1823,58 @@
                     success: function (data) {
                         let drives = `<h5>Created drives</h5>`;
                         for (drive in data) {
+                            let car;
+                            if (data[drive].CarType == 0) {
+                                car = "None";
+                            }
+                            else if (data[drive].CarType == 1) {
+                                car = "Car";
+                            }
+                            else if (data[drive].CarType == 2) {
+                                car = "Van";
+                            }
+                            else {
+                                car = "";
+                            }
+                            let state;
+                            if (data[drive].State == 0) {
+                                state = "Created";
+                            }
+                            else if (data[drive].State == 1) {
+                                state = "Canceled";
+                            }
+                            else if (data[drive].State == 2) {
+                                state = "Formated";
+                            }
+                            else if (data[drive].State == 3) {
+                                state = "Processed";
+                            }
+                            else if (data[drive].State == 4) {
+                                state = "Accepted";
+                            }
+                            else if (data[drive].State == 5) {
+                                state = "Successful";
+                            }
+                            else if (data[drive].State == 6) {
+                                state = "Unsuccessful";
+                            }
+
                             drives += `<ol>` +
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
                                 `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
-                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Car type : ${car}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                 `<li>Location : ${data[drive].Destination.Address}</li>` +
                                 `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                 `<li>Price : ${data[drive].Price}</li>` +
                                 `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                 `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                 `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                `<li>Status : ${data[drive].State}</li>` +
+                                `<li>Status : ${state}</li>` +
                                 `</ul>` +
                                 `</li>` +
                                 `</ol>`;
@@ -1506,21 +1911,58 @@
                     success: function (data) {
                         let drives = `<h5>Created drives</h5>`;
                         for (drive in data) {
+                            let car;
+                            if (data[drive].CarType == 0) {
+                                car = "None";
+                            }
+                            else if (data[drive].CarType == 1) {
+                                car = "Car";
+                            }
+                            else if (data[drive].CarType == 2) {
+                                car = "Van";
+                            }
+                            else {
+                                car = "";
+                            }
+                            let state;
+                            if (data[drive].State == 0) {
+                                state = "Created";
+                            }
+                            else if (data[drive].State == 1) {
+                                state = "Canceled";
+                            }
+                            else if (data[drive].State == 2) {
+                                state = "Formated";
+                            }
+                            else if (data[drive].State == 3) {
+                                state = "Processed";
+                            }
+                            else if (data[drive].State == 4) {
+                                state = "Accepted";
+                            }
+                            else if (data[drive].State == 5) {
+                                state = "Successful";
+                            }
+                            else if (data[drive].State == 6) {
+                                state = "Unsuccessful";
+                            }
+
                             drives += `<ol>` +
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
                                 `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
-                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Car type : ${car}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                 `<li>Location : ${data[drive].Destination.Address}</li>` +
                                 `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                 `<li>Price : ${data[drive].Price}</li>` +
                                 `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                 `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                 `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                `<li>Status : ${data[drive].State}</li>` +
+                                `<li>Status : ${state}</li>` +
                                 `</ul>` +
                                 `</li>` +
                                 `</ol>`;
@@ -1557,21 +1999,58 @@
                     success: function (data) {
                         let drives = `<h5>Created drives</h5>`;
                         for (drive in data) {
+                            let car;
+                            if (data[drive].CarType == 0) {
+                                car = "None";
+                            }
+                            else if (data[drive].CarType == 1) {
+                                car = "Car";
+                            }
+                            else if (data[drive].CarType == 2) {
+                                car = "Van";
+                            }
+                            else {
+                                car = "";
+                            }
+                            let state;
+                            if (data[drive].State == 0) {
+                                state = "Created";
+                            }
+                            else if (data[drive].State == 1) {
+                                state = "Canceled";
+                            }
+                            else if (data[drive].State == 2) {
+                                state = "Formated";
+                            }
+                            else if (data[drive].State == 3) {
+                                state = "Processed";
+                            }
+                            else if (data[drive].State == 4) {
+                                state = "Accepted";
+                            }
+                            else if (data[drive].State == 5) {
+                                state = "Successful";
+                            }
+                            else if (data[drive].State == 6) {
+                                state = "Unsuccessful";
+                            }
+
                             drives += `<ol>` +
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
                                 `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
-                                `<li>Car type : ${data[drive].CarType}</li>` +
+                                `<li>Car type : ${car}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
+                                `<li>Drived by : ${data[drive].DrivedBy.Username}</li>` +
                                 `<li>Location : ${data[drive].Destination.Address}</li>` +
                                 `<li>Approved by : ${data[drive].ApprovedBy.Username}</li>` +
                                 `<li>Price : ${data[drive].Price}</li>` +
                                 `<li>Commented by : ${data[drive].Comments.CreatedBy.Username}</li>` +
                                 `<li>Comment : ${data[drive].Comments.Description}</li> ` +
                                 `<li> Grade : ${data[drive].Comments.Grade}</li>` +
-                                `<li>Status : ${data[drive].State}</li>` +
+                                `<li>Status : ${state}</li>` +
                                 `</ul>` +
                                 `</li>` +
                                 `</ol>`;

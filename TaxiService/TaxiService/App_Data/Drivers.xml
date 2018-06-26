@@ -4,40 +4,20 @@
     <Id>0</Id>
     <Username>Vozac</Username>
     <Password>1234</Password>
-    <Name>Ivana</Name>
-    <Surname>Markovic</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone>45678</Phone>
-    <Email>ivana@gmail.com</Email>
-    <Gender>Male</Gender>
+    <Name>radi</Name>
+    <Surname>hahah</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>79456</Phone>
+    <Email>ivana01m@live.com</Email>
+    <Gender>Female</Gender>
     <Role>Driver</Role>
-    <Free>true</Free>
-    <X>44</X>
-    <Y>85</Y>
-    <Address>adresa</Address>
+    <Free>false</Free>
+    <X>678</X>
+    <Y>234</Y>
+    <Address>op</Address>
     <CarId>0</CarId>
-    <ModelYear>1996</ModelYear>
-    <RegNumber>852</RegNumber>
-    <Type>Car</Type>
-  </Driver>
-  <Driver Id="2">
-    <Id>2</Id>
-    <Username>Vozac2</Username>
-    <Password>1234</Password>
-    <Name>Marko</Name>
-    <Surname>Markovic</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone>45678</Phone>
-    <Email>ivana@gmail.com</Email>
-    <Gender>Male</Gender>
-    <Role>Driver</Role>
-    <Free>true</Free>
-    <X>123</X>
-    <Y>85</Y>
-    <Address>adresa</Address>
-    <CarId>0</CarId>
-    <ModelYear>1996</ModelYear>
-    <RegNumber>852</RegNumber>
+    <ModelYear>23</ModelYear>
+    <RegNumber>23</RegNumber>
     <Type>Car</Type>
   </Driver>
 </Drivers>
