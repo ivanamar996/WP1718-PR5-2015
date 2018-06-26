@@ -4,12 +4,12 @@
     <Id>0</Id>
     <Username>Vozac</Username>
     <Password>1234</Password>
-    <Name>Violeta</Name>
-    <Surname>ert</Surname>
+    <Name>Ivana</Name>
+    <Surname>Markovic</Surname>
     <Jmbg>0208996185850</Jmbg>
     <Phone>45678</Phone>
     <Email>ivana@gmail.com</Email>
-    <Gender>Female</Gender>
+    <Gender>Male</Gender>
     <Role>Driver</Role>
     <Free>true</Free>
     <X>44</X>
@@ -24,15 +24,15 @@
     <Id>2</Id>
     <Username>Vozac2</Username>
     <Password>1234</Password>
-    <Name>Ivana</Name>
-    <Surname>ert</Surname>
+    <Name>Marko</Name>
+    <Surname>Markovic</Surname>
     <Jmbg>0208996185850</Jmbg>
     <Phone>45678</Phone>
     <Email>ivana@gmail.com</Email>
-    <Gender>Female</Gender>
+    <Gender>Male</Gender>
     <Role>Driver</Role>
-    <Free>false</Free>
-    <X>44</X>
+    <Free>true</Free>
+    <X>123</X>
     <Y>85</Y>
     <Address>adresa</Address>
     <CarId>0</CarId>

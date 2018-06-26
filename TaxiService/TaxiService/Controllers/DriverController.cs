@@ -13,12 +13,14 @@ namespace TaxiService.Controllers
     {
         [HttpPost]
         [Route("api/Driver/EditLocation")]
-        public HttpResponseMessage EditLocation([FromBody]Location location)
+        public HttpResponseMessage EditLocation([FromBody]JObject location)
         {
             if(Data.driverServices.CheckIfDriverExists(Data.loggedUser.Username))
             {
                 Driver driverEdit = Data.driverServices.RetriveDriverByUserName(Data.loggedUser.Username);
-                driverEdit.Location = location;
+                driverEdit.Location.Address = location.GetValue("Address").ToString();
+                driverEdit.Location.X = Double.Parse(location.GetValue("X").ToString());
+                driverEdit.Location.Y = Double.Parse(location.GetValue("Y").ToString());
                 Data.driverServices.EditDriverProfile(driverEdit);
                 return Request.CreateResponse(HttpStatusCode.Created, driverEdit);
             }

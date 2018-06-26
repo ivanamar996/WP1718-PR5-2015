@@ -140,5 +140,4 @@ C:\Users\Ivana\Desktop\VI semestar\WebTaksi\TaxiService\TaxiService\bin\Microsof
 C:\Users\Ivana\Desktop\VI semestar\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csproj.CoreCompileInputs.cache
 C:\Users\Ivana\Desktop\VI semestar\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.dll
 C:\Users\Ivana\Desktop\VI semestar\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.pdb
-C:\Users\Ivana\Desktop\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csprojResolveAssemblyReference.cache
 C:\Users\Ivana\Desktop\VI semestar\WebTaksi\TaxiService\TaxiService\obj\Debug\TaxiService.csprojResolveAssemblyReference.cache

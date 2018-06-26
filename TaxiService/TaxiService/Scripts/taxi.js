@@ -7,6 +7,9 @@
     $("div#divSort").hide();
     $("div#divLink3").hide();
 
+    $("#divNaslov").animate({ "left": "0px" }, "slow");
+
+
     $("a#link1").click(function () {
         $("div#div1").html("<form id=\"formRegistration\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Registration/RegisterAccount\">" +
             "<table class=\"tabela\">" +
@@ -348,6 +351,8 @@
                 "<tr><td colspan=\"2\"><input type=\"submit\" value=\"Add\"/></td></tr>" +
                 "</table></form>");
 
+            $("div#div1").css("overflow", "scroll");
+
             $("form#formAddDriver").submit(function (e) {
                 ValidateAddDriver();
                 if (isValidateDriver) {
@@ -396,7 +401,7 @@
                     `<tr><td>Location:</td><td></td></tr>` +
                     `<tr><td>X: </td><td><input type=\"text\" id=\"xID\" name=\"x\" value="${data.Location.X}"/></td></tr>` +
                     `<tr><td>Y: </td><td><input type=\"text\" id=\"yID\" name=\"y\" value="${data.Location.Y}" /></td></tr>` +
-                    `<tr><td>Address: </td><td><input type=\"text\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
+                    `<tr><td>Address: </td><td><input type=\"text\" id=\"addressID\" name=\"address\"value="${data.Location.Address}" /></td></tr>` +
                     `<tr><td colspan=\"2\"><input type=\"submit\" value=\"Edit\" /></td></tr>` +
                     `</table></form>`);
 
@@ -413,13 +418,9 @@
                                 X: $("#xID").val(),
                                 Y: $("#yID").val(),
                                 Address: $("#addressID").val(),
-
                             },
                             success: function (html) {
-                                // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                                // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                                 alert("Uspjesno ste promijenili svoju lokaciju.");
-
                             },
                             error: function () {
                                 alert("Greska pri izmjeni lokacije.");
@@ -617,19 +618,16 @@
 
             $("#link20").attr("href", "api/Driver/AcceptDrive");
             
-                $.ajax({
-                    url: "api/Driver/AcceptDrive",
-                    type: "GET",
-                    dataType: "json",
-                    success: function (server_response) {
-                        if (server_response == 'success') {
-                            $("#result").html(server_response);
-                        }
-                        else {
-                            alert('Not OKay');
-                        }
-                    }
-                });
+            $.ajax({
+                type: "GET",
+                data: {},
+                url: "api/Driver/AcceptDrive",
+                error: function (response) {
+                    alert(url + " returns a " + response.status);
+                }, success() {
+                    alert(url + " Good link");
+                }
+            });
         });
 
         $("a#link12").click(function () {
@@ -767,7 +765,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T",' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -795,7 +793,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -823,7 +821,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -851,7 +849,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -879,7 +877,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -929,7 +927,7 @@
                                     `<li>Drive` +
                                     `<ul>` +
                                     `<li>ID : ${data[drive].Id}</li>` +
-                                    `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                    `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                     `<li>Address : ${data[drive].Address.Address}</li>` +
                                     `<li>Car type : ${data[drive].CarType}</li>` +
                                     `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1281,7 +1279,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1309,7 +1307,7 @@
                         `<li>Drive` +
                         `<ul>` +
                         `<li>ID : ${data[drive].Id}</li>` +
-                        `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                        `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                         `<li>Address : ${data[drive].Address.Address}</li>` +
                         `<li>Car type : ${data[drive].CarType}</li>` +
                         `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1359,7 +1357,7 @@
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
-                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
                                 `<li>Car type : ${data[drive].CarType}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1410,7 +1408,7 @@
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
-                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
                                 `<li>Car type : ${data[drive].CarType}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1461,7 +1459,7 @@
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
-                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
                                 `<li>Car type : ${data[drive].CarType}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1512,7 +1510,7 @@
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
-                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
                                 `<li>Car type : ${data[drive].CarType}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +
@@ -1563,7 +1561,7 @@
                                 `<li>Drive` +
                                 `<ul>` +
                                 `<li>ID : ${data[drive].Id}</li>` +
-                                `<li>OrderDate : ${data[drive].OrderDate}</li>` +
+                                `<li>OrderDate : ${data[drive].OrderDate.replace("T", ' ')}</li>` +
                                 `<li>Address : ${data[drive].Address.Address}</li>` +
                                 `<li>Car type : ${data[drive].CarType}</li>` +
                                 `<li>Ordered by : ${data[drive].OrderedBy.Username}</li>` +

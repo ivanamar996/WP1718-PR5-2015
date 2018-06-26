@@ -132,6 +132,8 @@ namespace TaxiService.Services
 
                     if (pom.CommentId == -1)
                         drive.Comments = new Comment(); //nemam else her nisam napravila commenrService
+                    else
+                        drive.Comments = Data.commentServices.RetriveCommentById(pom.CommentId);
 
                     if (pom.DriverId == -1)
                         drive.DrivedBy = new Driver();

@@ -15,8 +15,6 @@ namespace TaxiService.Controllers
         [Route("api/Login/Login")]
         public HttpResponseMessage Login([FromBody] LoginClass log)
         {
-            //Data data = new Data();
-
             if (Data.customerService.LogIn(log.Username, log.Password))
             {
                 Customer customerLogin = Data.customerService.RetriveCustomerByUserName(log.Username);

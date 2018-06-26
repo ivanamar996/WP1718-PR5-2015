@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -17,12 +18,17 @@ namespace TaxiService.Controllers
         public HttpResponseMessage CreateDrive([FromBody]JObject data)
         {
             Drive newDrive = new Drive();
-            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives(); 
+            IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
 
             if (drives == null)
                 newDrive.Id = 0;
             else
-                newDrive.Id = drives.Count() + 1;
+            {
+                if (drives.Count() == 1)
+                    newDrive.Id = drives.Count();
+
+             newDrive.Id = drives.Count() + 1;
+            }
 
             newDrive.Address = new Location()
             {
@@ -36,8 +42,9 @@ namespace TaxiService.Controllers
             newDrive.Comments = new Comment();
             newDrive.DrivedBy = new Driver();
             newDrive.Price = 0;
+            string s = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
             newDrive.CarType = (CarTypes)Enum.Parse(typeof(CarTypes), data.GetValue("Type").ToString());
-            newDrive.OrderDate = DateTime.Now;
+            newDrive.OrderDate = DateTime.ParseExact(s, "dd-MM-yyyy hh:mm tt", CultureInfo.InvariantCulture);
             newDrive.OrderedBy = Data.customerService.RetriveCustomerByUserName(Data.loggedUser.Username);
             newDrive.State = Enums.Status.Created;
             Data.driveServices.NewDrive(newDrive);

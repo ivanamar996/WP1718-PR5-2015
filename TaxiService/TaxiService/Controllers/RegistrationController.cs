@@ -25,6 +25,11 @@ namespace TaxiService.Controllers
                 }
                 else
                 {
+                    if (customers.Count() == 1)
+                    {
+                        customer.Id = customers.Count();
+                    }
+
                     customer.Id = customers.Count() + 1;
                 }
                 customer.Drives = new List<Drive>();

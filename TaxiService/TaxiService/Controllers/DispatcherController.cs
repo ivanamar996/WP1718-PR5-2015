@@ -26,7 +26,13 @@ namespace TaxiService.Controllers
                 if (drivers == null)
                     driverNew.Id = 0;
                 else
+                {
+                    if (drivers.Count() == 1)
+                        driverNew.Id = drivers.Count();
+
                     driverNew.Id = drivers.Count() + 1;
+                }
+                    
 
                 driverNew.Username = data.GetValue("Username").ToString();
                 driverNew.Password = data.GetValue("Password").ToString();
