@@ -2,63 +2,63 @@
 <Drives>
   <Drive Id="0">
     <Id>0</Id>
-    <OrderDate>2018-06-26T20:36:00</OrderDate>
-    <AddressX>678</AddressX>
-    <AddressY>234</AddressY>
-    <AddressAdr>op</AddressAdr>
-    <CarType>None</CarType>
+    <OrderDate>2018-06-28T00:45:00</OrderDate>
+    <AddressX>11.5</AddressX>
+    <AddressY>7.5</AddressY>
+    <AddressAdr>Bulevar oslobodjenja 131</AddressAdr>
+    <CarType>Car</CarType>
     <CustomerId>0</CustomerId>
-    <DestinationX>44</DestinationX>
-    <DestinationY>85</DestinationY>
-    <DestinationAdr>adresa</DestinationAdr>
+    <DestinationX>0</DestinationX>
+    <DestinationY>0</DestinationY>
+    <DestinationAdr />
     <DispatcherId>-1</DispatcherId>
-    <DriverId>0</DriverId>
+    <DriverId>-1</DriverId>
     <CommentId>-1</CommentId>
-    <Price>63</Price>
-    <Status>Successful</Status>
+    <Price>0</Price>
+    <Status>Created</Status>
   </Drive>
   <Drive Id="2">
     <Id>2</Id>
-    <OrderDate>2018-06-26T21:02:00</OrderDate>
-    <AddressX>44</AddressX>
-    <AddressY>85</AddressY>
-    <AddressAdr>adresa</AddressAdr>
-    <CarType>Car</CarType>
-    <CustomerId>0</CustomerId>
+    <OrderDate>2018-06-28T00:45:00</OrderDate>
+    <AddressX>11.5</AddressX>
+    <AddressY>7.5</AddressY>
+    <AddressAdr>Bulevar kralja Petra I 25</AddressAdr>
+    <CarType>Van</CarType>
+    <CustomerId>1</CustomerId>
     <DestinationX>0</DestinationX>
     <DestinationY>0</DestinationY>
-    <DestinationAdr></DestinationAdr>
+    <DestinationAdr />
     <DispatcherId>-1</DispatcherId>
-    <DriverId>0</DriverId>
-    <CommentId>0</CommentId>
+    <DriverId>-1</DriverId>
+    <CommentId>-1</CommentId>
     <Price>0</Price>
-    <Status>Unsuccessful</Status>
+    <Status>Created</Status>
   </Drive>
   <Drive Id="3">
     <Id>3</Id>
-    <OrderDate>2018-06-26T21:06:00</OrderDate>
-    <AddressX>123</AddressX>
-    <AddressY>356</AddressY>
-    <AddressAdr>adresa</AddressAdr>
+    <OrderDate>2018-06-28T00:46:00</OrderDate>
+    <AddressX>12.3</AddressX>
+    <AddressY>7.5</AddressY>
+    <AddressAdr>Tolstojeva 12</AddressAdr>
     <CarType>Car</CarType>
-    <CustomerId>0</CustomerId>
+    <CustomerId>3</CustomerId>
     <DestinationX>0</DestinationX>
     <DestinationY>0</DestinationY>
-    <DestinationAdr></DestinationAdr>
-    <DispatcherId>2</DispatcherId>
-    <DriverId>0</DriverId>
+    <DestinationAdr />
+    <DispatcherId>-1</DispatcherId>
+    <DriverId>-1</DriverId>
     <CommentId>-1</CommentId>
     <Price>0</Price>
-    <Status>Processed</Status>
+    <Status>Created</Status>
   </Drive>
   <Drive Id="4">
     <Id>4</Id>
-    <OrderDate>2018-06-26T21:20:00</OrderDate>
-    <AddressX>123</AddressX>
-    <AddressY>234</AddressY>
-    <AddressAdr>op</AddressAdr>
-    <CarType>Car</CarType>
-    <CustomerId>0</CustomerId>
+    <OrderDate>2018-06-28T00:47:00</OrderDate>
+    <AddressX>11.5</AddressX>
+    <AddressY>15.3</AddressY>
+    <AddressAdr>Puskinova 10</AddressAdr>
+    <CarType>Van</CarType>
+    <CustomerId>4</CustomerId>
     <DestinationX>0</DestinationX>
     <DestinationY>0</DestinationY>
     <DestinationAdr />

@@ -4,12 +4,48 @@
     <Id>0</Id>
     <Username>Viki</Username>
     <Password>1234</Password>
-    <Name>Ivana</Name>
-    <Surname>ert</Surname>
-    <Jmbg>0208996185850</Jmbg>
-    <Phone>0658764003</Phone>
-    <Email>ivana@gmail.com</Email>
-    <Gender>Male</Gender>
+    <Name>Violeta</Name>
+    <Surname>Mladjenovic</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>79456</Phone>
+    <Email>violeta@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Customer</Role>
+  </Customer>
+  <Customer Id="1">
+    <Id>1</Id>
+    <Username>Joka</Username>
+    <Password>1234</Password>
+    <Name>Jovana</Name>
+    <Surname>Mladjenovic</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>06587640035</Phone>
+    <Email>jovanamladjenovic11@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Customer</Role>
+  </Customer>
+  <Customer Id="3">
+    <Id>3</Id>
+    <Username>Mica</Username>
+    <Password>1234</Password>
+    <Name>Milica</Name>
+    <Surname>Simeunovic</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>06587640035</Phone>
+    <Email>mica@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Customer</Role>
+  </Customer>
+  <Customer Id="4">
+    <Id>4</Id>
+    <Username>Maja</Username>
+    <Password>1234</Password>
+    <Name>Maja</Name>
+    <Surname>Bukarac</Surname>
+    <Jmbg>1908974185850</Jmbg>
+    <Phone>06587640035</Phone>
+    <Email>maja@gmail.com</Email>
+    <Gender>Female</Gender>
     <Role>Customer</Role>
   </Customer>
 </Customers>

@@ -6,6 +6,7 @@
     $("div#divLink2").hide();
     $("div#divSort").hide();
     $("div#divLink3").hide();
+    $("div#divLogout").hide();
 
     $("#divNaslov").animate({ "left": "0px" }, "slow");
 
@@ -14,7 +15,7 @@
         $("div#div1").html("<form id=\"formRegistration\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Registration/RegisterAccount\">" +
             "<table class=\"tabela\">" +
             "<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" /></td></tr>" +
-            "<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" /></td></tr>" +
+            "<tr><td>Password:</td><td><input type=\"password\" id=\"passwordId\" name=\"password\" /></td></tr>" +
             "<tr><td>Name:</td><td><input type=\"text\" id=\"nameId\" name=\"name\" /></td></tr>" +
             "<tr><td>Surname:</td><td><input type=\"text\" id=\"surnameId\" name=\"Surname\" /></td>" +
             "<tr><td>Jmbg:</td><td><input type=\"text\" id=\"jmbgId\" name=\"jmbg\" /></td></tr>" +
@@ -163,7 +164,7 @@
         $("div#div1").html("<form id=\"form1\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Login/Login\">" +
             "<table class=\"tabela\">" +
             "<tr><td>Username:</td><td><input id=\"usernameId\" type=\"text\" name=\"username\" /></td></tr>" +
-            "<tr><td>Password:</td><td><input id=\"passwordId\" type=\"text\" name=\"password\" /></td></tr>" +
+            "<tr><td>Password:</td><td><input id=\"passwordId\" type=\"password\" name=\"password\" /></td></tr>" +
             "<tr><td colspan=\"2\"><input type=\"submit\" id=\"log\" value=\"Login\"/></td></tr>" +
             "</table></form>");
 
@@ -185,6 +186,7 @@
                         $("div#divService").show();
                         $("div#divSearch").show();
                         $("div#divSort").show();
+                        $("div#divLogout").show();
 
                         $.get("api/Login/Get", function (data, status) {
 
@@ -212,6 +214,7 @@
                                 linkovi += "<br><a id=\"link7\">Create drive</a></br><a id=\"link8\">Change drive</a>";
                                 linkovi += "<br><a id=\"link9\">Cancel drive</a>";
                                 linkovi += "<br><a id=\"link14\">Drives</a>";
+                                linkovi += "<br><a id=\"linkComment\">Comment drive</a>";
                             }
 
                             $("div#divLink").html(linkovi);
@@ -285,7 +288,7 @@
                 $("div#div1").html(`<form id=\"formEditProfile\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/User/Edit\">` +
                     `<table class=\"tabela\">` +
                     `<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" value=\"${data.Username}\"/></td></tr>` +
-                    `<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
+                    `<tr><td>Password:</td><td><input type=\"password\" id=\"passwordId\" name=\"password\" value=\"${data.Password}\" /></td></tr>` +
                     `<tr><td>Name:</td><td><input type=\"text\" name=\"name\" id=\"nameId\" value=\"${data.Name}\"/></td></tr>` +
                     `<tr><td>Surname:</td><td><input type=\"text\" name=\"surname\" id=\"surnameId\" value=\"${data.Surname}\"/></td>` +
                     `<tr><td>Jmbg:</td><td><input type=\"text\" name=\"jmbg\" id=\"jmbgId\" value=\"${data.Jmbg}\" /></td></tr>` +
@@ -328,7 +331,7 @@
             $("div#div1").html("<form id=\"formAddDriver\" accept-charset=\"utf-8\" method=\"post\" action=\"/api/Dispatcher/AddDriver\">" +
                 "<table class=\"tabela\">" +
                 "<tr><td>Username:</td><td><input type=\"text\" id=\"usernameId\" name=\"username\" /></td></tr>" +
-                "<tr><td>Password:</td><td><input type=\"text\" id=\"passwordId\" name=\"password\" /></td></tr>" +
+                "<tr><td>Password:</td><td><input type=\"password\" id=\"passwordId\" name=\"password\" /></td></tr>" +
                 "<tr><td>Name:</td><td><input type=\"text\" id=\"nameId\" name=\"name\" /></td></tr>" +
                 "<tr><td>Surname:</td><td><input type=\"text\" id=\"surnameId\" name=\"surname\" /></td>" +
                 "<tr><td>Jmbg:</td><td><input type=\"text\" id=\"jmbgId\" name=\"jmbg\" /></td></tr>" +
@@ -377,8 +380,6 @@
                             RegNumber: $("#regNumberID").val(),
                         },
                         success: function (html) {
-                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                             alert("Uspjesno ste dodali novog vozaca");
 
                         },
@@ -522,7 +523,7 @@
 
             $("div#div1").html("<p> Create comment</p><br>" +
                 "<form id=\"formCancelDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CancelDrive\">" +
-                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"30\"/><br>" +
+                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"90\"/><br>" +
                 "<input type=\"submit\" value=\"Create\"/>" +
                 "</form>");
 
@@ -578,8 +579,6 @@
                             Type: $("#typeID").val()
                         },
                         success: function (html) {
-                            // sessionStorage.setItem("currentUser", JSON.stringify(data));
-                            // let user = JSON.parse(sessionStorage.getItem("currentUser"));
                             alert("Uspjesno ste kreirali voznju.");
 
                         },
@@ -610,23 +609,25 @@
             });
             e.preventDefault();
 
-            });
-        //});
+        });
 
-        $("a#link20").click(function () {
+
+        $("a#link20").click(function (e) {
 
             $("#link20").attr("href", "api/Driver/AcceptDrive");
             
             $.ajax({
-                type: "GET",
-                data: {},
                 url: "api/Driver/AcceptDrive",
-                error: function (response) {
-                    alert(url + " returns a " + response.status);
-                }, success() {
-                    alert(url + " Good link");
+                statusCode: {
+                    200: function () {
+                        alert('Uspjesno');
+                    },
+                    500: function () {
+                        alert('Greska');
+                    }
                 }
             });
+            e.preventDefault();
         });
 
         $("a#link12").click(function () {
@@ -689,7 +690,16 @@
                     isValidateSuccDrive = false;
                 }
 
-                if ($("#xID").val() && $("#yID").val() && $("#priceID").val()) {
+                if ($("#addressID").val().trim() != "") {
+                    isValidateDriver = true;
+                }
+                else {
+                    $("#addressID").val("");
+                    $("#addressID").attr("placeholder", "Enter your address").placeholder;
+                    isValidateDriver = false;
+                }
+
+                if ($("#xID").val() && $("#yID").val() && $("#priceID").val() && $("#addressID").val()) {
                     isValidateSuccDrive = true;
                 }
                 else {
@@ -727,7 +737,7 @@
 
             $("div#div1").html("<p> Create comment</p><br>" +
                 "<form id=\"formUnsDrive\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Driver/UnsuccessfulDrive\">" +
-                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"30\"/><br>" +
+                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"90\"/><br>" +
                 "<input type=\"submit\" value=\"Create\"/>" +
                 "</form>");
 
@@ -738,8 +748,7 @@
                     method: "POST",
                     dataType: "json",
                     data: {
-
-                        Description: $("#descriptionID").val()
+                        Description: $("#descriptionID").val(),
                     },
                     statusCode: {
                         200: function () {
@@ -754,6 +763,43 @@
                 e.preventDefault();
 
             });
+        });
+
+        $("a#linkComment").click(function () {
+
+            $("div#div1").html("<p> Create comment</p><br>" +
+                "<form id=\"formComment\" accept-charset=\"utf-8\" method=\"post\" action=\"api/Customer/CreateComment\">" +
+                "Description: <br>"+
+                "<textarea name=\"description\" id=\"descriptionID\" rows=\"10\" cols=\"90\"/><br>" +
+                "Grade: <br>"+
+                "<input type=\"number\" name=\"grade\" id=\"gradeID\"/><br>" +
+                "<input type=\"submit\" value=\"Create\"/>" +
+                "</form>");
+
+            $("form#formComment").submit(function (e) {
+
+                $.ajax({
+                    url: "api/Customer/CreateComment",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        Description: $("#descriptionID").val(),
+                        Grade: $("#gradeID").val()
+                    },
+                    statusCode: {
+                        200: function () {
+                            alert('Uspjesno');
+                        },
+                        500: function () {
+                            alert('Greska');
+                        }
+                    }
+
+                });
+                e.preventDefault();
+
+            });
+           
         });
 
         $("a#link14").click(function () {
@@ -1213,7 +1259,16 @@
             isValidateEditLocation = false;
         }
 
-        if ($("#xID").val() && $("#yID").val()) {
+        if ($("#addressID").val().trim() != "") {
+            isValidateDriver = true;
+        }
+        else {
+            $("#addressID").val("");
+            $("#addressID").attr("placeholder", "Enter your address").placeholder;
+            isValidateDriver = false;
+        }
+
+        if ($("#xID").val() && $("#yID").val() && $("#addressID").val()) {
             isValidateEditLocation = true;
         }
         else {
@@ -1373,8 +1428,17 @@
             isValidateDriver = false;
         }
 
+        if ($("#addressID").val().trim() != "") {
+            isValidateDriver = true;
+        }
+        else {
+            $("#addressID").val("");
+            $("#addressID").attr("placeholder", "Enter your address").placeholder;
+            isValidateDriver = false;
+        }
+
         if ($("#nameId").val() && $("#surnameId").val() && $("#usernameId").val() && $("#passwordId").val() && $("#jmbgId").val() && $("#phoneId").val() && $("#emailId").val()
-            && $("#xID").val() && $("#yID").val() && $("#yearID").val() && $("#regNumberID").val()) {
+            && $("#xID").val() && $("#yID").val() && $("#yearID").val() && $("#regNumberID").val() && $("#addressID").val()) {
             isValidateDriver = true;
         }
         else {

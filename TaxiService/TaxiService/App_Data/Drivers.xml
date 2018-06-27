@@ -4,20 +4,80 @@
     <Id>0</Id>
     <Username>Vozac</Username>
     <Password>1234</Password>
-    <Name>radi</Name>
-    <Surname>hahah</Surname>
-    <Jmbg>1234567891234</Jmbg>
-    <Phone>79456</Phone>
-    <Email>ivana01m@live.com</Email>
+    <Name>Dragan</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>0701974185850</Jmbg>
+    <Phone>06587640035</Phone>
+    <Email>dragan@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Driver</Role>
+    <Free>true</Free>
+    <X>11.5</X>
+    <Y>7.5</Y>
+    <Address>Bulevar kralja Petra I 15</Address>
+    <CarId>0</CarId>
+    <ModelYear>2000</ModelYear>
+    <RegNumber>55101</RegNumber>
+    <Type>Car</Type>
+  </Driver>
+  <Driver Id="2">
+    <Id>2</Id>
+    <Username>Vozac2</Username>
+    <Password>1234</Password>
+    <Name>Marica</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>1908974185850</Jmbg>
+    <Phone>06587640035</Phone>
+    <Email>mara.markovic74@hotmail.com</Email>
     <Gender>Female</Gender>
     <Role>Driver</Role>
-    <Free>false</Free>
-    <X>678</X>
-    <Y>234</Y>
-    <Address>op</Address>
-    <CarId>0</CarId>
-    <ModelYear>23</ModelYear>
-    <RegNumber>23</RegNumber>
+    <Free>true</Free>
+    <X>10.32</X>
+    <Y>9.5</Y>
+    <Address>Bulevar oslobodjenja 131</Address>
+    <CarId>1</CarId>
+    <ModelYear>1996</ModelYear>
+    <RegNumber>55102</RegNumber>
+    <Type>Van</Type>
+  </Driver>
+  <Driver Id="3">
+    <Id>3</Id>
+    <Username>Vozac3</Username>
+    <Password>1234</Password>
+    <Name>Stanko</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>79456</Phone>
+    <Email>stanko@gmail.com</Email>
+    <Gender>Male</Gender>
+    <Role>Driver</Role>
+    <Free>true</Free>
+    <X>25.2</X>
+    <Y>23.5</Y>
+    <Address>Gogoljeva 6</Address>
+    <CarId>2</CarId>
+    <ModelYear>2005</ModelYear>
+    <RegNumber>55104</RegNumber>
     <Type>Car</Type>
+  </Driver>
+  <Driver Id="4">
+    <Id>4</Id>
+    <Username>Vozac4</Username>
+    <Password>1234</Password>
+    <Name>Bosa</Name>
+    <Surname>Markovic</Surname>
+    <Jmbg>1234567891234</Jmbg>
+    <Phone>79456</Phone>
+    <Email>bosa@gmail.com</Email>
+    <Gender>Female</Gender>
+    <Role>Driver</Role>
+    <Free>true</Free>
+    <X>5.3</X>
+    <Y>6.2</Y>
+    <Address>Dodza Djerdja 20</Address>
+    <CarId>3</CarId>
+    <ModelYear>2011</ModelYear>
+    <RegNumber>55104</RegNumber>
+    <Type>Van</Type>
   </Driver>
 </Drivers>

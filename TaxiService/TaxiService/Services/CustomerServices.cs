@@ -180,8 +180,6 @@ namespace TaxiService.Services
 
         public Customer RetriveCustomerById(int id)
         {
-            if (id == -1)
-                return null;
 
             if (File.Exists(fileName))
             {
@@ -205,10 +203,7 @@ namespace TaxiService.Services
                         Role = (Roles)Enum.Parse(typeof(Roles), customerx.Element("Role").Value)
                     }).ToList();
 
-                if (customers.First(x => x.Id.Equals(id)) == null)
-                    return null;
-
-                Customer customer = customers.First(x => x.Id.Equals(id));
+                Customer customer = customers.FirstOrDefault(x => x.Id.Equals(id));
 
                 return customer;
             }

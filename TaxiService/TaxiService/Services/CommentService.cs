@@ -21,6 +21,7 @@ namespace TaxiService.Services
                 new XElement("Comments",
                 new XElement("Comment", new XAttribute("Id", comment.Id),
                         new XElement("Id", comment.Id),
+                        new XElement("CreatedDateTime", comment.CreatedDateTime),
                         new XElement("Description", comment.Description),
                         new XElement("UserId", comment.CreatedBy.Id),
                         new XElement("DriveId", comment.CommentedOn.Id),
@@ -37,6 +38,7 @@ namespace TaxiService.Services
                     XElement drivers = doc.Element("Comments");
                     drivers.Add(new XElement("Comment", new XAttribute("Id", comment.Id),
                         new XElement("Id", comment.Id),
+                        new XElement("CreatedDateTime", comment.CreatedDateTime),
                         new XElement("Description", comment.Description),
                         new XElement("UserId", comment.CreatedBy.Id),
                         new XElement("DriveId", comment.CommentedOn.Id),
@@ -66,8 +68,10 @@ namespace TaxiService.Services
 
                         UserId = Int32.Parse(comment.Element("UserId").Value),
 
+                        CreatedDateTime = DateTime.Parse(comment.Element("CreatedDateTime").Value),
+
                         Description = comment.Element("Description").Value,
-                        
+
                         DriveId = Int32.Parse(comment.Element("DriveId").Value),
 
                         Grade = Int32.Parse(comment.Element("Grade").Value)
@@ -80,6 +84,7 @@ namespace TaxiService.Services
                     Comment com = new Comment();
                     com.Id = pom.Id;
                     com.Grade = pom.Grade;
+                    com.CreatedDateTime = pom.CreatedDateTime;
                     com.CreatedBy = Data.customerService.RetriveCustomerById(pom.UserId);
                     com.CommentedOn = Data.driveServices.RetriveDriveById(pom.DriveId);
                     com.Description = pom.Description;
@@ -115,6 +120,8 @@ namespace TaxiService.Services
 
                         Description = comment.Element("Description").Value,
 
+                        CreatedDateTime = DateTime.Parse(comment.Element("CreatedDateTime").Value),
+
                         DriveId = Int32.Parse(comment.Element("DriveId").Value),
 
                         Grade = Int32.Parse(comment.Element("Grade").Value)
@@ -127,12 +134,13 @@ namespace TaxiService.Services
                     Comment com = new Comment();
                     com.Id = pom.Id;
                     com.Grade = pom.Grade;
+                    com.CreatedDateTime = pom.CreatedDateTime;
                     com.CreatedBy = Data.customerService.RetriveCustomerById(pom.UserId);
                     com.CommentedOn = Data.driveServices.RetriveDriveById(pom.DriveId);
                     com.Description = pom.Description;
                     fullComments.Add(com);
                 }
-            
+
 
                 Comment comment1 = fullComments.First(x => x.Id.Equals(id));
 
@@ -143,5 +151,7 @@ namespace TaxiService.Services
                 return null;
             }
         }
+
+
     }
 }

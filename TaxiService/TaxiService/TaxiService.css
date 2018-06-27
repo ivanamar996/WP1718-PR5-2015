@@ -24,6 +24,17 @@ body {
     right:5%;
 }
 
+.LogOut {
+    font-family: Vedrana;
+    font-size: 450%;
+    color: #ffff1a;
+    background-color: black;
+    opacity: 0.7;
+    position: absolute;
+    top: 25%;
+    right: 5%;
+}
+
 
 .divCrni {
     color: black;
@@ -182,6 +193,10 @@ input[type=submit] {
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
+}
+
+select {
+    font-size: 30px;
 }
 
 input[type=submit]:hover {

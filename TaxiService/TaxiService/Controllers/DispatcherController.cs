@@ -101,6 +101,7 @@ namespace TaxiService.Controllers
                     newDrive.DrivedBy = driver;
                     driver.Free = false;
                     Data.driverServices.EditDriverProfile(driver);
+                    break;
                 }
             }
 

@@ -19,6 +19,7 @@ namespace TaxiService.Controllers
             if (!Data.customerService.CheckIfCustomerExists(customer.Username))
             {
                 IEnumerable<Customer> customers = Data.customerService.RetriveAllCustomers();
+
                 if (customers == null)
                 {
                     customer.Id = 0;
@@ -29,8 +30,8 @@ namespace TaxiService.Controllers
                     {
                         customer.Id = customers.Count();
                     }
-
-                    customer.Id = customers.Count() + 1;
+                    else
+                        customer.Id = customers.Count() + 1;
                 }
                 customer.Drives = new List<Drive>();
                 customer.Role = Enums.Roles.Customer;

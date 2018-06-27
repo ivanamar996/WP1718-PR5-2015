@@ -13,7 +13,7 @@ namespace TaxiService.Services
     {
         private string fileName = HttpContext.Current.Server.MapPath("~/App_Data/Drives.xml");
 
-        public void NewDrive(Drive drive) 
+        public void NewDrive(Drive drive)
         {
             if (!File.Exists(fileName))
             {
@@ -113,7 +113,7 @@ namespace TaxiService.Services
 
                     }).ToList();
 
-                foreach(DrivePom pom in drives)
+                foreach (DrivePom pom in drives)
                 {
                     Drive drive = new Drive();
                     drive.Id = pom.Id;
@@ -268,17 +268,12 @@ namespace TaxiService.Services
                     Drive d = new Drive();
                     d.Id = pom.Id;
                     d.OrderDate = pom.OrderDate;
-                    //d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
+                    d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
                     d.Price = pom.Price;
                     d.State = pom.State;
                     d.Destination = pom.Destination;
                     d.CarType = pom.CarType;
                     d.Address = pom.Address;
-
-                    if (pom.CustomerId == -1)
-                        d.OrderedBy = new Customer();
-                    else
-                        d.OrderedBy = Data.customerService.RetriveCustomerById(pom.CustomerId);
 
                     if (pom.DispatcherId == -1)
                         d.ApprovedBy = new Dispatcher();
@@ -288,7 +283,8 @@ namespace TaxiService.Services
                     if (pom.CommentId == -1)
                         d.Comments = new Comment(); //nemam else her nisam napravila commenrService
                     else
-                        d.Comments = Data.commentServices.RetriveCommentById(pom.CommentId);
+                        d.Comments = new Comment() { Id = pom.CommentId };
+
 
                     if (pom.DriverId == -1)
                         d.DrivedBy = new Driver();
@@ -298,7 +294,7 @@ namespace TaxiService.Services
                     fullDrives.Add(d);
                 }
 
-                Drive drive = fullDrives.First(x => x.Id.Equals(id));
+                Drive drive = fullDrives.FirstOrDefault(x => x.Id.Equals(id));
 
                 return drive;
             }

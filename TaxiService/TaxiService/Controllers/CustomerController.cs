@@ -27,7 +27,7 @@ namespace TaxiService.Controllers
                 if (drives.Count() == 1)
                     newDrive.Id = drives.Count();
 
-             newDrive.Id = drives.Count() + 1;
+                newDrive.Id = drives.Count() + 1;
             }
 
             newDrive.Address = new Location()
@@ -36,7 +36,7 @@ namespace TaxiService.Controllers
                 Y = Double.Parse(data.GetValue("Y").ToString()),
                 Address = data.GetValue("Address").ToString()
             };
-         
+
             newDrive.Destination = new Location();
             newDrive.ApprovedBy = new Dispatcher();
             newDrive.Comments = new Comment();
@@ -56,7 +56,7 @@ namespace TaxiService.Controllers
         public HttpResponseMessage ChangeDrive([FromBody]JObject data)
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
-            foreach(Drive d in drives)
+            foreach (Drive d in drives)
             {
                 if (d.OrderedBy.Id == Data.loggedUser.Id)
                 {
@@ -99,11 +99,13 @@ namespace TaxiService.Controllers
                             else
                                 com.Id = comments.Count() + 1;
                         }
-                            
+
 
                         com.Description = data.GetValue("Description").ToString();
                         com.CreatedBy = Data.customerService.RetriveCustomerById(Data.loggedUser.Id);
                         com.CommentedOn = d;
+                        string s = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+                        com.CreatedDateTime = DateTime.ParseExact(s, "dd-MM-yyyy hh:mm tt", CultureInfo.InvariantCulture);
                         d.Comments = com;
                         Data.driveServices.EditDriveProfile(d);
                         Data.commentServices.NewComment(com);
@@ -120,7 +122,7 @@ namespace TaxiService.Controllers
 
             IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
 
-            foreach(Drive d in allDrives)
+            foreach (Drive d in allDrives)
             {
                 if (d.OrderedBy == null)
                     continue;
@@ -131,6 +133,46 @@ namespace TaxiService.Controllers
                 }
             }
             return customerDrives;
+        }
+
+        [HttpPost]
+        [Route("api/Customer/CreateComment")]
+        public HttpResponseMessage CreateComment([FromBody]JObject data)
+        {
+            IEnumerable<Drive> allDrives = Data.driveServices.RetriveAllDrives();
+            foreach(Drive drive in allDrives)
+            {
+                if (drive.OrderedBy.Id == Data.loggedUser.Id)
+                {
+                    if(drive.State!=Enums.Status.Created && drive.State!=Enums.Status.Formated && drive.State != Enums.Status.Canceled)
+                    {
+                        Comment com = new Comment();
+                        IEnumerable<Comment> comments = Data.commentServices.RetriveAllComments();
+                        if (comments == null)
+                            com.Id = 0;
+                        else
+                            com.Id = comments.Count() + 1;
+
+                        com.Description = data.GetValue("Description").ToString();
+                        com.Grade = Int32.Parse(data.GetValue("Grade").ToString());
+
+                        if(com.Grade<0 || com.Grade > 5)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                        }
+
+                        string s = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+                        com.CreatedDateTime = DateTime.ParseExact(s, "dd-MM-yyyy hh:mm tt", CultureInfo.InvariantCulture);
+                        com.CreatedBy = Data.loggedUser;
+                        com.CommentedOn = drive;
+                        drive.Comments = com;
+                        Data.commentServices.NewComment(com);
+                        Data.driveServices.EditDriveProfile(drive);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+                    }
+                }
+            }
+            return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
     }
 }

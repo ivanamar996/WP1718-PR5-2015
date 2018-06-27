@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -33,6 +34,7 @@ namespace TaxiService.Controllers
         {
             IEnumerable<Drive> drives = Data.driveServices.RetriveAllDrives();
             Drive driveFinis = new Drive();
+            Driver driver = new Driver();
 
             foreach (Drive d in drives)
             {
@@ -52,6 +54,12 @@ namespace TaxiService.Controllers
                 Y = Double.Parse(data.GetValue("Y").ToString()),
                 Address = data.GetValue("Address").ToString()
             };
+
+            driver = driveFinis.DrivedBy;
+
+            driver.Location = driveFinis.Destination;
+            Data.driverServices.EditDriverProfile(driver);
+
 
             if (driveFinis.OrderedBy == null)
                 driveFinis.OrderedBy = new Customer();
@@ -99,6 +107,8 @@ namespace TaxiService.Controllers
             com.Description = data.GetValue("Description").ToString();
             com.CreatedBy = Data.driverServices.RetriveDriverById(driveFinis.DrivedBy.Id);
             com.CommentedOn = driveFinis;
+            string s = DateTime.Now.ToString("dd/MM/yyyy hh:mm tt");
+            com.CreatedDateTime = DateTime.ParseExact(s, "dd-MM-yyyy hh:mm tt", CultureInfo.InvariantCulture);
 
             driveFinis.Comments = com;
 
@@ -178,17 +188,20 @@ namespace TaxiService.Controllers
             {
                 if (d.State == Enums.Status.Created)
                 {
-                    d.DrivedBy = Data.driverServices.RetriveDriverById(Data.loggedUser.Id);
-                    d.State = Enums.Status.Accepted;
-                    Data.driveServices.EditDriveProfile(d);
-                    Driver driver = d.DrivedBy;
-                    driver.Free = false;
-                    Data.driverServices.EditDriverProfile(driver);
-                    return Request.CreateResponse(HttpStatusCode.Created, d);
+                    Driver driver1 = Data.driverServices.RetriveDriverById(Data.loggedUser.Id);
+                    if (driver1.Free == true)
+                    {
+                        d.DrivedBy = Data.driverServices.RetriveDriverById(Data.loggedUser.Id);
+                        d.State = Enums.Status.Accepted;
+                        Data.driveServices.EditDriveProfile(d);
+                        Driver driver = d.DrivedBy;
+                        driver.Free = false;
+                        Data.driverServices.EditDriverProfile(driver);
+                        return Request.CreateResponse(HttpStatusCode.OK);
+
+                    }
                 }
             }
-
-            
             return Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
     }
